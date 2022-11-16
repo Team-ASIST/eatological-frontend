@@ -19,11 +19,10 @@ jobs:
         uses: expo/expo-github-action@v7
         with:
           expo-version: latest
-          expo-username: ${{ secrets.EXPO_CLI_USERNAME }}
-          expo-password: ${{ secrets.EXPO_CLI_PASSWORD }}
+          token: ${{ secrets.EXPO_TOKEN }}
          
       - name: 📦 Install dependencies
         run: yarn
         
       - name: 🚀 Publish app
-        run: expo publish --release-channel production
+        run: expo publish --non-interactive --release-channel production 
