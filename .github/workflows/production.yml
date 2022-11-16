@@ -1,4 +1,4 @@
-name: Expo Publish on Staging
+name: Expo Publish on Production
 on:
   workflow_dispatch:
 jobs:
