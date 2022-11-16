@@ -1,8 +1,6 @@
 name: Expo Publish on Staging
 on:
-  push:
-    branches:
-      - develop
+  workflow_dispatch:
 jobs:
   publish:
     name: Install and publish
