@@ -26,6 +26,9 @@ const theme = createTheme({
         secondaryCardBackground: palette.darkMintGreen,
         primaryCardText: palette.white,
         secondaryCardText: palette.black,
+        primaryButtonColor: palette.coral,
+        secondaryButtonColor: palette.darkMintGreen,
+        inactiveButtonColor: palette.grey,
     },
     breakpoints: {
         phone: 0,

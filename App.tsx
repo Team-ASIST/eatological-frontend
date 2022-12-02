@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useColorScheme, Text, View, Button } from 'react-native';
+import React from 'react';
+import { useColorScheme, Text } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -11,61 +11,25 @@ import {
   Fraunces_500Medium,
   Fraunces_700Bold,
 } from '@expo-google-fonts/fraunces';
-
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import CurrentPlan from './pages/CurrentPlanPage/CurrentPlanPage';
+import NewPlanPage from './pages/NewPlanPage/NewPlanPage';
+import GroceryListPage from './pages/GroceryListPage/GroceryListPage';
+import SettingsPage from './pages/SettingsPage/SettingsPage';
+import { RootStackParamList, RootTabParamList } from './navigation/types';
 
-
-// All Screens
-const SettingsScreen = () => {
-  return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>Settings!</Text>
-    </View>
-  );
-}
-
-const NewPlanScreen = ({ navigation }) => {
-  return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>New Plan!</Text>
-      <Button
-        title="Home"
-        onPress={() => navigation.navigate('Current Plan')}
-      />
-    </View>
-  );
-}
-
-const CurrentPlan = () => {
-  return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>Current Plan!</Text>
-    </View>
-  );
-}
-
-const List = () => {
-  return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>Shopping List!</Text>
-    </View>
-  );
-}
-
-// Stack Navigator for new Plans
-const NewPlan = createNativeStackNavigator();
+const NewPlan = createNativeStackNavigator<RootStackParamList>();
 
 const PlanStackScreen = () => {
   return (
     <NewPlan.Navigator>
-      <NewPlan.Screen name="MealQuantity" component={NewPlanScreen} />
-      <NewPlan.Screen name="Leftovers" component={NewPlanScreen} />
+      <NewPlan.Screen name="MealQuantity" options={{ headerShown: false}} component={NewPlanPage} />
+      <NewPlan.Screen name="Leftovers" options={{ headerShown: false}} component={NewPlanPage} />
     </NewPlan.Navigator>
   );
 }
 
-// Bottom Tab Navigator
-const Tab = createBottomTabNavigator();
+const Tab = createBottomTabNavigator<RootTabParamList>();
 
 const App = () => {
   const colorTheme = useColorScheme();
@@ -80,47 +44,48 @@ const App = () => {
   }
   return (
     <ThemeProvider theme={colorTheme === 'dark' ? darkTheme : theme}>
-      <NavigationContainer>
-        <Tab.Navigator initialRouteName="Current Plan"
-          screenOptions={({ route }) => ({
-            tabBarIcon: ({ focused, color, size }) => {
-              let iconName;
+        <NavigationContainer>
+          <Tab.Navigator initialRouteName="CurrentPlan"
+            screenOptions={
+              ({ route }) => ({
+                headerShown: false,
+                tabBarIcon: ({ focused, color, size }) => {
+                  let iconName : string = "";
 
-              if (route.name === 'New Plan') {
-                iconName = focused
-                  ? 'add'
-                  : 'add-outline'
-              } else if (route.name === 'Current Plan') {
-                iconName = focused
-                  ? 'basket'
-                  : 'basket-outline';
-              } else if (route.name === 'Shopping List') {
-                iconName = focused
-                  ? 'ios-list'
-                  : 'ios-list-outline';
-              } else if (route.name === 'Settings') {
-                iconName = focused
-                  ? 'settings'
-                  : 'settings-outline';
-              }
+                  if (route.name === 'NewPlan') {
+                    iconName = focused
+                      ? 'add'
+                      : 'add-outline'
+                  } else if (route.name === 'CurrentPlan') {
+                    iconName = focused
+                      ? 'basket'
+                      : 'basket-outline';
+                  } else if (route.name === 'GroceryList') {
+                    iconName = focused
+                      ? 'ios-list'
+                      : 'ios-list-outline';
+                  } else if (route.name === 'Settings') {
+                    iconName = focused
+                      ? 'settings'
+                      : 'settings-outline';
+                  }
 
-              // You can return any component that you like here!
-              return <Ionicons name={iconName} size={size} color={color} />;
-            },
-            tabBarActiveTintColor: 'tomato',
-            tabBarInactiveTintColor: 'gray',
-          })}
-        >
-          <Tab.Screen
-            name="New Plan"
-            component={PlanStackScreen}
-            options={{ headerShown: false, tabBarStyle: { display: 'none' } }}
-          />
-          <Tab.Screen name="Current Plan" component={CurrentPlan} />
-          <Tab.Screen name="Shopping List" component={List} />
-          <Tab.Screen name="Settings" component={SettingsScreen} />
-        </Tab.Navigator>
-      </NavigationContainer>
+                  return <Ionicons name={iconName} size={size} color={color} />;
+                },
+                tabBarActiveTintColor: theme.colors.primaryButtonColor,
+                tabBarInactiveTintColor: theme.colors.inactiveButtonColor,
+              })}
+          >
+            <Tab.Screen
+              name="NewPlan"
+              component={PlanStackScreen}
+              options={{ headerShown: false, tabBarStyle: { display: 'none' } }}
+            />
+            <Tab.Screen name="CurrentPlan" options={{ headerShown: false}} component={CurrentPlan} />
+            <Tab.Screen name="GroceryList" options={{ headerShown: false}} component={GroceryListPage} />
+            <Tab.Screen name="Settings" options={{ headerShown: false}} component={SettingsPage} />
+          </Tab.Navigator>
+        </NavigationContainer>
     </ThemeProvider>
   );
 }
