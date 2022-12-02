@@ -1,20 +1,35 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { Text } from 'react-native';
+import { ThemeProvider } from '@shopify/restyle';
+import theme, { darkTheme } from './utils/theme';
+import React from 'react';
+import ThemeExample from './pages/themeExample/themeExample';
+import { useColorScheme } from 'react-native';
+import {
+  useFonts,
+  Fraunces_300Light,
+  Fraunces_500Medium,
+  Fraunces_700Bold,
+} from '@expo-google-fonts/fraunces';
 
-export default function App() {
+const App = () => {
+  const colorTheme = useColorScheme();
+  let [fontsLoaded] = useFonts({
+    Fraunces_300Light,
+    Fraunces_500Medium,
+    Fraunces_700Bold,
+  });
+
+  if (!fontsLoaded) {
+    return <Text>Fonts loading</Text>
+  }
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
+    <ThemeProvider theme={colorTheme === 'dark' ? darkTheme : theme}>
+      <ThemeExample />
       <StatusBar style="auto" />
-    </View>
+    </ThemeProvider>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default App; 

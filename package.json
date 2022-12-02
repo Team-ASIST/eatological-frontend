@@ -9,11 +9,14 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@expo-google-fonts/fraunces": "^0.2.2",
     "@expo/webpack-config": "^0.17.2",
     "@react-navigation/native": "^6.0.13",
     "@react-navigation/native-stack": "^6.9.1",
+    "@shopify/restyle": "^2.1.0",
     "@types/react-navigation": "^3.4.0",
     "expo": "^47.0.6",
+    "expo-font": "~11.0.1",
     "expo-status-bar": "~1.4.2",
     "expo-updates": "~0.15.5",
     "react": "18.1.0",
