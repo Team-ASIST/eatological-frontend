@@ -7,6 +7,7 @@ export const palette = {
     darkMintGreen: '#32AB67',
     lightMintGreen: '#79F7B1',
 
+
     white: '#ffffff',
     black: '#000000',
     grey: '#5E5854',
@@ -60,6 +61,12 @@ const theme = createTheme({
             lineHeight: 24,
             color: 'primaryCardText',
         },
+        navigationButton: {
+            fontFamily: 'Fraunces_300Light',
+            fontSize: 16,
+            lineHeight: 24,
+            color: 'secondaryButtonColor',
+        }
     },
     cardVariants: {
         primary: {

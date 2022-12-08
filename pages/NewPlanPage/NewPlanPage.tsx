@@ -1,38 +1,22 @@
-import React from "react";
-import { createBox, createText } from '@shopify/restyle';
-import { Theme } from '../../utils/theme';
-import { Button } from "react-native";
-import { NavigationScreenProp } from "react-navigation";
-
-const Text = createText<Theme>();
-const Box = createBox<Theme>();
+import React, { useState } from 'react'
+import { NavigationScreenProp } from 'react-navigation'
+import { NavigationContainer } from '@react-navigation/native'
+import { createNativeStackNavigator } from '@react-navigation/native-stack'
+import MealQuantityScreen from './MealQuantity'
+import LeftoversScreen from './Leftovers'
 
 export type NewPlanPageProps = {
-    navigation: NavigationScreenProp<any,any>
-};
+    navigation: NavigationScreenProp<any, any>
+}
+const Stack = createNativeStackNavigator()
 
 const NewPlanPage = ({ navigation }: NewPlanPageProps) => {
     return (
-        <Box padding="m" backgroundColor="mainBackground" flex={1}>
-        <Box
-          backgroundColor="primaryCardBackground"
-          margin="s"
-          padding="m"
-          flexGrow={1}
-        >
-          <Text variant="header">
-            New Plan Process is started!
-          </Text>
-          <Text variant="subheader">
-            Here should be the create a new plan!
-          </Text>
-          <Button
-        title="Home"
-        onPress={() => navigation.navigate('CurrentPlan')}
-      />
-        </Box>
-      </Box>
-    );
-  }
+        <Stack.Navigator initialRouteName="Home">
+            <Stack.Screen name="Mealquantity" component={MealQuantityScreen} />
+            <Stack.Screen name="Leftovers" component={LeftoversScreen} />
+        </Stack.Navigator>
+    )
+}
 
-export default NewPlanPage; 
+export default NewPlanPage
