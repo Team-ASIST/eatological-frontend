@@ -12,7 +12,7 @@ const Stack = createNativeStackNavigator()
 
 const NewPlanPage = ({ navigation }: NewPlanPageProps) => {
     return (
-        <Stack.Navigator initialRouteName="Home">
+        <Stack.Navigator initialRouteName="Mealquantity" screenOptions={{ headerShown: false }}>
             <Stack.Screen name="Mealquantity" component={MealQuantityScreen} />
             <Stack.Screen name="Leftovers" component={LeftoversScreen} />
         </Stack.Navigator>
