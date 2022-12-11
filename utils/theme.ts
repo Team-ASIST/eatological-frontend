@@ -12,10 +12,12 @@ export const palette = {
     black: '#000000',
     grey: '#5E5854',
     creme: '#FFE5E3',
+    spacegrey: '#646464',
 };
 
 const theme = createTheme({
     spacing: {
+        xs: 4,
         s: 8,
         m: 16,
         l: 32, 
@@ -30,6 +32,7 @@ const theme = createTheme({
         primaryButtonColor: palette.coral,
         secondaryButtonColor: palette.darkMintGreen,
         inactiveButtonColor: palette.grey,
+        navigationButtonColor: palette.spacegrey,
     },
     breakpoints: {
         phone: 0,
@@ -46,14 +49,14 @@ const theme = createTheme({
             fontWeight: 'bold',
             fontSize: 34,
             lineHeight: 42.5,
-            color:  'primaryCardText',
+            color:  'secondaryCardText',
         },
         subheader: {
             fontFamily: 'Fraunces_500Medium',
             fontWeight: '600',
             fontSize: 28,
             lineHeight: 36,
-            color: 'primaryCardText',
+            color: 'secondaryCardText',
         },
         body: {
             fontFamily: 'Fraunces_300Light',
@@ -62,10 +65,11 @@ const theme = createTheme({
             color: 'primaryCardText',
         },
         navigationButton: {
-            fontFamily: 'Fraunces_300Light',
-            fontSize: 16,
+            fontFamily: 'Fraunces_500Medium',
+            fontSize: 20,
             lineHeight: 24,
-            color: 'secondaryButtonColor',
+            color: 'navigationButtonColor',
+            
         }
     },
     cardVariants: {

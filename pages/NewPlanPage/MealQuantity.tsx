@@ -20,10 +20,10 @@ type MealProps = {
 const NewMeal = () => {
     return (
         <Box
+            marginVertical="s"
             padding="m"
-            backgroundColor="mainBackground"
-            flex={1}
-            maxHeight={70}
+            backgroundColor="primaryCardBackground"
+            borderRadius={50}
             flexDirection="row"
             justifyContent="space-between">
             <Text variant="body">New Meal</Text>
@@ -40,13 +40,13 @@ const Meal = ({ mealNumber }: MealProps) => {
     const [mealCounter, setMealCounter] = useState(1)
     return (
         <Box
+            marginVertical="s"
             padding="m"
-            backgroundColor="mainBackground"
-            flex={1}
-            maxHeight={70}
+            backgroundColor="primaryCardBackground"
+            borderRadius={50}
             flexDirection="row"
             justifyContent="space-between">
-            <Text variant="body">Meal {mealNumber}</Text>
+            <Text variant="body">Meal {mealNumber} </Text>
             <Box flexDirection="row">
                 <IconButton
                     onPress={() => {
@@ -54,15 +54,17 @@ const Meal = ({ mealNumber }: MealProps) => {
                     }}
                     icon={'ios-remove-circle-outline'}
                     size={25}
-                    color={''}></IconButton>
-                <Text variant="body">{mealCounter}</Text>
+                    color={'black'}></IconButton>
+                <Text variant="body" marginHorizontal="s">
+                    {mealCounter}
+                </Text>
                 <IconButton
                     onPress={() => {
                         setMealCounter(mealCounter + 1)
                     }}
                     icon={'ios-add-circle-outline'}
                     size={25}
-                    color={''}></IconButton>
+                    color={'black'}></IconButton>
             </Box>
         </Box>
     )
@@ -71,17 +73,22 @@ const Meal = ({ mealNumber }: MealProps) => {
 const MealQuantityScreen = ({ navigation }: Props) => {
     return (
         <Box padding="m" backgroundColor="mainBackground" flex={1}>
-            <Box backgroundColor="primaryCardBackground" margin="s" padding="m" flexGrow={1}>
-                <Text variant="header">How many meals do you want?</Text>
-                <Meal mealNumber={1}></Meal>
-                <NewMeal></NewMeal>
-                <Button title="Home" onPress={() => navigation.navigate('CurrentPlan')} />
-                <NavigationButton
-                    onPress={function (): void {
-                        navigation.navigate('Leftovers')
-                    }}
-                    text="Next"
-                />
+            <Box marginVertical="l" marginHorizontal="xs" padding="m" flexGrow={1}>
+                <Text variant="subheader">How many meals do you want?</Text>
+                <Box marginVertical="l" flexGrow={1}>
+                    <Meal mealNumber={1}></Meal>
+                    <NewMeal></NewMeal>
+                </Box>
+            </Box>
+            <Box
+                flexDirection="row"
+                position="absolute"
+                bottom={70}
+                start={-13}
+                end={-13}
+                justifyContent="space-between">
+                <NavigationButton onPress={() => navigation.navigate('CurrentPlan')} text="Home" />
+                <NavigationButton onPress={() => navigation.navigate('Leftovers')} text="Next" />
             </Box>
         </Box>
     )

@@ -14,9 +14,16 @@ type Props = {
 const NavigationButton = ({ onPress, text }: Props) => {
     return (
         <TouchableOpacity onPress={onPress}>
-            <View>
+            <Box
+                padding="xs"
+                backgroundColor="mainBackground"
+                borderRadius={50}
+                width={100}
+                borderWidth={2}
+                borderColor="navigationButtonColor"
+                alignItems="center">
                 <Text variant="navigationButton">{text}</Text>
-            </View>
+            </Box>
         </TouchableOpacity>
     )
 }
