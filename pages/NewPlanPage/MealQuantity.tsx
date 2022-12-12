@@ -1,6 +1,5 @@
 import { createBox, createText } from '@shopify/restyle'
 import { Theme } from '../../utils/theme'
-import { Button, View } from 'react-native'
 import { NavigationScreenProp } from 'react-navigation'
 import NavigationButton from '../../components/ui/NavigationButton'
 import IconButton from '../../components/ui/IconButton'

@@ -1,9 +1,9 @@
 import { createBox, createText } from '@shopify/restyle'
 import { Theme } from '../../utils/theme'
-import { Button, View } from 'react-native'
 import { NavigationScreenProp } from 'react-navigation'
 import React from 'react'
 import NavigationButton from '../../components/ui/NavigationButton'
+import SearchBar from '../../components/ui/SearchBar'
 
 const Text = createText<Theme>()
 const Box = createBox<Theme>()
@@ -16,9 +16,10 @@ const LeftoversScreen = ({ navigation }: Props) => {
     return (
         <Box padding="m" backgroundColor="mainBackground" flex={1}>
             <Box marginVertical="l" marginHorizontal="xs" padding="m" flexGrow={1}>
-                <Text variant="header">Do you have any leftovers?</Text>
-                <Text variant="subheader">Here should be the create a new plan!</Text>
+                <Text variant="subheader">Do you have any leftovers?</Text>
+                <SearchBar></SearchBar>
             </Box>
+
             <Box
                 flexDirection="row"
                 position="absolute"
