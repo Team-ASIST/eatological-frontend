@@ -2,7 +2,7 @@ import React from "react";
 import { useState } from "react";
 import { createBox, createText } from '@shopify/restyle';
 import { Theme } from '../../utils/theme';
-import { TouchableOpacity, ScrollView, Image, Dimensions } from "react-native";
+import { TouchableOpacity, ImageBackground, Image, Dimensions } from "react-native";
 import { NavigationScreenProp } from "react-navigation";
 import { SwipeListView } from 'react-native-swipe-list-view';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -11,6 +11,18 @@ const Text = createText<Theme>();
 const Box = createBox<Theme>();
 
 // TypeScript Setup
+
+class Leftovers {
+  id: number;
+  name: string;
+  amount: number;
+
+  constructor(id: number, name: string, amount: number) {
+    this.id = id;
+    this.name = name;
+    this.amount = amount;
+  }
+}
 
 class MealData {
   id: number;
@@ -40,34 +52,42 @@ export type SwapMealsPageProps = {
   navigation: NavigationScreenProp<any, any>
 };
 
-const wait = (timeout : number) => {
+const wait = (timeout: number) => {
   return new Promise(resolve => setTimeout(resolve, timeout));
 }
 
 // Define Recipe Component here
 
-const Recipe = (recipe: RecipeData) => {
+const Recipe = (recipe: RecipeData, navigation: any) => {
   const height = Dimensions.get('window').height;
+  const width = Dimensions.get('window').width;
   return (
-    <Box
-      height={0.25 * height}
-      borderRadius={50}
-      alignItems="center"
-      backgroundColor="primaryCardBackground"
-    >
-
-      <Box flexGrow={1} justifyContent={"center"}>
-        <Image source={require('../../assets/favicon.png')} />
-      </Box>
-
+    <TouchableOpacity onPress={() => (navigation.navigate('CurrentPlan'))}>
       <Box
-        flexDirection={"row"}
-        paddingBottom={"m"}
-        alignItems={"stretch"}
+        height={0.25 * height}
+        borderRadius={50}
+        backgroundColor="primaryCardBackground"
       >
-        <Text variant={"body"}>{recipe.name}</Text>
+
+        <ImageBackground source={require('../../assets/adaptive-icon.png')} borderRadius={50} resizeMode="cover" style={{ flex: 1, justifyContent: "center" }}>
+          <Box alignItems={"center"}>
+
+            <Box paddingTop={"m"}>
+              <Text variant="subheader">{recipe.name}</Text>
+            </Box>
+
+            <Box flexGrow={1} />
+
+            <Box
+              flexDirection={"row"}
+              paddingBottom={"m"}
+            >
+              <Box flex={1} alignItems={"center"}><Text variant={"body"}>{recipe.name}</Text></Box>
+            </Box>
+          </Box>
+        </ImageBackground>
       </Box>
-    </Box>
+    </TouchableOpacity>
   );
 };
 
@@ -140,14 +160,14 @@ const SwapMealsPage = ({ navigation }: SwapMealsPageProps) => {
         onRightAction={swipeRight}
 
         renderItem={(data, rowMap) => (
-          <Box paddingTop={"l"}>
+          <Box paddingTop={"m"}>
             {
-              Recipe(data.item)
+              Recipe(data.item, navigation)
             }
           </Box>
         )}
         renderHiddenItem={(data, rowMap) => (
-          <Box height={0.25 * height} paddingTop={"l"} flexDirection={"row"}>
+          <Box height={0.25 * height} paddingTop={"m"} flexDirection={"row"}>
 
             <Box flex={1}>
               <TouchableOpacity onPress={() => swipeLeft(data.item.id)}>
