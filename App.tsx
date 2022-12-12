@@ -17,15 +17,17 @@ import CurrentPlan from './pages/CurrentPlanPage/CurrentPlanPage';
 import NewPlanPage from './pages/NewPlanPage/NewPlanPage';
 import GroceryListPage from './pages/GroceryListPage/GroceryListPage';
 import SettingsPage from './pages/SettingsPage/SettingsPage';
+import SwapMealsPage from './pages/SwapMealsPage/SwapMealsPage';
 import { RootStackParamList, RootTabParamList } from './navigation/types';
 
 const NewPlan = createNativeStackNavigator<RootStackParamList>();
 
-const PlanStackScreen = () => {
+const PlanStackScreen = () => { //TODO change initialRoute
   return (
-    <NewPlan.Navigator>
+    <NewPlan.Navigator> 
       <NewPlan.Screen name="MealQuantity" options={{ headerShown: false}} component={NewPlanPage} />
       <NewPlan.Screen name="Leftovers" options={{ headerShown: false}} component={NewPlanPage} />
+      <NewPlan.Screen name="SwapMeals" options={{headerShown: false}} component={SwapMealsPage} />
     </NewPlan.Navigator>
   );
 }
