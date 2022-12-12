@@ -10,7 +10,8 @@ import {
   Fraunces_300Light,
   Fraunces_500Medium,
   Fraunces_700Bold,
-} from '@expo-google-fonts/fraunces';
+} from '@expo-google-fonts/fraunces';ç
+
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import CurrentPlan from './pages/CurrentPlanPage/CurrentPlanPage';
 import NewPlanPage from './pages/NewPlanPage/NewPlanPage';
