@@ -22,6 +22,12 @@ const theme = createTheme({
         m: 16,
         l: 32, 
     },
+    heights: {
+        xs: 100,
+        s: 150,
+        m: 200,
+        l: 250, 
+    },
     colors: {
         mainBackground: palette.creme,
         mainForeground: palette.darkCoral,
