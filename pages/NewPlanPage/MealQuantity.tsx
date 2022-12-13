@@ -30,7 +30,7 @@ const NewMeal = () => {
                 onPress={() => {}}
                 icon={'ios-add-circle-outline'}
                 size={25}
-                color={''}></IconButton>
+                color={'white'}></IconButton>
         </Box>
     )
 }
@@ -53,7 +53,7 @@ const Meal = ({ mealNumber }: MealProps) => {
                     }}
                     icon={'ios-remove-circle-outline'}
                     size={25}
-                    color={'black'}></IconButton>
+                    color={'white'}></IconButton>
                 <Text variant="body" marginHorizontal="s">
                     {mealCounter}
                 </Text>
@@ -63,7 +63,7 @@ const Meal = ({ mealNumber }: MealProps) => {
                     }}
                     icon={'ios-add-circle-outline'}
                     size={25}
-                    color={'black'}></IconButton>
+                    color={'white'}></IconButton>
             </Box>
         </Box>
     )

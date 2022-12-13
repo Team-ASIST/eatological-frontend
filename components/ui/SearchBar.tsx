@@ -76,6 +76,7 @@ const SearchBarDisplay = ({
             justifyContent="space-between">
             {/* Input field */}
             <TextInput
+                style={{ width: 235 }}
                 placeholder="Search..."
                 value={searchPhrase}
                 onChangeText={setSearchPhrase}
@@ -85,13 +86,14 @@ const SearchBarDisplay = ({
             />
             {/* cancel button, depending on whether the search bar is clicked or not */}
             {clicked && (
-                <NavigationButton
+                <IconButton
                     onPress={() => {
                         Keyboard.dismiss()
                         setClicked(false)
                     }}
-                    text="Cancel"
-                />
+                    icon={'close'}
+                    size={15}
+                    color={'grey'}></IconButton>
             )}
         </Box>
     )
