@@ -2,8 +2,8 @@ import { createBox, createText } from '@shopify/restyle'
 import { Theme } from '../../utils/theme'
 import { NavigationScreenProp } from 'react-navigation'
 import React from 'react'
-import NavigationButton from '../../components/ui/NavigationButton'
-import SearchBar from '../../components/ui/SearchBar'
+import NavigationButton from '../../components/ui/inputs/NavigationButton'
+import SearchBar from '../../components/ui/inputs/SearchBar'
 
 const Text = createText<Theme>()
 const Box = createBox<Theme>()
@@ -28,7 +28,7 @@ const LeftoversScreen = ({ navigation }: Props) => {
                 end={-13}
                 justifyContent="space-between">
                 <NavigationButton onPress={() => navigation.navigate('Mealquantity')} text="Back" />
-                <NavigationButton onPress={() => navigation.navigate('Leftovers')} text="Next" />
+                <NavigationButton onPress={() => navigation.navigate('SwapMeals')} text="Next" />
             </Box>
         </Box>
     )

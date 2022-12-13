@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 import { createBox, createText } from '@shopify/restyle'
 import { TextInput, Keyboard, FlatList, ListRenderItemInfo, View } from 'react-native'
-import { Theme } from '../../utils/theme'
-import NavigationButton from '../../components/ui/NavigationButton'
-import IconButton from '../../components/ui/IconButton'
+import { Theme } from '../../../utils/theme'
+import NavigationButton from './NavigationButton'
+import IconButton from './IconButton'
 
 const data = [
     {
