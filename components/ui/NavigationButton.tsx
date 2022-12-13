@@ -6,12 +6,12 @@ import { Theme } from '../../utils/theme'
 const Text = createText<Theme>()
 const Box = createBox<Theme>()
 
-type Props = {
+type NavigationButtonProps = {
     onPress: () => void
     text: String
 }
 
-const NavigationButton = ({ onPress, text }: Props) => {
+const NavigationButton = ({ onPress, text }: NavigationButtonProps) => {
     return (
         <TouchableOpacity onPress={onPress}>
             <Box
@@ -28,4 +28,31 @@ const NavigationButton = ({ onPress, text }: Props) => {
     )
 }
 
-export default NavigationButton
+type NavigationButtonContainerProps = {
+    onPressLeft: () => void
+    onPressRight: () => void
+    textLeft: String
+    textRight: String
+}
+
+const NavigationButtonContainer = ({
+    onPressLeft,
+    onPressRight,
+    textLeft,
+    textRight,
+}: NavigationButtonContainerProps) => {
+    return (
+        <Box
+            flexDirection="row"
+            position="absolute"
+            bottom={70}
+            start={-13}
+            end={-13}
+            justifyContent="space-between">
+            <NavigationButton onPress={onPressLeft} text={textLeft} />
+            <NavigationButton onPress={onPressRight} text={textRight} />
+        </Box>
+    )
+}
+
+export { NavigationButtonContainer, NavigationButton }

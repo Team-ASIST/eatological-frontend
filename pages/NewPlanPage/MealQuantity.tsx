@@ -1,7 +1,7 @@
 import { createBox, createText } from '@shopify/restyle'
 import { Theme } from '../../utils/theme'
 import { NavigationScreenProp } from 'react-navigation'
-import NavigationButton from '../../components/ui/NavigationButton'
+import { NavigationButtonContainer } from '../../components/ui/NavigationButton'
 import IconButton from '../../components/ui/IconButton'
 import { useState } from 'react'
 
@@ -79,16 +79,11 @@ const MealQuantityScreen = ({ navigation }: Props) => {
                     <NewMeal></NewMeal>
                 </Box>
             </Box>
-            <Box
-                flexDirection="row"
-                position="absolute"
-                bottom={70}
-                start={-13}
-                end={-13}
-                justifyContent="space-between">
-                <NavigationButton onPress={() => navigation.navigate('CurrentPlan')} text="Home" />
-                <NavigationButton onPress={() => navigation.navigate('Leftovers')} text="Next" />
-            </Box>
+            <NavigationButtonContainer
+                onPressLeft={() => navigation.navigate('CurrentPlan')}
+                textLeft="Home"
+                onPressRight={() => navigation.navigate('Leftovers')}
+                textRight="Next"></NavigationButtonContainer>
         </Box>
     )
 }
