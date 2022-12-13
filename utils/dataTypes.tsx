@@ -1,4 +1,3 @@
-// WebServer/java/scr/main/in - out
 export type Ingredient = {
     name: string;
     smallestAmount: number;
@@ -9,16 +8,11 @@ export type Ingredient = {
     alternative: string;
 }
 
-export type Meal = {
-    id: number;
-    amount: number;
-}
-
 export type Recipe = {
     name: string;
     ingredients: Ingredient[];
     steps: string[];
-    imageSource: string;
+    imageUrl: string;
 }
 
 export type Plan = {

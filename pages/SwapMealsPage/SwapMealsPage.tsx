@@ -1,5 +1,5 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { createBox, createText } from '@shopify/restyle';
 import { Theme } from '../../utils/theme';
 import { TouchableOpacity, ImageBackground, Image, Dimensions } from "react-native";
@@ -8,10 +8,10 @@ import { SwipeListView } from 'react-native-swipe-list-view';
 import { RecipeCardProps } from "../../components/ui/recipe/recipeCard";
 import recipeCard from "../../components/ui/recipe/recipeCard";
 
-import { Ingredient, Meal, Recipe, Plan } from "../../utils/dataTypes"
-import { HiddenCard } from "../../components/ui/recipe/hiddenSwipeButtons";"../../components/ui/recipe/hiddenSwipeButtons"
+import { Ingredient, Recipe, Plan } from "../../utils/dataTypes"
+import { HiddenCard } from "../../components/ui/recipe/hiddenSwipeButtons"; "../../components/ui/recipe/hiddenSwipeButtons"
 import { getInitialPlan, getListWithOldRecipe, getListWithNewRecipe } from "./SwapMealsCalls"
-import { RecipeSwipeElement }  from "./SwapMealsCalls"
+import { RecipeSwipeElement } from "./SwapMealsCalls"
 
 const Text = createText<Theme>();
 const Box = createBox<Theme>();
@@ -28,22 +28,33 @@ const wait = (timeout: number) => {
 
 const SwapMealsPage = ({ navigation }: SwapMealsPageProps) => {
   // Load Initial data for recipes
-  const meals = [{ id: 0, amount: 2 }, { id: 1, amount: 3 }]
+  const portions : number[] = [1,3,2,4,6]
 
+  const [swipeTracker, setSwipeTracker] = useState(Array(portions.length).fill(0) as number[])
   const [recipeList, setRecipeList] = useState([] as RecipeSwipeElement[])
-  getInitialPlan(meals).then(
-    recipes => {setRecipeList(recipes)}
-  ).catch(
-    error => {console.log(error)}
-  )
+  useEffect(() => {
+    getInitialPlan(portions).then(
+      recipes => { setRecipeList(recipes) }
+    ).catch(
+      error => { console.log(error) }
+    )
+  }, [])
 
   // Handle Swiping Input
   const swipeLeft = async (rowKey: any) => {
-    console.log('onLeftAction', rowKey as number);
     //TODO Load previous recipe at rowKey in recipeList
+    if(swipeTracker[rowKey] <= 0){
+      //TODO handle error
+      return
+    }
+
+    console.log('onLeftAction', rowKey as number);
+
     const newList = await getListWithOldRecipe(recipeList)
     setRecipeList(newList)
 
+    swipeTracker[rowKey] -= 1;
+    setSwipeTracker(swipeTracker)
   };
 
   const swipeRight = async (rowKey: any) => {
@@ -51,6 +62,9 @@ const SwapMealsPage = ({ navigation }: SwapMealsPageProps) => {
     //TODO Load new recipe at rowKey in recipeList
     const newList = await getListWithNewRecipe(recipeList)
     setRecipeList(newList)
+
+    swipeTracker[rowKey] += 1;
+    setSwipeTracker(swipeTracker)
   };
 
   const onRowDidOpen = async (rowKey: any, rowMap: any) => {
@@ -64,7 +78,7 @@ const SwapMealsPage = ({ navigation }: SwapMealsPageProps) => {
     <Box paddingTop={"l"} padding={"s"} backgroundColor="mainBackground" flex={1}>
 
       <SwipeListView
-        data={recipeList} // recipeList new branch
+        data={recipeList}
         keyExtractor={(data) => "" + data.id}
 
         onRowDidOpen={onRowDidOpen}
@@ -81,11 +95,11 @@ const SwapMealsPage = ({ navigation }: SwapMealsPageProps) => {
         onRightAction={swipeRight}
 
         renderItem={(data, rowMap) => (
-          <TouchableOpacity activeOpacity={0.8}>
+          <TouchableOpacity activeOpacity={1}>
             <Box paddingTop={"m"}>
               {
                 recipeCard({
-                  imageSource: data.item.recipe.imageSource,
+                  imageSource: data.item.recipe.imageUrl,
                   cookingTime: 10,
                   recipeName: data.item.recipe.name,
                   ready: true,

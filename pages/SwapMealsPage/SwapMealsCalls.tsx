@@ -1,4 +1,4 @@
-import { Meal, Recipe } from "../../utils/dataTypes"
+import { Recipe } from "../../utils/dataTypes"
 
 // Mockdata
 
@@ -30,10 +30,10 @@ export class RecipeSwipeElement {
   }
 
 export const recipeSwipeElements: RecipeSwipeElement[] = [
-    new RecipeSwipeElement(0, { name: "Paella", ingredients: [], steps: [], imageSource: images[0] }, 2),
-    new RecipeSwipeElement(1, { name: "Lasagne", ingredients: [], steps: [], imageSource: images[1] }, 4),
-    new RecipeSwipeElement(2, { name: "Pad Thai", ingredients: [], steps: [], imageSource: images[2] }, 3),
-    new RecipeSwipeElement(3, { name: "Ramen", ingredients: [], steps: [], imageSource: images[3] }, 1),
+    new RecipeSwipeElement(0, { name: "Paella", ingredients: [], steps: [], imageUrl: images[0] }, 2),
+    new RecipeSwipeElement(1, { name: "Lasagne", ingredients: [], steps: [], imageUrl: images[1] }, 4),
+    new RecipeSwipeElement(2, { name: "Pad Thai", ingredients: [], steps: [], imageUrl: images[2] }, 3),
+    new RecipeSwipeElement(3, { name: "Ramen", ingredients: [], steps: [], imageUrl: images[3] }, 1),
 ]
 
 
@@ -44,26 +44,60 @@ export const getListWithNewRecipe = async (currentList: RecipeSwipeElement[]): P
 
 export const getListWithOldRecipe = async (currentList: RecipeSwipeElement[]): Promise<RecipeSwipeElement[]> => {
     //TODO Call Backend for SwipeLeft
-
-    fetch('https://eatological-dev.azurewebsites.net/recipes', { method: 'GET', headers: { 'accept': 'application/json', 'EatologicalToken': 'dev@eatological.de' } })
-        .then((response) => response.text())
-        .then((data) => console.log("Success"))
-        .catch((error) => console.log(error));
-
     return currentList;
 }
 
-export const getInitialPlan = async (data: Meal[]): Promise<RecipeSwipeElement[]> => {
-    const recipes : Recipe[] = [] 
-
-
-    fetch('https://eatological-dev.azurewebsites.net/recipes', { method: 'GET', headers: { 'accept': 'application/json', 'EatologicalToken': 'dev@eatological.de' } })
+export const getInitialPlan = async (portions: number[]): Promise<RecipeSwipeElement[]> => {
+    let portionsArg : string = JSON.stringify(portions);
+    const result = await fetch('https://eatological-dev.azurewebsites.net/plan/create', { method: 'GET', headers: { 'accept': 'application/json', 'portions': portionsArg, 'EatologicalToken': 'dev@eatological.de' } })
         .then((response) => response.json())
         .then((data) => {
-            recipes.push(data)
+            const recipeSwipeElements : RecipeSwipeElement[] = []
+
+            let i: number = 0;
+            while(i < data.recipes.length){
+                recipeSwipeElements.push(
+                    new RecipeSwipeElement(
+                        i,
+                        data.recipes[i].recipe,
+                        portions[i]
+                    )
+                    )
+                i+=1;
+            }
+
+            
+            return recipeSwipeElements as RecipeSwipeElement[];
         })
         .catch((error) => console.log(error));
+ 
+    return result as RecipeSwipeElement[];
+    //return recipeSwipeElements;
+};
 
-    console.log(recipes.length)
-    return recipeSwipeElements;
+export const getRecipes = async (): Promise<RecipeSwipeElement[]> => {
+    const result = await fetch('https://eatological-dev.azurewebsites.net/recipes', { method: 'GET', headers: { 'accept': 'application/json', 'EatologicalToken': 'dev@eatological.de' } })
+        .then((response) => response.json())
+        .then((data) => {
+            const recipeSwipeElements : RecipeSwipeElement[] = []
+
+            let i: number = 0;
+            while(i < data.length){
+                recipeSwipeElements.push(
+                    new RecipeSwipeElement(
+                        i,
+                        data[i],
+                        4
+                    )
+                    )
+                i+=1;
+            }
+
+            
+            return recipeSwipeElements as RecipeSwipeElement[];
+        })
+        .catch((error) => console.log(error));
+  
+    return result as RecipeSwipeElement[];
+    //return recipeSwipeElements;
 };
