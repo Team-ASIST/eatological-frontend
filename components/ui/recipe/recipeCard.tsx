@@ -32,7 +32,7 @@ const recipeCard = (props: RecipeCardProps) => {
                     intensity={40}
                 >
                     <Box padding="s" flexDirection="row" justifyContent="space-between" alignContent="center">
-                        <Text variant="subheader">
+                        <Text variant="subheader" color={"primaryCardText"}>
                             {props.recipeName}
                         </Text>
                         <Box flexDirection="row">

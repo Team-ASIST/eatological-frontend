@@ -24,8 +24,7 @@ const AddItemButton = ({onPress, title}: AddItemButtonProps) => {
             <IconButton
                 onPress={onPress}
                 icon={'ios-add-circle-outline'}
-                size={25}
-                color={''}></IconButton>
+                size={25}></IconButton>
         </Box>
     )
 }
