@@ -1,5 +1,5 @@
 import { ImageBackground } from 'react-native'
-import React from 'react'
+import React, { Fragment } from 'react'
 import theme, { Theme } from '../../../utils/theme';
 import { createText, createBox } from '@shopify/restyle';
 import { BlurView } from 'expo-blur';
@@ -12,7 +12,7 @@ export type RecipeCardProps = {
     imageSource: string,
     cookingTime: number,
     recipeName: string,
-    ready: boolean, 
+    ready: boolean,
     persons: number
 }
 
@@ -31,22 +31,22 @@ const recipeCard = (props: RecipeCardProps) => {
                     tint="dark"
                     intensity={40}
                 >
-                    <Box padding="s" flexDirection="row" justifyContent="space-between" alignContent="center">
-                        <Text variant="subheader" color={"primaryCardText"}>
-                            {props.recipeName}
-                        </Text>
-                        <Box flexDirection="row">
+                    <Box padding="s" flexDirection="row" width={"95%"} justifyContent="space-between" alignContent="center" margin="s">
+                        <Box flexDirection="row" width={"80%"}>
+                            <Text variant="subsubheader" color={"primaryCardText"}>
+                                {props.recipeName}
+                            </Text>
+                        </Box>
+                        <Box flexDirection="row" justifyContent="flex-end" flexGrow={1} width={"20%"}>
+                            {props.ready ?
+                                <Box>
+                                    <IconText iconName={'checkmark-outline'} text={''} />
+                                </Box> :
+                                <Fragment></Fragment>
+                            }
                             <Box paddingRight="m">
                                 <IconText iconName={'person-outline'} text={props.persons.toString()} />
                             </Box>
-                            {props.ready ?
-                                <Box paddingRight="m">
-                                    <IconText iconName={'checkmark-outline'} text={''} />
-                                </Box> :
-                                <Box paddingRight="m">
-                                    <IconText iconName={'close'} text={''} />
-                                </Box>
-                            }
                         </Box>
                     </Box>
                 </BlurView>

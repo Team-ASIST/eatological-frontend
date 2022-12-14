@@ -15,7 +15,14 @@ export type Recipe = {
     imageUrl: string;
 }
 
+export type Meal = {
+    id: number, 
+    recipe: Recipe,
+    portions: number
+}
+
 export type Plan = {
     recipe: Recipe[];
     sustainabilityScore: number; 
 }
+
