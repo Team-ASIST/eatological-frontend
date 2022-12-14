@@ -8,7 +8,8 @@ export interface IMealAmount {
 
 interface IState {
     mealAmount: IMealAmount[],
-    leftovers: string[]
+    leftovers: string[],
+    preferences: string[]
 }
 
 const initialState: IState = {
@@ -17,6 +18,7 @@ const initialState: IState = {
         amount: 1
     }],
     leftovers: [],
+    preferences: []
 }
 
 const newPlanSlice = createSlice({
@@ -49,11 +51,13 @@ const newPlanSlice = createSlice({
                 } 
             }
         },
+        resetPlanConfiguration: () => initialState
     }
 })
 
-export const { mealAdded, mealIncrement, mealDecrement } = newPlanSlice.actions
+export const { mealAdded, mealIncrement, mealDecrement, resetPlanConfiguration } = newPlanSlice.actions
 
 export const selectAllMeals = (state: RootState) => state.newPlan.mealAmount
+export const selectNewPlanConfiguration = (state: RootState) => state.newPlan
 
 export default newPlanSlice.reducer

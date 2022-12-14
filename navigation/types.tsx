@@ -1,6 +1,6 @@
 export type RootStackParamList = {
     MealQuantity: undefined;
-    Leftovers: undefined;
+    LeftOvers: undefined;
     SwapMeals: undefined;
 };
 
