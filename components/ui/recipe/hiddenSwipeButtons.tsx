@@ -19,7 +19,6 @@ export const HiddenCard = (swipeLeft: any, swipeRight: any, id: number) => {
               borderTopLeftRadius={50}
               alignItems={"flex-start"}
               justifyContent={"center"}
-              paddingLeft={"s"}
               backgroundColor="mainForeground"
             >
               <Ionicons name="arrow-undo-outline" size={40} color="white" />
@@ -35,7 +34,6 @@ export const HiddenCard = (swipeLeft: any, swipeRight: any, id: number) => {
               borderTopRightRadius={50}
               alignItems={"flex-end"}
               justifyContent={"center"}
-              paddingRight={"s"}
               backgroundColor="secondaryCardBackground"
             >
               <Ionicons name="arrow-redo-outline" size={40} color="white" />

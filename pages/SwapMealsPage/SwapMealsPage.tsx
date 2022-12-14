@@ -42,16 +42,14 @@ const SwapMealsPage = ({ navigation }: SwapMealsPageProps) => {
 
   // Handle Swiping Input
   const swipeLeft = async (rowKey: any) => {
-    //TODO Load previous recipe at rowKey in recipeList
     if(swipeTracker[rowKey] <= 0){
       //TODO handle error
       return
     }
 
     console.log('onLeftAction', rowKey as number);
-
-    const newList = await getListWithOldRecipe(recipeList)
-    setRecipeList(newList)
+    setRecipeList( [] )
+    setRecipeList( await getListWithOldRecipe(recipeList, rowKey))
 
     swipeTracker[rowKey] -= 1;
     setSwipeTracker(swipeTracker)
@@ -59,9 +57,11 @@ const SwapMealsPage = ({ navigation }: SwapMealsPageProps) => {
 
   const swipeRight = async (rowKey: any) => {
     console.log('onRightAction', rowKey as number);
-    //TODO Load new recipe at rowKey in recipeList
-    const newList = await getListWithNewRecipe(recipeList)
-    setRecipeList(newList)
+
+    // Fix this Hack
+    const tempRecipes = recipeList;
+    setRecipeList( [] )
+    setRecipeList( await getListWithNewRecipe(recipeList, rowKey))
 
     swipeTracker[rowKey] += 1;
     setSwipeTracker(swipeTracker)
@@ -75,7 +75,7 @@ const SwapMealsPage = ({ navigation }: SwapMealsPageProps) => {
   }
 
   return (
-    <Box paddingTop={"l"} padding={"s"} backgroundColor="mainBackground" flex={1}>
+    <Box paddingTop={"l"} backgroundColor="mainBackground" flex={1}>
 
       <SwipeListView
         data={recipeList}
