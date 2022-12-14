@@ -52,7 +52,6 @@ const SwapMealsPage = ({ navigation }: SwapMealsPageProps) => {
       return
     }
 
-    setRecipeList([])
     setRecipeList(await getListWithOldRecipe(recipeList, rowKey))
 
     swipeTracker[rowKey] -= 1
@@ -62,7 +61,6 @@ const SwapMealsPage = ({ navigation }: SwapMealsPageProps) => {
   const swipeRight = async (rowKey: any) => {
     // Fix this Hack
     const tempRecipes = recipeList
-    setRecipeList([])
     setRecipeList(await getListWithNewRecipe(recipeList, rowKey))
 
     swipeTracker[rowKey] += 1
