@@ -5,16 +5,16 @@ import { Theme } from '../../utils/theme';
 import { TouchableOpacity, ImageBackground, Image, Dimensions } from "react-native";
 import { NavigationScreenProp } from "react-navigation";
 import { SwipeListView } from 'react-native-swipe-list-view';
-import { RecipeCardProps } from "../../components/ui/recipe/recipeCard";
+import RecipeCard, { RecipeCardProps } from "../../components/ui/recipe/recipeCard";
 import recipeCard from "../../components/ui/recipe/recipeCard";
 
 import { Ingredient, Recipe, Plan } from "../../utils/dataTypes"
 import { HiddenCard } from "../../components/ui/recipe/hiddenSwipeButtons"; "../../components/ui/recipe/hiddenSwipeButtons"
 import { getInitialPlan, getListWithOldRecipe, getListWithNewRecipe } from "./SwapMealsCalls"
-import { RecipeSwipeElement } from "./SwapMealsCalls"
+import { RecipeSwipeObject } from "./SwapMealsCalls"
 
-const Text = createText<Theme>();
-const Box = createBox<Theme>();
+const Text = createText<Theme>()
+const Box = createBox<Theme>()
 
 // TypeScript Setup
 
@@ -31,7 +31,7 @@ const SwapMealsPage = ({ navigation }: SwapMealsPageProps) => {
   const portions : number[] = [1,3,2,4,6]
 
   const [swipeTracker, setSwipeTracker] = useState(Array(portions.length).fill(0) as number[])
-  const [recipeList, setRecipeList] = useState([] as RecipeSwipeElement[])
+  const [recipeList, setRecipeList] = useState([] as RecipeSwipeObject[])
   useEffect(() => {
     getInitialPlan(portions).then(
       recipes => { setRecipeList(recipes) }
@@ -51,26 +51,26 @@ const SwapMealsPage = ({ navigation }: SwapMealsPageProps) => {
     setRecipeList( [] )
     setRecipeList( await getListWithOldRecipe(recipeList, rowKey))
 
-    swipeTracker[rowKey] -= 1;
+    swipeTracker[rowKey] -= 1
     setSwipeTracker(swipeTracker)
   };
 
   const swipeRight = async (rowKey: any) => {
-    console.log('onRightAction', rowKey as number);
+    console.log('onRightAction', rowKey as number)
 
     // Fix this Hack
     const tempRecipes = recipeList;
     setRecipeList( [] )
     setRecipeList( await getListWithNewRecipe(recipeList, rowKey))
 
-    swipeTracker[rowKey] += 1;
+    swipeTracker[rowKey] += 1
     setSwipeTracker(swipeTracker)
   };
 
   const onRowDidOpen = async (rowKey: any, rowMap: any) => {
     await wait(1000)
     if (rowMap[rowKey]) {
-      rowMap[rowKey].closeRow();
+      rowMap[rowKey].closeRow()
     }
   }
 
@@ -97,20 +97,18 @@ const SwapMealsPage = ({ navigation }: SwapMealsPageProps) => {
         renderItem={(data, rowMap) => (
           <TouchableOpacity activeOpacity={1}>
             <Box paddingTop={"m"}>
-              {
-                recipeCard({
-                  imageSource: data.item.recipe.imageUrl,
-                  cookingTime: 10,
-                  recipeName: data.item.recipe.name,
-                  ready: true,
-                  persons: data.item.portions
-                } as RecipeCardProps)
-              }
+              <RecipeCard
+                imageSource={data.item.recipe.imageUrl}
+                cookingTime={10}
+                recipeName={data.item.recipe.name}
+                ready={true}
+                persons={data.item.portions}
+              />
             </Box>
           </TouchableOpacity>
         )}
         renderHiddenItem={(data, rowMap) => (
-          HiddenCard(swipeLeft, swipeRight, data.item.id)
+          HiddenCard(swipeLeft, swipeLeft, data.item.id)
         )}
         leftOpenValue={50}
         rightOpenValue={-50}
