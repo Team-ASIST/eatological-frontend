@@ -1,52 +1,22 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { createBox, createText } from '@shopify/restyle';
 import { Theme } from '../../utils/theme';
 import { TouchableOpacity, ImageBackground, Image, Dimensions } from "react-native";
 import { NavigationScreenProp } from "react-navigation";
 import { SwipeListView } from 'react-native-swipe-list-view';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import { RecipeCardProps } from "../../components/ui/recipe/recipeCard";
+import recipeCard from "../../components/ui/recipe/recipeCard";
+
+import { Ingredient, Recipe, Plan } from "../../utils/dataTypes"
+import { HiddenCard } from "../../components/ui/recipe/hiddenSwipeButtons"; "../../components/ui/recipe/hiddenSwipeButtons"
+import { getInitialPlan, getListWithOldRecipe, getListWithNewRecipe } from "./SwapMealsCalls"
+import { RecipeSwipeElement } from "./SwapMealsCalls"
 
 const Text = createText<Theme>();
 const Box = createBox<Theme>();
 
 // TypeScript Setup
-
-class Leftovers {
-  id: number;
-  name: string;
-  amount: number;
-
-  constructor(id: number, name: string, amount: number) {
-    this.id = id;
-    this.name = name;
-    this.amount = amount;
-  }
-}
-
-class MealData {
-  id: number;
-  amount: number;
-
-  constructor(id: number, amount: number) {
-    this.id = id;
-    this.amount = amount;
-  }
-}
-
-class RecipeData {
-  id: number;
-  name: string;
-
-  constructor(id: number, name: string) {
-    this.id = id;
-    this.name = name;
-  }
-
-  keyExtractor = (): number => {
-    return this.id;
-  }
-}
 
 export type SwapMealsPageProps = {
   navigation: NavigationScreenProp<any, any>
@@ -56,77 +26,45 @@ const wait = (timeout: number) => {
   return new Promise(resolve => setTimeout(resolve, timeout));
 }
 
-// Define Recipe Component here
-
-const Recipe = (recipe: RecipeData, navigation: any) => {
-  const height = Dimensions.get('window').height;
-  const width = Dimensions.get('window').width;
-  return (
-    <TouchableOpacity onPress={() => (navigation.navigate('CurrentPlan'))}>
-      <Box
-        height={0.25 * height}
-        borderRadius={50}
-        backgroundColor="primaryCardBackground"
-      >
-
-        <ImageBackground source={require('../../assets/adaptive-icon.png')} borderRadius={50} resizeMode="cover" style={{ flex: 1, justifyContent: "center" }}>
-          <Box alignItems={"center"}>
-
-            <Box paddingTop={"m"}>
-              <Text variant="subheader">{recipe.name}</Text>
-            </Box>
-
-            <Box flexGrow={1} />
-
-            <Box
-              flexDirection={"row"}
-              paddingBottom={"m"}
-            >
-              <Box flex={1} alignItems={"center"}><Text variant={"body"}>{recipe.name}</Text></Box>
-            </Box>
-          </Box>
-        </ImageBackground>
-      </Box>
-    </TouchableOpacity>
-  );
-};
-
-const getListWithNewRecipe = async (currentList: RecipeData[]): Promise<RecipeData[]> => {
-  //TODO Call Backend for SwipeRight
-  const recipes = [new RecipeData(0, "Kimbap"), new RecipeData(1, "Ramen"), new RecipeData(2, "Teriyaki"), new RecipeData(3, "Tonkatsu"), new RecipeData(4, "Sashimi")]
-  return recipes
-}
-
-const getListWithOldRecipe = async (currentList: RecipeData[]): Promise<RecipeData[]> => {
-  //TODO Call Backend for SwipeLeft
-  const recipes = [new RecipeData(0, "Sushi"), new RecipeData(1, "Ramen"), new RecipeData(2, "Teriyaki"), new RecipeData(3, "Tonkatsu"), new RecipeData(4, "Sashimi")]
-  return recipes
-}
-
-const getInitialPlan = (data: MealData[]): RecipeData[] => {
-  const recipes = [new RecipeData(0, "Sushi"), new RecipeData(1, "Ramen"), new RecipeData(2, "Teriyaki"), new RecipeData(3, "Tonkatsu"), new RecipeData(4, "Sashimi")]
-  return recipes
-};
-
 const SwapMealsPage = ({ navigation }: SwapMealsPageProps) => {
   // Load Initial data for recipes
-  const meals = [new MealData(0, 2), new MealData(1, 1)]
-  const [recipeList, setRecipeList] = useState(getInitialPlan(meals))
+  const portions : number[] = [1,3,2,4,6]
+
+  const [swipeTracker, setSwipeTracker] = useState(Array(portions.length).fill(0) as number[])
+  const [recipeList, setRecipeList] = useState([] as RecipeSwipeElement[])
+  useEffect(() => {
+    getInitialPlan(portions).then(
+      recipes => { setRecipeList(recipes) }
+    ).catch(
+      error => { console.log(error) }
+    )
+  }, [])
 
   // Handle Swiping Input
   const swipeLeft = async (rowKey: any) => {
-    console.log('onLeftAction', rowKey as number);
-    //TODO Load previous recipe at rowKey in recipeList
-    const newList = await getListWithOldRecipe(recipeList)
-    setRecipeList(newList)
+    if(swipeTracker[rowKey] <= 0){
+      //TODO handle error
+      return
+    }
 
+    console.log('onLeftAction', rowKey as number);
+    setRecipeList( [] )
+    setRecipeList( await getListWithOldRecipe(recipeList, rowKey))
+
+    swipeTracker[rowKey] -= 1;
+    setSwipeTracker(swipeTracker)
   };
 
   const swipeRight = async (rowKey: any) => {
     console.log('onRightAction', rowKey as number);
-    //TODO Load new recipe at rowKey in recipeList
-    const newList = await getListWithNewRecipe(recipeList)
-    setRecipeList(newList)
+
+    // Fix this Hack
+    const tempRecipes = recipeList;
+    setRecipeList( [] )
+    setRecipeList( await getListWithNewRecipe(recipeList, rowKey))
+
+    swipeTracker[rowKey] += 1;
+    setSwipeTracker(swipeTracker)
   };
 
   const onRowDidOpen = async (rowKey: any, rowMap: any) => {
@@ -136,11 +74,8 @@ const SwapMealsPage = ({ navigation }: SwapMealsPageProps) => {
     }
   }
 
-  const height = Dimensions.get('window').height;
-  const width = Dimensions.get('window').width;
-
   return (
-    <Box paddingTop={"l"} padding={"s"} backgroundColor="mainBackground" flex={1}>
+    <Box paddingTop={"l"} backgroundColor="mainBackground" flex={1}>
 
       <SwipeListView
         data={recipeList}
@@ -160,48 +95,22 @@ const SwapMealsPage = ({ navigation }: SwapMealsPageProps) => {
         onRightAction={swipeRight}
 
         renderItem={(data, rowMap) => (
-          <Box paddingTop={"m"}>
-            {
-              Recipe(data.item, navigation)
-            }
-          </Box>
+          <TouchableOpacity activeOpacity={1}>
+            <Box paddingTop={"m"}>
+              {
+                recipeCard({
+                  imageSource: data.item.recipe.imageUrl,
+                  cookingTime: 10,
+                  recipeName: data.item.recipe.name,
+                  ready: true,
+                  persons: data.item.portions
+                } as RecipeCardProps)
+              }
+            </Box>
+          </TouchableOpacity>
         )}
         renderHiddenItem={(data, rowMap) => (
-          <Box height={0.25 * height} paddingTop={"m"} flexDirection={"row"}>
-
-            <Box flex={1}>
-              <TouchableOpacity onPress={() => swipeLeft(data.item.id)}>
-                <Box
-                  height={0.25 * height}
-                  borderBottomLeftRadius={50}
-                  borderTopLeftRadius={50}
-                  alignItems={"flex-start"}
-                  justifyContent={"center"}
-                  paddingLeft={"s"}
-                  backgroundColor="mainForeground"
-                >
-                  <Ionicons name="arrow-undo-outline" size={40} color="white" />
-                </Box>
-              </TouchableOpacity>
-            </Box>
-
-            <Box flex={1}>
-              <TouchableOpacity onPress={() => swipeRight(data.item.id)}>
-                <Box
-                  height={0.25 * height}
-                  borderBottomRightRadius={50}
-                  borderTopRightRadius={50}
-                  alignItems={"flex-end"}
-                  justifyContent={"center"}
-                  paddingRight={"s"}
-                  backgroundColor="secondaryCardBackground"
-                >
-                  <Ionicons name="arrow-redo-outline" size={40} color="white" />
-                </Box>
-              </TouchableOpacity>
-            </Box>
-
-          </Box>
+          HiddenCard(swipeLeft, swipeRight, data.item.id)
         )}
         leftOpenValue={50}
         rightOpenValue={-50}
