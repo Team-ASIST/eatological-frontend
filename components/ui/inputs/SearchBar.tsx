@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 import { createBox, createText } from '@shopify/restyle'
 import { TextInput, Keyboard, FlatList, ListRenderItemInfo, View } from 'react-native'
-import { Theme } from '../../utils/theme'
-import NavigationButton from '../../components/ui/NavigationButton'
-import IconButton from '../../components/ui/IconButton'
+import { Theme } from '../../../utils/theme'
+import { NavigationButton } from './NavigationButton'
+import IconButton from './IconButton'
 
 const data = [
     {
@@ -111,10 +111,9 @@ const Item = ({ name }: ItemProps) => (
         justifyContent="space-between">
         <Text variant="navigationButton">{name}</Text>
         <IconButton
-            onPress={() => {}}
+            onPress={() => { }}
             icon={'ios-add-circle-outline'}
-            size={25}
-            color={'black'}></IconButton>
+            size={25} />
     </Box>
 )
 

@@ -88,14 +88,18 @@ export const getListWithOldRecipe = async (currentList: RecipeSwipeObject[], mea
     return result
 }
 
-export const getInitialPlan = async (portions: number[]): Promise<RecipeSwipeObject[]> => {
+export const getInitialPlan = async (portions: number[], leftovers: string[], preferences: string[]): Promise<RecipeSwipeObject[]> => {
     let portionsArg: string = JSON.stringify(portions)
+    let leftoverArg: string = JSON.stringify(leftovers)
+    let preferencesArg: string = JSON.stringify(preferences)
     const result = await fetch('https://eatological-dev.azurewebsites.net/plan/create',
         {
             method: 'GET',
             headers: {
                 'accept': 'application/json',
-                'portions': portionsArg,
+                'Portions': portionsArg,
+                'Leftovers': leftoverArg,
+                'Preferences': preferencesArg,
                 'EatologicalToken': 'dev@eatological.de'
             }
         })

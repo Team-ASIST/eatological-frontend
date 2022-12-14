@@ -55,23 +55,23 @@ const CurrentPlan = () => {
 
   return (
     <Box backgroundColor="mainBackground" flex={1}>
-      <SafeAreaView>
+      <SafeAreaView style={{ flex: 1 }}>
         <ScrollView refreshControl={
           <RefreshControl
             refreshing={refreshing}
             onRefresh={onRefresh}
           />
         }>
-        {
-          currentPlan.map((el: RecipeCardProps) => {
-            return <RecipeCard imageSource={el.imageSource} cookingTime={el.cookingTime} recipeName={el.recipeName} ready={el.ready} persons={el.persons} />
+          {
+            currentPlan.map((el: RecipeCardProps) => {
+              return <RecipeCard key={el.recipeName} imageSource={el.imageSource} cookingTime={el.cookingTime} recipeName={el.recipeName} ready={el.ready} persons={el.persons} />
 
-          })
-        }
+            })
+          }
         </ScrollView>
-      </SafeAreaView>
-
+      </SafeAreaView >
     </Box>
+
   );
 }
 
