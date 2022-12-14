@@ -36,7 +36,7 @@ const SwapMealsPage = ({ navigation }: SwapMealsPageProps) => {
 
   useEffect(() => {
     getInitialPlan(mealAmount.map((m: IMealAmount) => m.amount), leftovers, preferences).then(
-      (recipes: RecipeSwipeElement[]) => {
+      (recipes: RecipeSwipeObject[]) => {
         setRecipeList(recipes)
         setSwipeTracker(Array(recipes.length).fill(0))
       }
