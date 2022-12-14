@@ -55,11 +55,10 @@ export const getListWithNewRecipe = async (currentList: RecipeSwipeObject[], mea
         .then((data) => {
             return data.recipes[0].recipe as Recipe
         })
-        .catch((error) => console.log(error))
+        .catch((error) => console.error(error))
     
     
     result[mealID].swapRecipe(newRecipe as Recipe);    
-    console.log(JSON.stringify(result[mealID]))
     return result;
 }
 
@@ -80,11 +79,10 @@ export const getListWithOldRecipe = async (currentList: RecipeSwipeObject[], mea
         .then((data) => {
             return data.recipes[0].recipe as Recipe
         })
-        .catch((error) => console.log(error))
+        .catch((error) => console.error(error))
     
 
     result[mealID].swapRecipe(newRecipe as Recipe);    
-    console.log("SwipeRight Finished!")
     return result
 }
 
@@ -122,11 +120,8 @@ export const getInitialPlan = async (portions: number[], leftovers: string[], pr
 
             return recipeSwipeElements as RecipeSwipeObject[];
         })
-        .catch((error) => console.log(error));
+        .catch((error) => console.error(error));
 
-
-
-    console.log("Initial Fetching finished!")
     return result as RecipeSwipeObject[];
 };
 
@@ -151,7 +146,7 @@ export const getRecipes = async (): Promise<RecipeSwipeObject[]> => {
 
             return recipeSwipeElements as RecipeSwipeObject[];
         })
-        .catch((error) => console.log(error));
+        .catch((error) => console.error(error));
 
     return result as RecipeSwipeObject[];
     //return recipeSwipeElements;

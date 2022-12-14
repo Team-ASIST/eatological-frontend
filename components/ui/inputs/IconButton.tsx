@@ -1,14 +1,11 @@
-import { createText, createBox, color, useTheme } from '@shopify/restyle'
+import { useTheme } from '@shopify/restyle'
 import React from 'react'
-import { TouchableOpacity, View } from 'react-native'
+import { TouchableOpacity } from 'react-native'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import { Theme } from '../../../utils/theme'
 
-const Text = createText<Theme>()
-const Box = createBox<Theme>()
-
 type Props = {
-    onPress: () => void
+    onPress?: () => void
     icon: string
     size: number
 }

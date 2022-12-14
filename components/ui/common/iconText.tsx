@@ -3,6 +3,7 @@ import React from 'react'
 import { createBox, createText } from '@shopify/restyle';
 import theme, { Theme } from '../../../utils/theme';
 import Ionicons from '@expo/vector-icons/Ionicons';
+import IconButton from '../inputs/IconButton';
 
 const Box = createBox<Theme>();
 const Text = createText<Theme>();
@@ -15,8 +16,8 @@ type IconTextProps = {
 const iconText = (props: IconTextProps) => {
     return (
         <Box flexDirection="row" alignContent="center" >
-            <Ionicons name={props.iconName} size={theme.textVariants.subheader.fontSize} color={theme.colors.primaryCardText}/>
-            <Text variant="subheader">{props.text}</Text>
+            <IconButton icon={props.iconName} size={theme.textVariants.subheader.fontSize}/>
+            <Text variant="subheader" color={"primaryCardText"}>{props.text}</Text>
         </Box>
     )
 }

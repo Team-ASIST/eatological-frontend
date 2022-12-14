@@ -41,7 +41,7 @@ const SwapMealsPage = ({ navigation }: SwapMealsPageProps) => {
         setSwipeTracker(Array(recipes.length).fill(0))
       }
     ).catch(
-      error => { console.log(error) }
+      error => { console.error(error) }
     )
   }, [])
 
@@ -52,7 +52,6 @@ const SwapMealsPage = ({ navigation }: SwapMealsPageProps) => {
       return
     }
 
-    console.log('onLeftAction', rowKey as number);
     setRecipeList([])
     setRecipeList(await getListWithOldRecipe(recipeList, rowKey))
 
@@ -61,8 +60,6 @@ const SwapMealsPage = ({ navigation }: SwapMealsPageProps) => {
   };
 
   const swipeRight = async (rowKey: any) => {
-    console.log('onRightAction', rowKey as number)
-
     // Fix this Hack
     const tempRecipes = recipeList
     setRecipeList([])
