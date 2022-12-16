@@ -5,40 +5,13 @@ import RecipeCard, { RecipeCardProps } from "../../components/ui/recipe/recipeCa
 import { SafeAreaView } from "react-native-safe-area-context";
 import recipeCard from "../../components/ui/recipe/recipeCard";
 import { RefreshControl, ScrollView } from "react-native-gesture-handler";
+import { useSelector } from "react-redux";
+import { selectAllRecipes } from "../../redux/slice/currentPlanSlice";
+import { RecipeSwipeObject } from "../SwapMealsPage/SwapMealsCalls";
+import { Meal } from "../../utils/dataTypes";
 
 const Text = createText<Theme>();
 const Box = createBox<Theme>();
-
-const currentPlan: RecipeCardProps[] = [
-  {
-    imageSource: 'https://images.unsplash.com/photo-1588276552401-30058a0fe57b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2023&q=80',
-    cookingTime: 35,
-    recipeName: 'Paella',
-    ready: true,
-    persons: 4
-  },
-  {
-    imageSource: 'https://images.unsplash.com/photo-1619895092538-128341789043?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80',
-    cookingTime: 60,
-    recipeName: 'Lasagne',
-    ready: true,
-    persons: 2
-  },
-  {
-    imageSource: 'https://images.unsplash.com/photo-1626804475315-9644b37a2fe4?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80',
-    cookingTime: 45,
-    recipeName: 'Pad Thai',
-    ready: false,
-    persons: 1
-  },
-  {
-    imageSource: 'https://images.unsplash.com/photo-1618889482923-38250401a84e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80',
-    cookingTime: 30,
-    recipeName: 'Ramen',
-    ready: false,
-    persons: 2
-  }
-]
 
 const wait = (timeout: number) => {
   return new Promise(resolve => setTimeout(resolve, timeout));
@@ -47,6 +20,9 @@ const wait = (timeout: number) => {
 
 const CurrentPlan = () => {
   const [refreshing, setRefreshing] = React.useState(false);
+  const recipes = useSelector(selectAllRecipes)
+
+  console.log(recipes)
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
@@ -63,9 +39,8 @@ const CurrentPlan = () => {
           />
         }>
           {
-            currentPlan.map((el: RecipeCardProps) => {
-              return <RecipeCard key={el.recipeName} imageSource={el.imageSource} cookingTime={el.cookingTime} recipeName={el.recipeName} ready={el.ready} persons={el.persons} />
-
+            recipes.map((el: Meal) => {
+              return <RecipeCard key={el.id} imageSource={el.recipe.imageUrl} cookingTime={10} recipeName={el.recipe.name} ready={Math.random() < 0.5} persons={el.portions} />
             })
           }
         </ScrollView>

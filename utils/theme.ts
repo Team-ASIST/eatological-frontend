@@ -64,6 +64,13 @@ const theme = createTheme({
             lineHeight: 36,
             color: 'secondaryCardText',
         },
+        subsubheader: {
+            fontFamily: 'Fraunces_500Medium',
+            fontWeight: '600',
+            fontSize: 18,
+            lineHeight: 30,
+            color: 'secondaryCardText',
+        },
         body: {
             fontFamily: 'Fraunces_300Light',
             fontSize: 16,

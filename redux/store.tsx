@@ -1,10 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit'
 
 import newPlanReducer from './slice/newPlanSlice'
+import currentPlanReducer from './slice/currentPlanSlice'
 
 export const store = configureStore({
   reducer: {
     newPlan: newPlanReducer,
+    currentPlan: currentPlanReducer
   }
 })
 

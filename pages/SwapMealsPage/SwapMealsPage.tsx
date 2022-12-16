@@ -6,13 +6,14 @@ import { TouchableOpacity, ImageBackground, Image, Dimensions } from "react-nati
 import { NavigationScreenProp } from "react-navigation";
 import { SwipeListView } from 'react-native-swipe-list-view';
 import RecipeCard, { RecipeCardProps } from "../../components/ui/recipe/recipeCard";
-import recipeCard from "../../components/ui/recipe/recipeCard";
 import { HiddenCard } from "../../components/ui/recipe/hiddenSwipeButtons"; "../../components/ui/recipe/hiddenSwipeButtons"
 import { getInitialPlan, getListWithOldRecipe, getListWithNewRecipe } from "./SwapMealsCalls"
 import { RecipeSwipeObject } from "./SwapMealsCalls"
 import { IMealAmount, resetPlanConfiguration, selectNewPlanConfiguration } from "../../redux/slice/newPlanSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { NavigationButtonContainer } from "../../components/ui/inputs/NavigationButton";
+import { updateRecipes } from "../../redux/slice/currentPlanSlice";
+import { Meal, Recipe } from "../../utils/dataTypes";
 
 const Text = createText<Theme>()
 const Box = createBox<Theme>()
@@ -101,9 +102,8 @@ const SwapMealsPage = ({ navigation }: SwapMealsPageProps) => {
                 imageSource={data.item.recipe.imageUrl}
                 cookingTime={10}
                 recipeName={data.item.recipe.name}
-                ready={true}
                 persons={data.item.portions}
-              />
+                ready={false} />
             </Box>
           </TouchableOpacity>
         )}
@@ -120,6 +120,13 @@ const SwapMealsPage = ({ navigation }: SwapMealsPageProps) => {
         }}
         textLeft="Cancel"
         onPressRight={() => {
+          dispatch(updateRecipes({recipes: recipeList.map((r: RecipeSwipeObject) => {
+            return {
+              id: r.id, 
+              recipe: r.recipe,
+              portions: r.portions
+            } as Meal
+          })}))
           dispatch(resetPlanConfiguration())
           navigation.navigate('CurrentPlan')
         }}
