@@ -1,31 +1,35 @@
 import React from 'react'
 import { createBox, createText } from '@shopify/restyle'
-import { Theme } from '../../../utils/theme'
+import theme, { Theme } from '../../../utils/theme'
+import { TouchableOpacity } from 'react-native'
+import Ionicons from 'react-native-vector-icons/Ionicons'
 import IconButton from './IconButton'
 
 export interface AddItemButtonProps {
-    onPress: () => {},
-    title: string
+    onPress: () => {}
 }
 
 const Box = createBox<Theme>()
 const Text = createText<Theme>()
 
-const AddItemButton = ({onPress, title}: AddItemButtonProps) => {
+const AddItemButton = ({ onPress }: AddItemButtonProps) => {
     return (
-        <Box
-            marginVertical="s"
-            padding="m"
-            backgroundColor="primaryCardBackground"
-            borderRadius={50}
-            flexDirection="row"
-            justifyContent="space-between">
-            <Text variant="body">{title}</Text>
-            <IconButton
-                onPress={onPress}
-                icon={'ios-add-circle-outline'}
-                size={25}></IconButton>
-        </Box>
+            <Box marginVertical="s" alignItems={'center'}>
+                <TouchableOpacity
+                    hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+                    onPress={onPress}>
+                    <Box flexDirection={'row'}>
+                        <Ionicons
+                            name={'add-outline'}
+                            size={28}
+                            color={theme.colors.primaryCardBackground}
+                        />
+                        <Text variant={'subsubheader'} color={'primaryCardBackground'}>
+                            Add Meal
+                        </Text>
+                    </Box>
+                </TouchableOpacity>
+            </Box>
     )
 }
 
