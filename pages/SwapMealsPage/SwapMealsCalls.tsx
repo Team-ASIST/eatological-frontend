@@ -55,14 +55,15 @@ export const getListWithNewRecipe = async (currentList: RecipeSwipeObject[], mea
             return data.recipes as any[]
         })
         .catch((error) => console.error(error))
-    
-    result[mealID].swapRecipe((newRecipes as any[])[mealID].recipe)  
+
+
+    result[mealID].swapRecipe((newRecipes as any[])[mealID].recipe)
     return result
 }
 
 export const getListWithOldRecipe = async (currentList: RecipeSwipeObject[], mealID: number): Promise<RecipeSwipeObject[]> => {
     //TODO Catch Void Return
-    
+
     const result = currentList.map((x) => x);
     const newRecipes = await fetch('https://eatological-dev.azurewebsites.net/plan/swipeleft',
         {
@@ -78,9 +79,8 @@ export const getListWithOldRecipe = async (currentList: RecipeSwipeObject[], mea
             return data.recipes as any[]
         })
         .catch((error) => console.error(error))
-    
 
-    result[mealID].swapRecipe((newRecipes as any[])[mealID].recipe)  
+    result[mealID].swapRecipe((newRecipes as any[])[mealID].recipe)
     return result
 }
 

@@ -2,7 +2,7 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { createBox, createText } from '@shopify/restyle';
 import { Theme } from '../../utils/theme';
-import { TouchableOpacity} from "react-native";
+import { TouchableOpacity } from "react-native";
 import { NavigationScreenProp } from "react-navigation";
 import { SwipeListView } from 'react-native-swipe-list-view';
 import RecipeCard, { RecipeCardProps } from "../../components/ui/recipe/recipeCard";
@@ -14,6 +14,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { NavigationButtonContainer } from "../../components/ui/inputs/NavigationButton";
 import { updateRecipes } from "../../redux/slice/currentPlanSlice";
 import { Meal, Recipe } from "../../utils/dataTypes";
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const Text = createText<Theme>()
 const Box = createBox<Theme>()
@@ -28,12 +29,35 @@ const wait = (timeout: number) => {
   return new Promise(resolve => setTimeout(resolve, timeout))
 }
 
+const TopBar = () => {
+  return (
+    <Box marginTop="l" marginHorizontal="xs" padding="m">
+      <Text variant="subheader">Choose your Recipes...</Text>
+      <Box flexDirection={"row"} flexGrow={1}>
+        <Box flex={1} justifyContent={"flex-start"} alignItems={"center"} flexDirection={"row"}>
+          <Ionicons name="arrow-back-circle-outline" size={20} color="black" />
+          <Text paddingLeft={"xs"} variant={"body"} color={"secondaryCardText"}>
+            Prev
+          </Text>
+        </Box>
+        <Box flex={1} justifyContent={"flex-end"} alignItems={"center"} flexDirection={"row"}>
+          <Text paddingRight={"xs"} variant={"body"} color={"secondaryCardText"}>
+            Next
+          </Text>
+          <Ionicons name="arrow-forward-circle-outline" size={20} color="black" />
+        </Box>
+      </Box>
+    </Box>
+  )
+}
+
 const SwapMealsPage = ({ navigation }: SwapMealsPageProps) => {
   // Load Initial data for recipes
   const { mealAmount, leftovers, preferences } = useSelector(selectNewPlanConfiguration)
   const [swipeTracker, setSwipeTracker] = useState(Array(mealAmount.length).fill(0) as number[])
   const [recipeList, setRecipeList] = useState([] as RecipeSwipeObject[])
   const [loading, setLoading] = useState(false)
+  const [lastLoadTimestamp, setLastLoadTimestamp] = useState(new Date())
 
   const dispatch = useDispatch()
 
@@ -49,49 +73,52 @@ const SwapMealsPage = ({ navigation }: SwapMealsPageProps) => {
   }, [])
 
   // Handle Swiping Input
-  const swipeLeft = async (rowKey: any) => {
-    if (swipeTracker[rowKey] <= 0) {
-      //TODO handle error
-      return
-    }
+  const swipeLeft = async (rowKey: any, rowMap: any) => {
+    if (swipeTracker[rowKey] > 0 && !loading) {
+      setLoading(true)
+      const newPlan = await getListWithOldRecipe(recipeList, rowKey)
+      setRecipeList(newPlan)
 
-    setLoading(true)
-    setRecipeList(await getListWithOldRecipe(recipeList, rowKey))
-    swipeTracker[rowKey] -= 1
-    setSwipeTracker(swipeTracker)
-    setLoading(false)
+      // Reset State and Update SwipeTracker
+      swipeTracker[rowKey] -= 1
+      setSwipeTracker(swipeTracker)
+      setLoading(false)
+    }
+    rowMap[rowKey].closeRow()
   };
 
-  const swipeRight = async (rowKey: any) => {
-    setLoading(true)
-    setRecipeList(await getListWithNewRecipe(recipeList, rowKey))
 
-    swipeTracker[rowKey] += 1
-    setSwipeTracker(swipeTracker)
-    setLoading(false)
-  };
+  const swipeRight = async (rowKey: any, rowMap: any) => {
+    if (!loading) {
+      setLoading(true)
+      const newPlan = await getListWithNewRecipe(recipeList, rowKey)
+      setRecipeList(newPlan)
 
-  const onRowDidOpen = async (rowKey: any, rowMap: any) => {
-    await wait(1000)
-    if (rowMap[rowKey]) {
-      rowMap[rowKey].closeRow()
+      // Reset State and Update SwipeTracker
+      swipeTracker[rowKey] += 1
+      setSwipeTracker(swipeTracker)
+      setLoading(false)
     }
-  }
+    rowMap[rowKey].closeRow()
+  };
 
   return (
-    <Box paddingTop={"l"} backgroundColor="mainBackground" flex={1}>
+    <Box backgroundColor="mainBackground" flex={1}>
+      <TopBar />
 
       <SwipeListView
         data={recipeList}
         keyExtractor={(data) => "" + data.id}
+        useFlatList={true}
 
-        onRowDidOpen={onRowDidOpen}
+        disableLeftSwipe={loading}
+        disableRightSwipe={loading}
 
-        stopLeftSwipe={75}
-        stopRightSwipe={-75}
+        stopLeftSwipe={50}
+        stopRightSwipe={-50}
 
-        leftActivationValue={50}
-        rightActivationValue={-50}
+        leftActivationValue={25}
+        rightActivationValue={-25}
         leftActionValue={50}
         rightActionValue={-50}
 
@@ -101,6 +128,8 @@ const SwapMealsPage = ({ navigation }: SwapMealsPageProps) => {
         previewRowKey={"0"}
         previewDuration={1000}
         previewOpenValue={-50}
+
+        showsVerticalScrollIndicator={false}
 
         renderItem={(data, rowMap) => (
           <TouchableOpacity activeOpacity={1}>
@@ -115,7 +144,7 @@ const SwapMealsPage = ({ navigation }: SwapMealsPageProps) => {
           </TouchableOpacity>
         )}
         renderHiddenItem={(data, rowMap) => (
-          <HiddenCard loading={loading}/>
+          <HiddenCard loading={loading} />
         )}
         leftOpenValue={50}
         rightOpenValue={-50}
