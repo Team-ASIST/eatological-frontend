@@ -2,11 +2,11 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { createBox, createText } from '@shopify/restyle';
 import { Theme } from '../../utils/theme';
-import { TouchableOpacity, ImageBackground, Image, Dimensions } from "react-native";
+import { TouchableOpacity} from "react-native";
 import { NavigationScreenProp } from "react-navigation";
 import { SwipeListView } from 'react-native-swipe-list-view';
 import RecipeCard, { RecipeCardProps } from "../../components/ui/recipe/recipeCard";
-import { HiddenCard } from "../../components/ui/recipe/hiddenSwipeButtons"; "../../components/ui/recipe/hiddenSwipeButtons"
+import { HiddenCard, HiddenCardProps } from "../../components/ui/recipe/hiddenCard"; "../../components/ui/recipe/hiddenSwipeButtons"
 import { getInitialPlan, getListWithOldRecipe, getListWithNewRecipe } from "./SwapMealsCalls"
 import { RecipeSwipeObject } from "./SwapMealsCalls"
 import { IMealAmount, resetPlanConfiguration, selectNewPlanConfiguration } from "../../redux/slice/newPlanSlice";
@@ -33,6 +33,8 @@ const SwapMealsPage = ({ navigation }: SwapMealsPageProps) => {
   const { mealAmount, leftovers, preferences } = useSelector(selectNewPlanConfiguration)
   const [swipeTracker, setSwipeTracker] = useState(Array(mealAmount.length).fill(0) as number[])
   const [recipeList, setRecipeList] = useState([] as RecipeSwipeObject[])
+  const [loading, setLoading] = useState(false)
+
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -53,19 +55,20 @@ const SwapMealsPage = ({ navigation }: SwapMealsPageProps) => {
       return
     }
 
+    setLoading(true)
     setRecipeList(await getListWithOldRecipe(recipeList, rowKey))
-
     swipeTracker[rowKey] -= 1
     setSwipeTracker(swipeTracker)
+    setLoading(false)
   };
 
   const swipeRight = async (rowKey: any) => {
-    // Fix this Hack
-    const tempRecipes = recipeList
+    setLoading(true)
     setRecipeList(await getListWithNewRecipe(recipeList, rowKey))
 
     swipeTracker[rowKey] += 1
     setSwipeTracker(swipeTracker)
+    setLoading(false)
   };
 
   const onRowDidOpen = async (rowKey: any, rowMap: any) => {
@@ -87,13 +90,17 @@ const SwapMealsPage = ({ navigation }: SwapMealsPageProps) => {
         stopLeftSwipe={75}
         stopRightSwipe={-75}
 
-        leftActivationValue={70}
-        rightActivationValue={-70}
-        leftActionValue={70}
-        rightActionValue={-70}
+        leftActivationValue={50}
+        rightActivationValue={-50}
+        leftActionValue={50}
+        rightActionValue={-50}
 
         onLeftAction={swipeLeft}
         onRightAction={swipeRight}
+
+        previewRowKey={"0"}
+        previewDuration={1000}
+        previewOpenValue={-50}
 
         renderItem={(data, rowMap) => (
           <TouchableOpacity activeOpacity={1}>
@@ -108,7 +115,7 @@ const SwapMealsPage = ({ navigation }: SwapMealsPageProps) => {
           </TouchableOpacity>
         )}
         renderHiddenItem={(data, rowMap) => (
-          HiddenCard(swipeLeft, swipeLeft, data.item.id)
+          <HiddenCard loading={loading}/>
         )}
         leftOpenValue={50}
         rightOpenValue={-50}
@@ -120,13 +127,15 @@ const SwapMealsPage = ({ navigation }: SwapMealsPageProps) => {
         }}
         textLeft="Cancel"
         onPressRight={() => {
-          dispatch(updateRecipes({recipes: recipeList.map((r: RecipeSwipeObject) => {
-            return {
-              id: r.id, 
-              recipe: r.recipe,
-              portions: r.portions
-            } as Meal
-          })}))
+          dispatch(updateRecipes({
+            recipes: recipeList.map((r: RecipeSwipeObject) => {
+              return {
+                id: r.id,
+                recipe: r.recipe,
+                portions: r.portions
+              } as Meal
+            })
+          }))
           dispatch(resetPlanConfiguration())
           navigation.navigate('CurrentPlan')
         }}
