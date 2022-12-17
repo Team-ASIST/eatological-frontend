@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import { createBox, createText } from '@shopify/restyle'
 import { TextInput, Keyboard, FlatList, ListRenderItemInfo, View } from 'react-native'
-import { Theme } from '../../utils/theme'
-import IconButton from '../../components/ui/IconButton'
+import { Theme } from '../../../utils/theme'
+import IconButton from './IconButton'
 
 const data = [
     {
@@ -92,8 +92,7 @@ const SearchBarDisplay = ({
                         setSearchPhrase("")
                     }}
                     icon={'close'}
-                    size={15}
-                    color={'grey'}></IconButton>
+                    size={15}></IconButton>
             )}
         </Box>
     )
@@ -115,8 +114,7 @@ const Item = ({ name }: ItemProps) => (
         <IconButton
             onPress={() => {}}
             icon={'ios-add-circle-outline'}
-            size={25}
-            color={'black'}></IconButton>
+            size={25}></IconButton>
     </Box>
 )
 
