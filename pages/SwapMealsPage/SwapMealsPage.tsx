@@ -8,7 +8,7 @@ import { SwipeListView } from 'react-native-swipe-list-view';
 import RecipeCard, { RecipeCardProps } from "../../components/ui/recipe/recipeCard";
 import { HiddenCard, HiddenCardProps } from "../../components/ui/recipe/hiddenCard";
 import { getInitialPlan, getListWithOldRecipe, getListWithNewRecipe } from "./SwapMealsCalls"
-import { RecipeSwipeObject } from "./SwapMealsCalls"
+import { RecipeSwipeObject, FrontendPlan } from "./SwapMealsCalls"
 import { IMealAmount, resetPlanConfiguration, selectNewPlanConfiguration } from "../../redux/slice/newPlanSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { NavigationButtonContainer } from "../../components/ui/inputs/NavigationButton";
@@ -81,15 +81,19 @@ const SwapMealsPage = ({ navigation }: SwapMealsPageProps) => {
   const [recipeList, setRecipeList] = useState([] as RecipeSwipeObject[])
   // Manages Locking, Loading Animation
   const [loading, setLoading] = useState(false)
+  // Sustainability Score for future animations
+  const [sustainabilityScore, setSustainabilityScore] = useState(0)
 
   const dispatch = useDispatch()
 
   // Fetch Initial Plan on First Mounting
   useEffect(() => {
     getInitialPlan(mealAmount.map((m: IMealAmount) => m.amount), leftovers, preferences).then(
-      (recipes: RecipeSwipeObject[]) => {
-        setRecipeList(recipes)
-        setSwipeTracker(Array(recipes.length).fill(0))
+      (initialPlan: FrontendPlan) => {
+        setRecipeList(initialPlan.recipeSwipeObjects)
+        setSwipeTracker(Array(initialPlan.recipeSwipeObjects.length).fill(0))
+        setSustainabilityScore(initialPlan.sustainabilityScore)
+        // Enter Swiping Phase
         setSetupPhase(false)
       }
     ).catch(
@@ -101,8 +105,9 @@ const SwapMealsPage = ({ navigation }: SwapMealsPageProps) => {
   const swipeLeft = async (rowKey: any, rowMap: any) => {
     if (swipeTracker[rowKey] > 0 && !loading) {
       setLoading(true)
-      const newPlan = await getListWithOldRecipe(recipeList, rowKey)
-      setRecipeList(newPlan)
+      const newPlan : FrontendPlan = await getListWithOldRecipe(recipeList, rowKey)
+      setRecipeList(newPlan.recipeSwipeObjects)
+      setSustainabilityScore(newPlan.sustainabilityScore)
 
       // Reset State and Update SwipeTracker
       swipeTracker[rowKey] -= 1
@@ -116,8 +121,9 @@ const SwapMealsPage = ({ navigation }: SwapMealsPageProps) => {
   const swipeRight = async (rowKey: any, rowMap: any) => {
     if (!loading) {
       setLoading(true)
-      const newPlan = await getListWithNewRecipe(recipeList, rowKey)
-      setRecipeList(newPlan)
+      const newPlan : FrontendPlan = await getListWithNewRecipe(recipeList, rowKey)
+      setRecipeList(newPlan.recipeSwipeObjects)
+      setSustainabilityScore(newPlan.sustainabilityScore)
 
       // Reset State and Update SwipeTracker
       swipeTracker[rowKey] += 1
@@ -161,7 +167,7 @@ const SwapMealsPage = ({ navigation }: SwapMealsPageProps) => {
             <Box paddingTop={"m"}>
               <RecipeCard
                 imageSource={data.item.recipe.imageUrl}
-                cookingTime={10}
+                cookingTime={data.item.recipe.prepTime}
                 recipeName={data.item.recipe.name}
                 persons={data.item.portions}
                 ready={false} />
