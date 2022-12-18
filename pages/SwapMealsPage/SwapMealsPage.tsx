@@ -2,11 +2,11 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { createBox, createText } from '@shopify/restyle';
 import { Theme } from '../../utils/theme';
-import { TouchableOpacity } from "react-native";
+import { TouchableOpacity, Image, Dimensions } from "react-native";
 import { NavigationScreenProp } from "react-navigation";
 import { SwipeListView } from 'react-native-swipe-list-view';
 import RecipeCard, { RecipeCardProps } from "../../components/ui/recipe/recipeCard";
-import { HiddenCard, HiddenCardProps } from "../../components/ui/recipe/hiddenCard"; "../../components/ui/recipe/hiddenSwipeButtons"
+import { HiddenCard, HiddenCardProps } from "../../components/ui/recipe/hiddenCard";
 import { getInitialPlan, getListWithOldRecipe, getListWithNewRecipe } from "./SwapMealsCalls"
 import { RecipeSwipeObject } from "./SwapMealsCalls"
 import { IMealAmount, resetPlanConfiguration, selectNewPlanConfiguration } from "../../redux/slice/newPlanSlice";
@@ -51,21 +51,46 @@ const TopBar = () => {
   )
 }
 
+type animationProps = {
+  setupPhase: boolean
+}
+
+const Animation = (props: animationProps) => {
+  const windowWidth = Dimensions.get('window').width;
+  if (props.setupPhase) {
+    return (
+      <Box alignItems={"center"} flexGrow={1} flexDirection={"column"} justifyContent={"center"}>
+        <Image
+          style={{ width: windowWidth, height: 9/16 * windowWidth }}
+          source={require('../../assets/animation.gif')} />
+      </Box>
+    )
+  } else {
+    return <Box />
+  }
+}
+
 const SwapMealsPage = ({ navigation }: SwapMealsPageProps) => {
+  // Initial State for Animation
+  const [setupPhase, setSetupPhase] = useState(true)
   // Load Initial data for recipes
   const { mealAmount, leftovers, preferences } = useSelector(selectNewPlanConfiguration)
+  // Track Progression of Individual Swipes
   const [swipeTracker, setSwipeTracker] = useState(Array(mealAmount.length).fill(0) as number[])
+  // Current Plan
   const [recipeList, setRecipeList] = useState([] as RecipeSwipeObject[])
+  // Manages Locking, Loading Animation
   const [loading, setLoading] = useState(false)
-  const [lastLoadTimestamp, setLastLoadTimestamp] = useState(new Date())
 
   const dispatch = useDispatch()
 
+  // Fetch Initial Plan on First Mounting
   useEffect(() => {
     getInitialPlan(mealAmount.map((m: IMealAmount) => m.amount), leftovers, preferences).then(
       (recipes: RecipeSwipeObject[]) => {
         setRecipeList(recipes)
         setSwipeTracker(Array(recipes.length).fill(0))
+        setSetupPhase(false)
       }
     ).catch(
       error => { console.error(error) }
@@ -105,7 +130,7 @@ const SwapMealsPage = ({ navigation }: SwapMealsPageProps) => {
   return (
     <Box backgroundColor="mainBackground" flex={1}>
       <TopBar />
-
+      <Animation setupPhase={setupPhase} />
       <SwipeListView
         data={recipeList}
         keyExtractor={(data) => "" + data.id}
