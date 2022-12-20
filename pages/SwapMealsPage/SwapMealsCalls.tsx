@@ -1,4 +1,4 @@
-import { Recipe } from "../../utils/dataTypes"
+import { Recipe, RecipeState, BackendPlan } from "../../utils/dataTypes"
 
 // Mockdata
 
@@ -29,19 +29,24 @@ export class RecipeSwipeObject {
     }
 }
 
+export type FrontendPlan = {
+    recipeSwipeObjects: RecipeSwipeObject[],
+    sustainabilityScore: number
+}
+
 export const recipeSwipeElements: RecipeSwipeObject[] = [
-    new RecipeSwipeObject(0, { name: "Paella", ingredients: [], steps: [], imageUrl: images[0] }, 2),
-    new RecipeSwipeObject(1, { name: "Lasagne", ingredients: [], steps: [], imageUrl: images[1] }, 4),
-    new RecipeSwipeObject(2, { name: "Pad Thai", ingredients: [], steps: [], imageUrl: images[2] }, 3),
-    new RecipeSwipeObject(3, { name: "Ramen", ingredients: [], steps: [], imageUrl: images[3] }, 1),
+    new RecipeSwipeObject(0, { name: "Paella", ingredients: [], steps: [], imageUrl: images[0], prepTime: 0, totalTime: 0 }, 2),
+    new RecipeSwipeObject(1, { name: "Lasagne", ingredients: [], steps: [], imageUrl: images[1], prepTime: 0, totalTime: 0 }, 4),
+    new RecipeSwipeObject(2, { name: "Pad Thai", ingredients: [], steps: [], imageUrl: images[2], prepTime: 0, totalTime: 0 }, 3),
+    new RecipeSwipeObject(3, { name: "Ramen", ingredients: [], steps: [], imageUrl: images[3], prepTime: 0, totalTime: 0 }, 1),
 ]
 
 
-export const getListWithNewRecipe = async (currentList: RecipeSwipeObject[], mealID: number): Promise<RecipeSwipeObject[]> => {
+export const getListWithNewRecipe = async (currentList: RecipeSwipeObject[], mealID: number): Promise<FrontendPlan> => {
     //TODO Catch Void Return 
 
     const result = currentList.map((x) => x);
-    const newRecipes = await fetch('https://eatological-dev.azurewebsites.net/plan/swiperight',
+    const newPlan = await fetch('https://eatological-dev.azurewebsites.net/plan/swiperight',
         {
             method: 'GET',
             headers: {
@@ -52,20 +57,20 @@ export const getListWithNewRecipe = async (currentList: RecipeSwipeObject[], mea
         })
         .then((response) => response.json())
         .then((data) => {
-            return data.recipes as any[]
+            return data as BackendPlan
         })
         .catch((error) => console.error(error))
+    //TODO Catch unresolved Fetch
 
-
-    result[mealID].swapRecipe((newRecipes as any[])[mealID].recipe)
-    return result
+    result[mealID].swapRecipe((newPlan as BackendPlan).recipes[mealID].recipe)
+    return { recipeSwipeObjects: result, sustainabilityScore: (newPlan as BackendPlan).sustainabilityScore }
 }
 
-export const getListWithOldRecipe = async (currentList: RecipeSwipeObject[], mealID: number): Promise<RecipeSwipeObject[]> => {
+export const getListWithOldRecipe = async (currentList: RecipeSwipeObject[], mealID: number): Promise<FrontendPlan> => {
     //TODO Catch Void Return
 
     const result = currentList.map((x) => x);
-    const newRecipes = await fetch('https://eatological-dev.azurewebsites.net/plan/swipeleft',
+    const newPlan = await fetch('https://eatological-dev.azurewebsites.net/plan/swipeleft',
         {
             method: 'GET',
             headers: {
@@ -76,19 +81,19 @@ export const getListWithOldRecipe = async (currentList: RecipeSwipeObject[], mea
         })
         .then((response) => response.json())
         .then((data) => {
-            return data.recipes as any[]
+            return data as BackendPlan
         })
         .catch((error) => console.error(error))
 
-    result[mealID].swapRecipe((newRecipes as any[])[mealID].recipe)
-    return result
+    result[mealID].swapRecipe((newPlan as BackendPlan).recipes[mealID].recipe)
+    return { recipeSwipeObjects: result, sustainabilityScore: (newPlan as BackendPlan).sustainabilityScore }
 }
 
-export const getInitialPlan = async (portions: number[], leftovers: string[], preferences: string[]): Promise<RecipeSwipeObject[]> => {
+export const getInitialPlan = async (portions: number[], leftovers: string[], preferences: string[]): Promise<FrontendPlan> => {
     let portionsArg: string = JSON.stringify(portions)
     let leftoverArg: string = JSON.stringify(leftovers)
     let preferencesArg: string = JSON.stringify(preferences)
-    const result = await fetch('https://eatological-dev.azurewebsites.net/plan/create',
+    const plan = await fetch('https://eatological-dev.azurewebsites.net/plan/create',
         {
             method: 'GET',
             headers: {
@@ -101,11 +106,11 @@ export const getInitialPlan = async (portions: number[], leftovers: string[], pr
         })
         .then((response) => response.json())
         .then((data) => {
-            const recipeSwipeElements: RecipeSwipeObject[] = []
+            const recipeSwipeObjects: RecipeSwipeObject[] = []
 
             let i: number = 0
             while (i < data.recipes.length) {
-                recipeSwipeElements.push(
+                recipeSwipeObjects.push(
                     new RecipeSwipeObject(
                         i,
                         data.recipes[i].recipe,
@@ -116,36 +121,9 @@ export const getInitialPlan = async (portions: number[], leftovers: string[], pr
             }
 
 
-            return recipeSwipeElements as RecipeSwipeObject[];
+            return { recipeSwipeObjects: recipeSwipeObjects, sustainabilityScore: (data as BackendPlan).sustainabilityScore }
         })
         .catch((error) => console.error(error));
 
-    return result as RecipeSwipeObject[];
-};
-
-export const getRecipes = async (): Promise<RecipeSwipeObject[]> => {
-    const result = await fetch('https://eatological-dev.azurewebsites.net/recipes', { method: 'GET', headers: { 'accept': 'application/json', 'EatologicalToken': 'dev@eatological.de' } })
-        .then((response) => response.json())
-        .then((data) => {
-            const recipeSwipeElements: RecipeSwipeObject[] = []
-
-            let i: number = 0;
-            while (i < data.length) {
-                recipeSwipeElements.push(
-                    new RecipeSwipeObject(
-                        i,
-                        data[i],
-                        4
-                    )
-                )
-                i += 1;
-            }
-
-
-            return recipeSwipeElements as RecipeSwipeObject[];
-        })
-        .catch((error) => console.error(error));
-
-    return result as RecipeSwipeObject[];
-    //return recipeSwipeElements;
+    return plan as FrontendPlan
 };
