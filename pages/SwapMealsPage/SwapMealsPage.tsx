@@ -5,14 +5,14 @@ import { Theme } from '../../utils/theme';
 import { TouchableOpacity, Image, Dimensions } from "react-native";
 import { NavigationScreenProp } from "react-navigation";
 import { SwipeListView } from 'react-native-swipe-list-view';
-import RecipeCard, { RecipeCardProps } from "../../components/ui/recipe/recipeCard";
-import { HiddenCard, HiddenCardProps } from "../../components/ui/recipe/hiddenCard";
+import RecipeCard from "../../components/ui/recipe/recipeCard";
+import { HiddenCard } from "../../components/ui/recipe/hiddenCard";
 import { getInitialPlan, getListWithOldRecipe, getListWithNewRecipe } from "./SwapMealsCalls"
 import { RecipeSwipeObject, FrontendPlan } from "./SwapMealsCalls"
 import { IMealAmount, resetPlanConfiguration, selectNewPlanConfiguration } from "../../redux/slice/newPlanSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { updateRecipes } from "../../redux/slice/currentPlanSlice";
-import { Meal, Recipe } from "../../utils/dataTypes";
+import { Meal } from "../../utils/dataTypes";
 import NewPlanNavigationBar from '../NewPlanPage/NavigationNewPlanBar'
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
