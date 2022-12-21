@@ -9,7 +9,6 @@ import AddItemButton from '../../components/ui/inputs/AddItemButton'
 import { SafeAreaView } from "react-native-safe-area-context";
 import { ScrollView } from "react-native-gesture-handler";
 import NewPlanNavigationBar from './NavigationNewPlanBar'
-import { NewPlanLabels, ScreenToPosition } from '../../utils/step'
 import { useRoute } from '@react-navigation/native'
 
 const Text = createText<Theme>()
@@ -33,7 +32,7 @@ const MealQuantityScreen = ({ navigation }: Props) => {
     const addMeal = (
         <AddItemButton
             onPress={() => dispatch(mealAdded())}
-            title={''} />
+             />
     )
 
     return (
@@ -50,7 +49,7 @@ const MealQuantityScreen = ({ navigation }: Props) => {
                     }
                 }>                
                 <Box marginVertical="l" marginHorizontal="xs" padding="m" height={"75%"}>
-                    <Text variant="subheader">How many meals do you want?</Text>
+                <Text variant="subheader">How many meals are you planning for?</Text>
                     <Box marginVertical="l">
                         <ScrollView alwaysBounceVertical={false} showsVerticalScrollIndicator={false}>
                             {mealInputs}
