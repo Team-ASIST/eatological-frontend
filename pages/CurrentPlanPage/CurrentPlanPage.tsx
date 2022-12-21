@@ -22,8 +22,6 @@ const CurrentPlan = () => {
   const [refreshing, setRefreshing] = React.useState(false);
   const recipes = useSelector(selectAllRecipes)
 
-  console.log(recipes)
-
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     wait(250).then(() => setRefreshing(false));

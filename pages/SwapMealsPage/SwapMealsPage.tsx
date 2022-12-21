@@ -2,7 +2,7 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { createBox, createText } from '@shopify/restyle';
 import { Theme } from '../../utils/theme';
-import { TouchableOpacity, ImageBackground, Image, Dimensions } from "react-native";
+import { TouchableOpacity } from "react-native";
 import { NavigationScreenProp } from "react-navigation";
 import { SwipeListView } from 'react-native-swipe-list-view';
 import RecipeCard, { RecipeCardProps } from "../../components/ui/recipe/recipeCard";
@@ -11,9 +11,9 @@ import { getInitialPlan, getListWithOldRecipe, getListWithNewRecipe } from "./Sw
 import { RecipeSwipeObject } from "./SwapMealsCalls"
 import { IMealAmount, resetPlanConfiguration, selectNewPlanConfiguration } from "../../redux/slice/newPlanSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { NavigationButtonContainer } from "../../components/ui/inputs/NavigationButton";
 import { updateRecipes } from "../../redux/slice/currentPlanSlice";
-import { Meal, Recipe } from "../../utils/dataTypes";
+import { Meal } from "../../utils/dataTypes";
+import NewPlanNavigationBar from '../NewPlanPage/NavigationNewPlanBar'
 
 const Text = createText<Theme>()
 const Box = createBox<Theme>()
@@ -76,61 +76,68 @@ const SwapMealsPage = ({ navigation }: SwapMealsPageProps) => {
   }
 
   return (
-    <Box paddingTop={"l"} backgroundColor="mainBackground" flex={1}>
+    <Box padding="m" backgroundColor="mainBackground" flex={1}>
+      <NewPlanNavigationBar
+        onClickBack={
+          () => navigation.navigate('LeftOvers')}
+        onClickNext={
+          () => {
+            dispatch(updateRecipes({
+              recipes: recipeList.map((r: RecipeSwipeObject) => {
+                return {
+                  id: r.id,
+                  recipe: r.recipe,
+                  portions: r.portions
+                } as Meal
+              })
+            }))
+            dispatch(resetPlanConfiguration())
+            navigation.navigate('CurrentPlan')
+          }
+        }
+        onClickAbort={
+          () => {
+            dispatch(resetPlanConfiguration())
+            navigation.navigate('CurrentPlan')
+          }
+        }>
+        <Box flexGrow={1} height="50%">
+          <SwipeListView
+            data={recipeList}
+            keyExtractor={(data) => "" + data.id}
+            onRowDidOpen={onRowDidOpen}
 
-      <SwipeListView
-        data={recipeList}
-        keyExtractor={(data) => "" + data.id}
+            stopLeftSwipe={75}
+            stopRightSwipe={-75}
 
-        onRowDidOpen={onRowDidOpen}
+            leftActivationValue={70}
+            rightActivationValue={-70}
+            leftActionValue={70}
+            rightActionValue={-70}
 
-        stopLeftSwipe={75}
-        stopRightSwipe={-75}
+            onLeftAction={swipeLeft}
+            onRightAction={swipeRight}
 
-        leftActivationValue={70}
-        rightActivationValue={-70}
-        leftActionValue={70}
-        rightActionValue={-70}
-
-        onLeftAction={swipeLeft}
-        onRightAction={swipeRight}
-
-        renderItem={(data, rowMap) => (
-          <TouchableOpacity activeOpacity={1}>
-            <Box paddingTop={"m"}>
-              <RecipeCard
-                imageSource={data.item.recipe.imageUrl}
-                cookingTime={10}
-                recipeName={data.item.recipe.name}
-                persons={data.item.portions}
-                ready={false} />
-            </Box>
-          </TouchableOpacity>
-        )}
-        renderHiddenItem={(data, rowMap) => (
-          HiddenCard(swipeLeft, swipeLeft, data.item.id)
-        )}
-        leftOpenValue={50}
-        rightOpenValue={-50}
-      />
-      <NavigationButtonContainer
-        onPressLeft={() => {
-          dispatch(resetPlanConfiguration())
-          navigation.navigate('CurrentPlan')
-        }}
-        textLeft="Cancel"
-        onPressRight={() => {
-          dispatch(updateRecipes({recipes: recipeList.map((r: RecipeSwipeObject) => {
-            return {
-              id: r.id, 
-              recipe: r.recipe,
-              portions: r.portions
-            } as Meal
-          })}))
-          dispatch(resetPlanConfiguration())
-          navigation.navigate('CurrentPlan')
-        }}
-        textRight="Finish" />
+            renderItem={(data, rowMap) => (
+              <TouchableOpacity activeOpacity={1}>
+                <Box paddingTop={"m"}>
+                  <RecipeCard
+                    imageSource={data.item.recipe.imageUrl}
+                    cookingTime={10}
+                    recipeName={data.item.recipe.name}
+                    persons={data.item.portions}
+                    ready={false} />
+                </Box>
+              </TouchableOpacity>
+            )}
+            renderHiddenItem={(data, rowMap) => (
+              HiddenCard(swipeLeft, swipeLeft, data.item.id)
+            )}
+            leftOpenValue={50}
+            rightOpenValue={-50}
+          />
+        </Box>
+      </ NewPlanNavigationBar>
     </Box >
   );
 }

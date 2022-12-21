@@ -8,14 +8,15 @@ type Props = {
     onPress?: () => void
     icon: string
     size: number
+    color?: string
 }
 
-const IconButton = ({ onPress, icon, size }: Props) => {
+const IconButton = ({ onPress, icon, size, color }: Props) => {
     const theme = useTheme<Theme>();
 
     return (
         <TouchableOpacity onPress={onPress}>
-            <Ionicons name={icon} size={size}  color={theme.colors.primaryCardText} />
+            <Ionicons name={icon} size={size}  color={color ? color: theme.colors.primaryCardText} />
         </TouchableOpacity>
     )
 }

@@ -3,7 +3,7 @@ import { useColorScheme, Text, SafeAreaView } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { createBox, ThemeProvider, useTheme } from '@shopify/restyle';
+import { createBox, ThemeProvider } from '@shopify/restyle';
 import { Provider } from 'react-redux'
 import { store } from './redux/store'
 import theme, { darkTheme, Theme } from './utils/theme';

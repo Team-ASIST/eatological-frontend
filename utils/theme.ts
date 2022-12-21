@@ -13,6 +13,8 @@ export const palette = {
     grey: '#5E5854',
     creme: '#FFE5E3',
     spacegrey: '#646464',
+
+    red: '#FF3021'
 };
 
 const theme = createTheme({
@@ -36,9 +38,10 @@ const theme = createTheme({
         primaryCardText: palette.white,
         secondaryCardText: palette.black,
         primaryButtonColor: palette.coral,
-        secondaryButtonColor: palette.darkMintGreen,
+        secondaryButtonColor: palette.lightMintGreen,
         inactiveButtonColor: palette.grey,
         navigationButtonColor: palette.spacegrey,
+        alert: palette.red
     },
     breakpoints: {
         phone: 0,

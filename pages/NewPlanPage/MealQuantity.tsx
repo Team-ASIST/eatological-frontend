@@ -3,11 +3,14 @@ import { Theme } from '../../utils/theme'
 import { NavigationScreenProp } from 'react-navigation'
 import { NavigationButtonContainer } from '../../components/ui/inputs/NavigationButton'
 import { useDispatch, useSelector } from 'react-redux'
-import { IMealAmount, mealAdded, mealIncrement, mealDecrement, selectAllMeals } from '../../redux/slice/newPlanSlice'
+import { IMealAmount, mealAdded, mealIncrement, mealDecrement, selectAllMeals, resetPlanConfiguration } from '../../redux/slice/newPlanSlice'
 import PlusMinusInput from '../../components/ui/inputs/PlusMinusInput'
 import AddItemButton from '../../components/ui/inputs/AddItemButton'
 import { SafeAreaView } from "react-native-safe-area-context";
 import { ScrollView } from "react-native-gesture-handler";
+import NewPlanNavigationBar from './NavigationNewPlanBar'
+import { NewPlanLabels, ScreenToPosition } from '../../utils/step'
+import { useRoute } from '@react-navigation/native'
 
 const Text = createText<Theme>()
 const Box = createBox<Theme>()
@@ -35,20 +38,27 @@ const MealQuantityScreen = ({ navigation }: Props) => {
 
     return (
         <Box padding="m" backgroundColor="mainBackground" flex={1}>
-            <Box marginVertical="l" marginHorizontal="xs" padding="m" height={"75%"}>
-                <Text variant="subheader">How many meals do you want?</Text>
-                <Box marginVertical="l">
-                    <ScrollView alwaysBounceVertical={false} showsVerticalScrollIndicator={false}>
-                        {mealInputs}
-                        {addMeal}
-                    </ScrollView>
+            <NewPlanNavigationBar
+                onClickBack={
+                    () => navigation.navigate('CurrentPlan')}
+                onClickNext={
+                    () => navigation.navigate('LeftOvers')}
+                onClickAbort={
+                    () => {
+                        dispatch(resetPlanConfiguration())
+                        navigation.navigate('CurrentPlan')
+                    }
+                }>                
+                <Box marginVertical="l" marginHorizontal="xs" padding="m" height={"75%"}>
+                    <Text variant="subheader">How many meals do you want?</Text>
+                    <Box marginVertical="l">
+                        <ScrollView alwaysBounceVertical={false} showsVerticalScrollIndicator={false}>
+                            {mealInputs}
+                            {addMeal}
+                        </ScrollView>
+                    </Box>
                 </Box>
-            </Box>
-            <NavigationButtonContainer
-                onPressLeft={() => navigation.navigate('CurrentPlan')}
-                textLeft="Home"
-                onPressRight={() => navigation.navigate('LeftOvers')}
-                textRight="Next" />
+            </NewPlanNavigationBar>
         </Box>
     )
 }
