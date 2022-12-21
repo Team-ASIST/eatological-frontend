@@ -5,10 +5,8 @@ import { Theme } from "../../utils/theme";
 import { useRoute } from '@react-navigation/native'
 import IconButton from "../../components/ui/inputs/IconButton";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import { NavigationScreenProp } from "react-navigation";
-import { resetPlanConfiguration } from "../../redux/slice/newPlanSlice";
-import { useDispatch, useSelector } from "react-redux";
-import { updateRecipes } from "../../redux/slice/currentPlanSlice";
+import { Alert } from 'react-native';
+
 
 const Box = createBox<Theme>()
 
@@ -84,32 +82,47 @@ const NavigationNewPlanBar = (props: NavigationNewPlanBarProps): ReactElement =>
   );
 
   return (<>
-      <Box marginLeft="l" marginRight="l">
-        <StepIndicator
-          customStyles={customStyles}
-          stepCount={WorkflowLength}
-          currentPosition={ScreenToPosition[route.name]}
-          renderStepIndicator={renderStepIndicator}
-        />
-      </Box>
-      <>{props.children}</>
-      <Box flexDirection={"row"} justifyContent="space-between">
-        <IconButton
-          onPress={props.onClickBack}
-          icon={'chevron-back-circle-outline'}
-          size={60}
-          color={theme.colors.inactiveButtonColor} />
-        <IconButton
-          onPress={props.onClickAbort}
-          icon={'close-circle-outline'}
-          size={50}
-          color={theme.colors.alert} />
-        <IconButton
-          onPress={props.onClickNext}
-          icon={'chevron-forward-circle-outline'}
-          size={60}
-          color={theme.colors.inactiveButtonColor} />
-      </Box>
+    <Box marginLeft="l" marginRight="l">
+      <StepIndicator
+        customStyles={customStyles}
+        stepCount={WorkflowLength}
+        currentPosition={ScreenToPosition[route.name]}
+        renderStepIndicator={renderStepIndicator}
+      />
+    </Box>
+    <>{props.children}</>
+    <Box flexDirection={"row"} justifyContent="space-between">
+      <IconButton
+        onPress={props.onClickBack}
+        icon={'chevron-back-circle-outline'}
+        size={60}
+        color={theme.colors.inactiveButtonColor} />
+      <IconButton
+        onPress={
+          () => {
+            Alert.alert(
+              "Abort Meal Generation",
+              "Are you sure to abort the process?",
+              [
+                {
+                  text: "Yes",
+                  onPress: props.onClickAbort,
+                  style: "cancel"
+                },
+                { text: "No", onPress: () => console.log("OK Pressed") }
+              ]
+            );
+          }
+        }
+        icon={'close-circle-outline'}
+        size={50}
+        color={theme.colors.alert} />
+      <IconButton
+        onPress={props.onClickNext}
+        icon={'chevron-forward-circle-outline'}
+        size={60}
+        color={theme.colors.inactiveButtonColor} />
+    </Box>
   </>)
 };
 
