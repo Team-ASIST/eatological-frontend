@@ -5,7 +5,7 @@ import { Theme } from "../../utils/theme";
 import { useRoute } from '@react-navigation/native'
 import IconButton from "../../components/ui/inputs/IconButton";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import { Alert } from 'react-native';
+import { Alert, View } from 'react-native';
 
 
 const Box = createBox<Theme>()
@@ -92,11 +92,14 @@ const NavigationNewPlanBar = (props: NavigationNewPlanBarProps): ReactElement =>
     </Box>
     <>{props.children}</>
     <Box flexDirection={"row"} justifyContent="space-between">
-      <IconButton
-        onPress={props.onClickBack}
-        icon={'chevron-back-circle-outline'}
-        size={60}
-        color={theme.colors.inactiveButtonColor} />
+      {ScreenToPosition[route.name] == 0 ?
+        <View style={{ width: 60 }} /> :
+        <IconButton
+          onPress={props.onClickBack}
+          icon={'chevron-back-circle-outline'}
+          size={60}
+          color={theme.colors.inactiveButtonColor} />
+      }
       <IconButton
         onPress={
           () => {
@@ -109,7 +112,7 @@ const NavigationNewPlanBar = (props: NavigationNewPlanBarProps): ReactElement =>
                   onPress: props.onClickAbort,
                   style: "cancel"
                 },
-                { text: "No", onPress: () => console.log("OK Pressed") }
+                { text: "No", onPress: () => { } }
               ]
             );
           }
@@ -119,9 +122,9 @@ const NavigationNewPlanBar = (props: NavigationNewPlanBarProps): ReactElement =>
         color={theme.colors.alert} />
       <IconButton
         onPress={props.onClickNext}
-        icon={'chevron-forward-circle-outline'}
+        icon={ScreenToPosition[route.name] == WorkflowLength - 1 ? 'checkmark-circle-outline' : 'chevron-forward-circle-outline'}
         size={60}
-        color={theme.colors.inactiveButtonColor} />
+        color={ScreenToPosition[route.name] == WorkflowLength - 1 ? theme.colors.success : theme.colors.inactiveButtonColor} />
     </Box>
   </>)
 };
