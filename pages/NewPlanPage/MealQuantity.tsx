@@ -1,15 +1,12 @@
 import { createBox, createText } from '@shopify/restyle'
 import { Theme } from '../../utils/theme'
 import { NavigationScreenProp } from 'react-navigation'
-import { NavigationButtonContainer } from '../../components/ui/inputs/NavigationButton'
 import { useDispatch, useSelector } from 'react-redux'
 import { IMealAmount, mealAdded, mealIncrement, mealDecrement, selectAllMeals, resetPlanConfiguration } from '../../redux/slice/newPlanSlice'
 import PlusMinusInput from '../../components/ui/inputs/PlusMinusInput'
 import AddItemButton from '../../components/ui/inputs/AddItemButton'
-import { SafeAreaView } from "react-native-safe-area-context";
 import { ScrollView } from "react-native-gesture-handler";
 import NewPlanNavigationBar from './NavigationNewPlanBar'
-import { useRoute } from '@react-navigation/native'
 
 const Text = createText<Theme>()
 const Box = createBox<Theme>()

@@ -19,8 +19,6 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 const Text = createText<Theme>()
 const Box = createBox<Theme>()
 
-// TypeScript Setup
-
 export type SwapMealsPageProps = {
   navigation: NavigationScreenProp<any, any>
 };

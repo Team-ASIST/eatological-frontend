@@ -41,7 +41,8 @@ const theme = createTheme({
         secondaryButtonColor: palette.lightMintGreen,
         inactiveButtonColor: palette.grey,
         navigationButtonColor: palette.spacegrey,
-        alert: palette.red
+        alert: palette.red,
+        success: palette.lightMintGreen
     },
     breakpoints: {
         phone: 0,

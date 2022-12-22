@@ -1,14 +1,4 @@
-import { Recipe, RecipeState, BackendPlan } from "../../utils/dataTypes"
-
-// Mockdata
-
-const images: string[] = [
-    'https://images.unsplash.com/photo-1588276552401-30058a0fe57b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2023&q=80',
-    'https://images.unsplash.com/photo-1619895092538-128341789043?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80',
-    'https://images.unsplash.com/photo-1626804475315-9644b37a2fe4?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80',
-    'https://images.unsplash.com/photo-1618889482923-38250401a84e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80',
-]
-
+import { Recipe, BackendPlan } from "../../utils/dataTypes"
 export class RecipeSwipeObject {
     id: number;
     recipe: Recipe;
@@ -33,14 +23,6 @@ export type FrontendPlan = {
     recipeSwipeObjects: RecipeSwipeObject[],
     sustainabilityScore: number
 }
-
-export const recipeSwipeElements: RecipeSwipeObject[] = [
-    new RecipeSwipeObject(0, { name: "Paella", ingredients: [], steps: [], imageUrl: images[0], prepTime: 0, totalTime: 0 }, 2),
-    new RecipeSwipeObject(1, { name: "Lasagne", ingredients: [], steps: [], imageUrl: images[1], prepTime: 0, totalTime: 0 }, 4),
-    new RecipeSwipeObject(2, { name: "Pad Thai", ingredients: [], steps: [], imageUrl: images[2], prepTime: 0, totalTime: 0 }, 3),
-    new RecipeSwipeObject(3, { name: "Ramen", ingredients: [], steps: [], imageUrl: images[3], prepTime: 0, totalTime: 0 }, 1),
-]
-
 
 export const getListWithNewRecipe = async (currentList: RecipeSwipeObject[], mealID: number): Promise<FrontendPlan> => {
     //TODO Catch Void Return 
