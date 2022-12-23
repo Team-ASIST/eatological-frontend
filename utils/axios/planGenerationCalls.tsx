@@ -7,13 +7,12 @@ export const createPlan = async (portions: number[], leftovers: string[], prefer
     let leftoverArg: string = JSON.stringify(leftovers)
     let preferencesArg: string = JSON.stringify(preferences)
 
-    // Call
     try {
+        // Create a new Plan API
         const response = await backend.get(
             '/plan/create',
             {
                 headers: {
-                    'accept': 'application/json',
                     'Portions': portionsArg,
                     'Leftovers': leftoverArg,
                     'Preferences': preferencesArg
@@ -24,6 +23,7 @@ export const createPlan = async (portions: number[], leftovers: string[], prefer
 
         }
 
+        // Extract data and parse results into FrontendPlan Object
         let initialPlan: BackendPlan = response.data
 
         const recipeSwipeObjects: RecipeSwipeObject[] = []
@@ -41,6 +41,7 @@ export const createPlan = async (portions: number[], leftovers: string[], prefer
         return { recipeSwipeObjects: recipeSwipeObjects, sustainabilityScore: initialPlan.sustainabilityScore }
 
     } catch (error) {
+        // Call erroneous
         console.error(error)
         return {} as FrontendPlan
     }
@@ -49,6 +50,7 @@ export const createPlan = async (portions: number[], leftovers: string[], prefer
 export const swipeLeft = async (currentList: RecipeSwipeObject[], mealID: number): Promise<FrontendPlan> => {
     const result = currentList.map((x) => x)
     try {
+        // Get Plan with old Recipe API
         const response = await backend.get(
             '/swipeleft',
             {
@@ -58,6 +60,7 @@ export const swipeLeft = async (currentList: RecipeSwipeObject[], mealID: number
             }
         )
 
+        // Extract data and parse new recipe by swapping into previous plan
         let newPlan : BackendPlan = response.data
         result[mealID].swapRecipe(newPlan.recipes[mealID].recipe)
         return { recipeSwipeObjects: result, sustainabilityScore: newPlan.sustainabilityScore }
@@ -70,6 +73,7 @@ export const swipeLeft = async (currentList: RecipeSwipeObject[], mealID: number
 export const swipeRight = async (currentList: RecipeSwipeObject[], mealID: number): Promise<FrontendPlan> => {
     const result = currentList.map((x) => x)
     try {
+        // Get Plan with new Recipe API
         const response = await backend.get(
             '/swiperight',
             {
@@ -79,10 +83,12 @@ export const swipeRight = async (currentList: RecipeSwipeObject[], mealID: numbe
             }
         )
 
+        // Extract data and parse new recipe by swapping into previous plan
         let newPlan : BackendPlan = response.data
         result[mealID].swapRecipe(newPlan.recipes[mealID].recipe)
         return { recipeSwipeObjects: result, sustainabilityScore: newPlan.sustainabilityScore }
     } catch (error) {
+        // Call erroneous
         console.error(error)
         return {} as FrontendPlan
     }
@@ -94,6 +100,7 @@ export const acceptPlan = async (currentList: RecipeSwipeObject[]) => {
             '/plan/accept'
         )
     }catch(error){
+        // Call erroneous
         console.error(error)
     }
 }
