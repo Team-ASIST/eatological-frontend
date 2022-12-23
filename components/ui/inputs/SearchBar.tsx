@@ -3,6 +3,8 @@ import { createBox, createText } from '@shopify/restyle'
 import { TextInput, Keyboard, FlatList, ListRenderItemInfo, View } from 'react-native'
 import { Theme } from '../../../utils/theme'
 import IconButton from './IconButton'
+import { leftoverAdded } from '../../../redux/slice/newPlanSlice'
+import { useDispatch } from 'react-redux'
 
 const data = [
     {
@@ -89,7 +91,7 @@ const SearchBarDisplay = ({
                     onPress={() => {
                         Keyboard.dismiss()
                         setClicked(false)
-                        setSearchPhrase("")
+                        setSearchPhrase('')
                     }}
                     icon={'close'}
                     size={15}></IconButton>
@@ -103,20 +105,23 @@ type ItemProps = {
     id: string
 }
 
-const Item = ({ name }: ItemProps) => (
-    <Box
-        padding="xs"
-        backgroundColor="mainBackground"
-        borderRadius={10}
-        flexDirection="row"
-        justifyContent="space-between">
-        <Text variant="navigationButton">{name}</Text>
-        <IconButton
-            onPress={() => {}}
-            icon={'ios-add-circle-outline'}
-            size={25}></IconButton>
-    </Box>
-)
+const Item = ({ name }: ItemProps) => {
+    const dispatch = useDispatch()
+    return (
+        <Box
+            padding="xs"
+            backgroundColor="mainBackground"
+            borderRadius={10}
+            flexDirection="row"
+            justifyContent="space-between">
+            <Text variant="navigationButton">{name}</Text>
+            <IconButton
+                onPress={() => dispatch(leftoverAdded(name))}
+                icon={'ios-add-circle-outline'}
+                size={25}></IconButton>
+        </Box>
+    )
+}
 
 type ListProps = {
     searchPhrase: string
