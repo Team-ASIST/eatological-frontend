@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useColorScheme, Text, SafeAreaView } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBox, ThemeProvider, useTheme } from '@shopify/restyle';
-import { Provider } from 'react-redux'
+import { Provider, useDispatch } from 'react-redux'
 import { store } from './redux/store'
 import theme, { darkTheme, Theme } from './utils/theme';
 import {
@@ -21,6 +21,8 @@ import SwapMealsPage from './pages/SwapMealsPage/SwapMealsPage';
 import { RootStackParamList, RootTabParamList } from './navigation/types';
 import MealQuantityScreen from './pages/NewPlanPage/MealQuantity';
 import LeftoversScreen from './pages/NewPlanPage/Leftovers';
+import { ingredientAdded } from './redux/slice/ingredientSlice';
+import { Ingredient } from './utils/dataTypes';
 
 const NewPlan = createNativeStackNavigator<RootStackParamList>();
 const Tab = createBottomTabNavigator<RootTabParamList>();
@@ -40,7 +42,40 @@ const PlanStackScreen = () => { //TODO change initialRoute
   );
 }
 
+const AppWrapper = () => {
+  return (
+    <Provider store={store}> 
+      <App /> 
+    </Provider>
+  )
+}
+
 const App = () => {
+  const dispatch = useDispatch()
+  const [tempIngredients, setTempIngredients] = useState([]);
+
+  useEffect(()=>{
+    fetch('https://eatological-dev.azurewebsites.net/ingredients',
+    {
+      method: 'GET',
+      headers: {
+          'accept': 'application/json',
+          'EatologicalToken': 'dev@eatological.de'
+      }
+  }
+    )
+    .then(res => {
+      return res.json()
+    })
+    .then(data => {
+      data.map((item: any) => dispatch(ingredientAdded(item)))
+    })
+  }, []
+  )
+
+  
+
+
   const colorTheme = useColorScheme();
   let [fontsLoaded] = useFonts({
     Fraunces_300Light,
@@ -101,4 +136,4 @@ const App = () => {
   );
 }
 
-export default App; 
+export default AppWrapper; 

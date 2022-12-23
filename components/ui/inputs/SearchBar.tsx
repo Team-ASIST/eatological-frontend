@@ -3,51 +3,10 @@ import { createBox, createText } from '@shopify/restyle'
 import { TextInput, Keyboard, FlatList, ListRenderItemInfo, View } from 'react-native'
 import { Theme } from '../../../utils/theme'
 import IconButton from './IconButton'
-import { leftoverAdded } from '../../../redux/slice/newPlanSlice'
-import { useDispatch } from 'react-redux'
+import { leftoverAdded, selectAllLeftovers } from '../../../redux/slice/newPlanSlice'
+import { useDispatch, useSelector } from 'react-redux'
+import { selectAllIngredients } from '../../../redux/slice/ingredientSlice'
 
-const data = [
-    {
-        id: '1',
-        name: 'Michael Scott',
-    },
-    {
-        id: '2',
-        name: 'Jim Halpert',
-    },
-    {
-        id: '3',
-        name: 'Pam Beesly',
-    },
-    {
-        id: '4',
-        name: 'Dwight Schrute',
-    },
-    {
-        id: '5',
-        name: 'Andy Bernard',
-    },
-    {
-        id: '6',
-        name: 'Ryan Howard',
-    },
-    {
-        id: '7',
-        name: 'Kelly Kapoor',
-    },
-    {
-        id: '8',
-        name: 'Toby Flenderson',
-    },
-    {
-        id: '9',
-        name: 'Stanley Hudson',
-    },
-    {
-        id: '10',
-        name: 'Phyllis Vance',
-    },
-]
 
 const Text = createText<Theme>()
 const Box = createBox<Theme>()
@@ -129,6 +88,7 @@ type ListProps = {
 }
 
 const List = ({ searchPhrase, data }: ListProps) => {
+    
     return (
         <FlatList
             data={data}
@@ -143,7 +103,7 @@ const List = ({ searchPhrase, data }: ListProps) => {
                 ) {
                     return <Item name={item.name} id={item.id} />
                 } else {
-                    return <View /> //TODO: herausfinden, wie ich nichts zurückgeben kann
+                    return <View /> 
                 }
             }}
             keyExtractor={(item: ItemProps) => item.id}
@@ -155,6 +115,8 @@ const SearchBar = () => {
     const [searchPhrase, setSearchPhrase] = useState('')
     const [clicked, setClicked] = useState(false)
 
+    const leftovers = useSelector(selectAllIngredients)
+
     return (
         <Box marginVertical="s" padding="m" backgroundColor="mainBackground" borderRadius={50}>
             <SearchBarDisplay
@@ -163,7 +125,7 @@ const SearchBar = () => {
                 clicked={clicked}
                 setClicked={setClicked}
             />
-            {clicked && <List searchPhrase={searchPhrase} data={data} />}
+            {clicked && <List searchPhrase={searchPhrase} data={leftovers} />}
         </Box>
     )
 }
