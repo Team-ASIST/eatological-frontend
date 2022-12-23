@@ -26,13 +26,38 @@ export type RecipeState = {
 
 export type BackendPlan = {
     recipes: RecipeState[],
-    sustainabilityScore: number 
+    sustainabilityScore: number
 }
 
 // Data Types for the Frontend Data
 
 export type Meal = {
-    id: number, 
+    id: number,
     recipe: Recipe,
     portions: number
+}
+
+export class RecipeSwipeObject {
+    id: number;
+    recipe: Recipe;
+    portions: number;
+
+    constructor(id: number, recipe: Recipe, portions: number) {
+        this.id = id;
+        this.recipe = recipe;
+        this.portions = portions
+    }
+
+    keyExtractor = (): number => {
+        return this.id;
+    }
+
+    swapRecipe = (newRecipe: Recipe): void => {
+        this.recipe = newRecipe;
+    }
+}
+
+export type FrontendPlan = {
+    recipeSwipeObjects: RecipeSwipeObject[],
+    sustainabilityScore: number
 }
