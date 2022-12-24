@@ -6,6 +6,7 @@ import IconButton from './IconButton'
 import { leftoverAdded, selectAllLeftovers } from '../../../redux/slice/newPlanSlice'
 import { useDispatch, useSelector } from 'react-redux'
 import { selectAllIngredients } from '../../../redux/slice/ingredientSlice'
+import { Ingredient } from '../../../utils/dataTypes'
 
 
 const Text = createText<Theme>()
@@ -60,11 +61,13 @@ const SearchBarDisplay = ({
 }
 
 type ItemProps = {
+    id: number
     name: string
-    id: string
+    smallestAmount: number
+    unit: string
 }
 
-const Item = ({ name }: ItemProps) => {
+const Item = ({id,  name, smallestAmount, unit }: ItemProps) => {
     const dispatch = useDispatch()
     return (
         <Box
@@ -75,7 +78,7 @@ const Item = ({ name }: ItemProps) => {
             justifyContent="space-between">
             <Text variant="navigationButton">{name}</Text>
             <IconButton
-                onPress={() => dispatch(leftoverAdded(name))}
+                onPress={() => dispatch(leftoverAdded({id,  name, smallestAmount, unit }))}
                 icon={'ios-add-circle-outline'}
                 size={25}></IconButton>
         </Box>
@@ -101,12 +104,12 @@ const List = ({ searchPhrase, data }: ListProps) => {
                         .toUpperCase()
                         .includes(searchPhrase.toUpperCase().trim().replace(/\s/g, ''))
                 ) {
-                    return <Item name={item.name} id={item.id} />
+                    return <Item name={item.name} id={item.id} smallestAmount={item.smallestAmount} unit={item.unit}/>
                 } else {
                     return <View /> 
                 }
             }}
-            keyExtractor={(item: ItemProps) => item.id}
+            keyExtractor={(item: ItemProps) => item.id.toString()}
         />
     )
 }

@@ -7,9 +7,10 @@ export interface IMealAmount {
 }
 
 export interface ILeftOver {
+    id: number
     name: string
-    id: string
-    amount: number
+    smallestAmount: number
+    unit: string
 }
 
 interface IState {
@@ -57,26 +58,24 @@ const newPlanSlice = createSlice({
                 }
             }
         },
-        leftoverAdded(state, name) {
-            state.leftovers.push({
-                id: nanoid(),
-                name: name.payload,
-                amount: 1,
-            })
+        leftoverAdded(state, action) {
+            state.leftovers.push(
+                action.payload
+            )
         },
         leftoverIncrement(state, action) {
             const { id } = action.payload
             const existingLeftover = state.leftovers.find((leftover) => leftover.id === id)
             if (existingLeftover) {
-                existingLeftover.amount++
+                existingLeftover.smallestAmount++
             }
         },
         leftoverDecrement(state, action) {
             const { id } = action.payload
             const existingLeftover = state.leftovers.find((leftover) => leftover.id === id)
             if (existingLeftover) {
-                if (existingLeftover.amount > 1) {
-                    existingLeftover.amount--
+                if (existingLeftover.smallestAmount > 1) {
+                    existingLeftover.smallestAmount--
                 } else {
                     state.leftovers = state.leftovers.filter((leftover) => leftover.id !== id)
                 }

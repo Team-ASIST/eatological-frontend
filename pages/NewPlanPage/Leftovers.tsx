@@ -25,12 +25,12 @@ const LeftoversScreen = ({ navigation }: Props) => {
     const leftovers = useSelector(selectAllLeftovers)
     const dispatch = useDispatch()
 
-    const mealInputs = leftovers.map((leftover: ILeftOver, index: number) => (
+    const mealInputs = leftovers.map((leftover: ILeftOver) => (
         <LeftOverInput
             key={leftover.id}
             increment={() => dispatch(leftoverIncrement({ id: leftover.id }))}
             decrement={() => dispatch(leftoverDecrement({ id: leftover.id }))}
-            value={leftover.amount}
+            value={leftover.smallestAmount}
             title={leftover.name}
         />
     ))
