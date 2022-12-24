@@ -26,7 +26,6 @@ const SearchBarDisplay = ({
     return (
         <Box
             flexDirection="row"
-            marginVertical="s"
             padding="m"
             backgroundColor="mainBackground"
             borderRadius={50}
@@ -35,7 +34,7 @@ const SearchBarDisplay = ({
             justifyContent="space-between">
             {/* Input field */}
             <TextInput
-                style={{ width: 235 }}
+                style={{ width: 265 }}
                 placeholder="Search..."
                 value={searchPhrase}
                 onChangeText={setSearchPhrase}
@@ -103,7 +102,7 @@ const List = ({ searchPhrase, data }: ListProps) => {
                 if (
                     item.name
                         .toUpperCase()
-                        .startsWith(searchPhrase.toUpperCase().trim().replace(/\s/g, ''))
+                        .includes(searchPhrase.toUpperCase().trim().replace(/\s/g, ''))
                 ) {
                     return (
                         <Item
@@ -129,7 +128,7 @@ const SearchBar = () => {
     const leftovers = useSelector(selectAllIngredients)
 
     return (
-        <Box marginVertical="s" padding="m" backgroundColor="mainBackground" borderRadius={50}>
+        <Box  marginVertical="m" paddingVertical="m" >
             <SearchBarDisplay
                 searchPhrase={searchPhrase}
                 setSearchPhrase={setSearchPhrase}

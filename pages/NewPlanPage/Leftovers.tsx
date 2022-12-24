@@ -9,6 +9,7 @@ import {
     selectAllLeftovers,
     leftoverDecrement,
     leftoverIncrement,
+    leftoverRemoved
 } from '../../redux/slice/newPlanSlice'
 import { useDispatch, useSelector } from 'react-redux'
 import LeftOverInput from '../../components/ui/inputs/LeftOverInput'
@@ -30,8 +31,10 @@ const LeftoversScreen = ({ navigation }: Props) => {
             key={leftover.id}
             increment={() => dispatch(leftoverIncrement({ id: leftover.id }))}
             decrement={() => dispatch(leftoverDecrement({ id: leftover.id }))}
+            remove = {() => dispatch(leftoverRemoved({ id: leftover.id }))}
             value={leftover.smallestAmount}
             title={leftover.name}
+            unit={leftover.unit}
         />
     ))
     return (

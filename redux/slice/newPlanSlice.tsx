@@ -70,6 +70,13 @@ const newPlanSlice = createSlice({
                 })
             }
         },
+        leftoverRemoved(state, action) {
+            const { id } = action.payload
+            const existingLeftover = state.leftovers.find((leftover) => leftover.id === id)
+            if (existingLeftover) {
+                state.leftovers = state.leftovers.filter((leftover) => leftover.id !== id)
+            }
+        },
         leftoverIncrement(state, action) {
             const { id } = action.payload
             const existingLeftover = state.leftovers.find((leftover) => leftover.id === id)
@@ -100,6 +107,7 @@ export const {
     leftoverAdded,
     leftoverIncrement,
     leftoverDecrement,
+    leftoverRemoved
 } = newPlanSlice.actions
 
 export const selectAllMeals = (state: RootState) => state.newPlan.mealAmount
