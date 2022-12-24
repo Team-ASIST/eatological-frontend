@@ -5,21 +5,18 @@ import { Theme } from '../../utils/theme';
 import { TouchableOpacity, Image, Dimensions } from "react-native";
 import { NavigationScreenProp } from "react-navigation";
 import { SwipeListView } from 'react-native-swipe-list-view';
-import RecipeCard, { RecipeCardProps } from "../../components/ui/recipe/recipeCard";
-import { HiddenCard, HiddenCardProps } from "../../components/ui/recipe/hiddenCard";
-import { getInitialPlan, getListWithOldRecipe, getListWithNewRecipe } from "./SwapMealsCalls"
-import { RecipeSwipeObject, FrontendPlan } from "./SwapMealsCalls"
-import { IMealAmount, resetPlanConfiguration, selectNewPlanConfiguration } from "../../redux/slice/newPlanSlice";
+import RecipeCard from "../../components/ui/recipe/recipeCard";
+import { HiddenCard } from "../../components/ui/recipe/hiddenCard";
+import { ILeftOver, IMealAmount, resetPlanConfiguration, selectNewPlanConfiguration } from "../../redux/slice/newPlanSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { NavigationButtonContainer } from "../../components/ui/inputs/NavigationButton";
 import { updateRecipes } from "../../redux/slice/currentPlanSlice";
-import { Meal, Recipe } from "../../utils/dataTypes";
+import { Meal, RecipeSwipeObject, FrontendPlan } from "../../utils/dataTypes";
+import NewPlanNavigationBar from '../NewPlanPage/NavigationNewPlanBar'
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { createPlan, swipeleft, swiperight } from "../../utils/axios/planGenerationCalls";
 
 const Text = createText<Theme>()
 const Box = createBox<Theme>()
-
-// TypeScript Setup
 
 export type SwapMealsPageProps = {
   navigation: NavigationScreenProp<any, any>
@@ -77,7 +74,7 @@ const SwapMealsPage = ({ navigation }: SwapMealsPageProps) => {
   const { mealAmount, leftovers, preferences } = useSelector(selectNewPlanConfiguration)
   // Track Progression of Individual Swipes
   const [swipeTracker, setSwipeTracker] = useState(Array(mealAmount.length).fill(0) as number[])
-  // Current Plan
+  // Current PlangetInitialPlan
   const [recipeList, setRecipeList] = useState([] as RecipeSwipeObject[])
   // Manages Locking, Loading Animation
   const [loading, setLoading] = useState(false)
@@ -88,7 +85,7 @@ const SwapMealsPage = ({ navigation }: SwapMealsPageProps) => {
 
   // Fetch Initial Plan on First Mounting
   useEffect(() => {
-    getInitialPlan(mealAmount.map((m: IMealAmount) => m.amount), leftovers, preferences).then(
+    createPlan(mealAmount.map((m: IMealAmount) => m.amount), leftovers.map((l: ILeftOver) => l.name), preferences).then(
       (initialPlan: FrontendPlan) => {
         setRecipeList(initialPlan.recipeSwipeObjects)
         setSwipeTracker(Array(initialPlan.recipeSwipeObjects.length).fill(0))
@@ -105,7 +102,7 @@ const SwapMealsPage = ({ navigation }: SwapMealsPageProps) => {
   const swipeLeft = async (rowKey: any, rowMap: any) => {
     if (swipeTracker[rowKey] > 0 && !loading) {
       setLoading(true)
-      const newPlan : FrontendPlan = await getListWithOldRecipe(recipeList, rowKey)
+      const newPlan : FrontendPlan = await swipeleft(recipeList, rowKey)
       setRecipeList(newPlan.recipeSwipeObjects)
       setSustainabilityScore(newPlan.sustainabilityScore)
 
@@ -121,7 +118,7 @@ const SwapMealsPage = ({ navigation }: SwapMealsPageProps) => {
   const swipeRight = async (rowKey: any, rowMap: any) => {
     if (!loading) {
       setLoading(true)
-      const newPlan : FrontendPlan = await getListWithNewRecipe(recipeList, rowKey)
+      const newPlan : FrontendPlan = await swiperight(recipeList, rowKey)
       setRecipeList(newPlan.recipeSwipeObjects)
       setSustainabilityScore(newPlan.sustainabilityScore)
 
@@ -134,8 +131,33 @@ const SwapMealsPage = ({ navigation }: SwapMealsPageProps) => {
   };
 
   return (
-    <Box backgroundColor="mainBackground" flex={1}>
-      <TopBar />
+    <Box padding="m" backgroundColor="mainBackground" flex={1}>
+      <NewPlanNavigationBar
+        onClickBack={
+          () => navigation.navigate('LeftOvers')}
+        onClickNext={
+          () => {
+            dispatch(updateRecipes({
+              recipes: recipeList.map((r: RecipeSwipeObject) => {
+                return {
+                  id: r.id,
+                  recipe: r.recipe,
+                  portions: r.portions
+                } as Meal
+              })
+            }))
+            dispatch(resetPlanConfiguration())
+            navigation.navigate('CurrentPlan')
+          }
+        }
+        onClickAbort={
+          () => {
+            dispatch(resetPlanConfiguration())
+            navigation.navigate('CurrentPlan')
+          }
+        }>
+        <Box flexGrow={1} height="50%">
+        <TopBar />
       <Animation setupPhase={setupPhase} />
       <SwipeListView
         data={recipeList}
@@ -180,26 +202,8 @@ const SwapMealsPage = ({ navigation }: SwapMealsPageProps) => {
         leftOpenValue={50}
         rightOpenValue={-50}
       />
-      <NavigationButtonContainer
-        onPressLeft={() => {
-          dispatch(resetPlanConfiguration())
-          navigation.navigate('CurrentPlan')
-        }}
-        textLeft="Cancel"
-        onPressRight={() => {
-          dispatch(updateRecipes({
-            recipes: recipeList.map((r: RecipeSwipeObject) => {
-              return {
-                id: r.id,
-                recipe: r.recipe,
-                portions: r.portions
-              } as Meal
-            })
-          }))
-          dispatch(resetPlanConfiguration())
-          navigation.navigate('CurrentPlan')
-        }}
-        textRight="Finish" />
+        </Box>
+      </ NewPlanNavigationBar>
     </Box >
   );
 }

@@ -7,7 +7,7 @@ import recipeCard from "../../components/ui/recipe/recipeCard";
 import { RefreshControl, ScrollView } from "react-native-gesture-handler";
 import { useSelector } from "react-redux";
 import { selectAllRecipes } from "../../redux/slice/currentPlanSlice";
-import { RecipeSwipeObject } from "../SwapMealsPage/SwapMealsCalls";
+import { RecipeSwipeObject } from "../../utils/dataTypes";
 import { Meal } from "../../utils/dataTypes";
 
 const Text = createText<Theme>();
@@ -21,8 +21,6 @@ const wait = (timeout: number) => {
 const CurrentPlan = () => {
   const [refreshing, setRefreshing] = React.useState(false);
   const recipes = useSelector(selectAllRecipes)
-
-  console.log(recipes)
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);

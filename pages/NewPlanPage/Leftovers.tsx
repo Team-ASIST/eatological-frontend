@@ -2,7 +2,6 @@ import { createBox, createText } from '@shopify/restyle'
 import { Theme } from '../../utils/theme'
 import { NavigationScreenProp } from 'react-navigation'
 import React from 'react'
-import { NavigationButtonContainer } from '../../components/ui/inputs/NavigationButton'
 import SearchBar from '../../components/ui/inputs/SearchBar'
 import {
     ILeftOver,
@@ -14,6 +13,9 @@ import {
 import { useDispatch, useSelector } from 'react-redux'
 import LeftOverInput from '../../components/ui/inputs/LeftOverInput'
 import { ScrollView } from 'react-native-gesture-handler'
+import NewPlanNavigationBar from './NavigationNewPlanBar'
+import { useRoute } from '@react-navigation/native'
+import { resetPlanConfiguration } from '../../redux/slice/newPlanSlice'
 
 const Text = createText<Theme>()
 const Box = createBox<Theme>()
@@ -25,6 +27,7 @@ type Props = {
 const LeftoversScreen = ({ navigation }: Props) => {
     const leftovers = useSelector(selectAllLeftovers)
     const dispatch = useDispatch()
+    const route = useRoute()
 
     const mealInputs = leftovers.map((leftover: ILeftOver) => (
         <LeftOverInput
@@ -37,21 +40,29 @@ const LeftoversScreen = ({ navigation }: Props) => {
             unit={leftover.unit}
         />
     ))
+    
+
     return (
         <Box padding="m" backgroundColor="mainBackground" flex={1}>
-            <Box marginVertical="l" marginHorizontal="xs" padding="m" height={'75%'}>
-                <Text variant="subheader">Do you have any leftovers?</Text>
-                <SearchBar></SearchBar>
-                <ScrollView alwaysBounceVertical={false} showsVerticalScrollIndicator={false}>
+            <NewPlanNavigationBar
+                onClickBack={
+                    () => navigation.navigate('MealQuantity')}
+                onClickNext={
+                    () => navigation.navigate('SwapMeals')}
+                onClickAbort={
+                    () => {
+                        dispatch(resetPlanConfiguration())
+                        navigation.navigate('CurrentPlan')
+                    }
+                }>
+                <Box marginVertical="l" marginHorizontal="xs" padding="m" flexGrow={1}>
+                    <Text variant="subheader">Do you have any leftovers?</Text>
+                    <SearchBar></SearchBar>
+                    <ScrollView alwaysBounceVertical={false} showsVerticalScrollIndicator={false}>
                     {mealInputs}
                 </ScrollView>
-            </Box>
-            <NavigationButtonContainer
-                onPressLeft={() => navigation.navigate('MealQuantity')}
-                textLeft="Back"
-                onPressRight={() => navigation.navigate('SwapMeals')}
-                textRight="Next"
-            />
+                </Box>
+            </NewPlanNavigationBar>
         </Box>
     )
 }

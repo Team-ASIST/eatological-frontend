@@ -1,5 +1,5 @@
 import { createSlice, current, nanoid } from '@reduxjs/toolkit'
-import { RecipeSwipeObject } from '../../pages/SwapMealsPage/SwapMealsCalls'
+import { RecipeSwipeObject } from '../../utils/dataTypes'
 import { Meal, Recipe } from '../../utils/dataTypes'
 import { RootState } from '../store'
 
