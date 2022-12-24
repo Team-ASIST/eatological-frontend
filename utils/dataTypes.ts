@@ -10,9 +10,14 @@ export type Ingredient = {
     alternative: string,
 }
 
+export type smallIngredient = {
+    id: number, 
+    smallestAmountNumber: number
+}
+
 export type Recipe = {
     name: string,
-    ingredients: Ingredient[],
+    ingredients: smallIngredient[],
     steps: string[],
     imageUrl: string,
     prepTime: number,
@@ -20,12 +25,13 @@ export type Recipe = {
 }
 
 export type RecipeState = {
-    cooked: boolean,
-    recipe: Recipe
+    recipe: Recipe,
+    portion: number,
+    cooked: boolean
 }
 
 export type BackendPlan = {
-    recipes: RecipeState[],
+    meals: RecipeState[],
     sustainabilityScore: number
 }
 
