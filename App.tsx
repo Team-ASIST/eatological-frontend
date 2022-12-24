@@ -42,6 +42,7 @@ const PlanStackScreen = () => { //TODO change initialRoute
   );
 }
 
+//Wrapper component which enables the usage of useDispatch in App component
 const AppWrapper = () => {
   return (
     <Provider store={store}> 
@@ -51,8 +52,8 @@ const AppWrapper = () => {
 }
 
 const App = () => {
+  //load ingredients and store them in redux store (ingredientSlice)
   const dispatch = useDispatch()
-  const [tempIngredients, setTempIngredients] = useState([]);
 
   useEffect(()=>{
     fetch('https://eatological-dev.azurewebsites.net/ingredients',
@@ -72,9 +73,6 @@ const App = () => {
     })
   }, []
   )
-
-  
-
 
   const colorTheme = useColorScheme();
   let [fontsLoaded] = useFonts({

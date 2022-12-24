@@ -6,8 +6,6 @@ import IconButton from './IconButton'
 import { leftoverAdded, selectAllLeftovers } from '../../../redux/slice/newPlanSlice'
 import { useDispatch, useSelector } from 'react-redux'
 import { selectAllIngredients } from '../../../redux/slice/ingredientSlice'
-import { Ingredient } from '../../../utils/dataTypes'
-
 
 const Text = createText<Theme>()
 const Box = createBox<Theme>()
@@ -45,7 +43,7 @@ const SearchBarDisplay = ({
                     setClicked(true)
                 }}
             />
-            {/* cancel button, depending on whether the search bar is clicked or not */}
+            {/* close button, depending on whether the search bar is clicked or not */}
             {clicked && (
                 <IconButton
                     onPress={() => {
@@ -67,7 +65,9 @@ type ItemProps = {
     unit: string
 }
 
-const Item = ({id,  name, smallestAmount, unit }: ItemProps) => {
+
+//Items for search bar proposals with important ingredient properties for leftovers
+const Item = ({ id, name, smallestAmount, unit }: ItemProps) => {
     const dispatch = useDispatch()
     return (
         <Box
@@ -77,8 +77,9 @@ const Item = ({id,  name, smallestAmount, unit }: ItemProps) => {
             flexDirection="row"
             justifyContent="space-between">
             <Text variant="navigationButton">{name}</Text>
+            {/* icon button for adding food items to leftovers */}
             <IconButton
-                onPress={() => dispatch(leftoverAdded({id,  name, smallestAmount, unit }))}
+                onPress={() => dispatch(leftoverAdded({ id, name, smallestAmount, unit }))}
                 icon={'ios-add-circle-outline'}
                 size={25}></IconButton>
         </Box>
@@ -90,8 +91,8 @@ type ListProps = {
     data: any
 }
 
+//List of displayed items, no case sensitivity
 const List = ({ searchPhrase, data }: ListProps) => {
-    
     return (
         <FlatList
             data={data}
@@ -102,11 +103,18 @@ const List = ({ searchPhrase, data }: ListProps) => {
                 if (
                     item.name
                         .toUpperCase()
-                        .includes(searchPhrase.toUpperCase().trim().replace(/\s/g, ''))
+                        .startsWith(searchPhrase.toUpperCase().trim().replace(/\s/g, ''))
                 ) {
-                    return <Item name={item.name} id={item.id} smallestAmount={item.smallestAmount} unit={item.unit}/>
+                    return (
+                        <Item
+                            name={item.name}
+                            id={item.id}
+                            smallestAmount={item.smallestAmount}
+                            unit={item.unit}
+                        />
+                    )
                 } else {
-                    return <View /> 
+                    return <View />
                 }
             }}
             keyExtractor={(item: ItemProps) => item.id.toString()}

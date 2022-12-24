@@ -59,9 +59,16 @@ const newPlanSlice = createSlice({
             }
         },
         leftoverAdded(state, action) {
-            state.leftovers.push(
-                action.payload
-            )
+            const { id, name, smallestAmount, unit } = action.payload
+            const existingLeftover = state.leftovers.find((leftover) => leftover.id === id)
+            if (!existingLeftover) {
+                state.leftovers.push({
+                    id: id,
+                    name: name,
+                    smallestAmount: smallestAmount,
+                    unit: unit,
+                })
+            }
         },
         leftoverIncrement(state, action) {
             const { id } = action.payload
