@@ -61,12 +61,12 @@ type ItemProps = {
     id: number
     name: string
     smallestAmount: number
+    amount: number
     unit: string
 }
 
-
 //Items for search bar proposals with important ingredient properties for leftovers
-const Item = ({ id, name, smallestAmount, unit }: ItemProps) => {
+const Item = ({ id, name, smallestAmount, amount, unit }: ItemProps) => {
     const dispatch = useDispatch()
     return (
         <Box
@@ -78,7 +78,7 @@ const Item = ({ id, name, smallestAmount, unit }: ItemProps) => {
             <Text variant="navigationButton">{name}</Text>
             {/* icon button for adding food items to leftovers */}
             <IconButton
-                onPress={() => dispatch(leftoverAdded({ id, name, smallestAmount, unit }))}
+                onPress={() => dispatch(leftoverAdded({ id, name, smallestAmount, amount, unit }))}
                 icon={'ios-add-circle-outline'}
                 size={25}></IconButton>
         </Box>
@@ -109,6 +109,7 @@ const List = ({ searchPhrase, data }: ListProps) => {
                             name={item.name}
                             id={item.id}
                             smallestAmount={item.smallestAmount}
+                            amount={item.smallestAmount}
                             unit={item.unit}
                         />
                     )
@@ -128,7 +129,7 @@ const SearchBar = () => {
     const leftovers = useSelector(selectAllIngredients)
 
     return (
-        <Box  marginVertical="m" paddingVertical="m" >
+        <Box marginVertical="m" paddingVertical="m">
             <SearchBarDisplay
                 searchPhrase={searchPhrase}
                 setSearchPhrase={setSearchPhrase}

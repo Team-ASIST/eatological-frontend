@@ -71,6 +71,7 @@ const App = () => {
     .then(data => {
       data.map((item: any) => dispatch(ingredientAdded(item)))
     })
+    .catch((error) => console.error(error))
   }, []
   )
 

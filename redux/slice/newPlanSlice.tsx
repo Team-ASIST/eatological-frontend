@@ -10,6 +10,7 @@ export interface ILeftOver {
     id: number
     name: string
     smallestAmount: number
+    amount: number
     unit: string
 }
 
@@ -59,13 +60,14 @@ const newPlanSlice = createSlice({
             }
         },
         leftoverAdded(state, action) {
-            const { id, name, smallestAmount, unit } = action.payload
+            const { id, name, smallestAmount, amount, unit } = action.payload
             const existingLeftover = state.leftovers.find((leftover) => leftover.id === id)
             if (!existingLeftover) {
                 state.leftovers.push({
                     id: id,
                     name: name,
                     smallestAmount: smallestAmount,
+                    amount: amount,
                     unit: unit,
                 })
             }
@@ -81,15 +83,15 @@ const newPlanSlice = createSlice({
             const { id } = action.payload
             const existingLeftover = state.leftovers.find((leftover) => leftover.id === id)
             if (existingLeftover) {
-                existingLeftover.smallestAmount++
+                existingLeftover.amount += existingLeftover.smallestAmount
             }
         },
         leftoverDecrement(state, action) {
             const { id } = action.payload
             const existingLeftover = state.leftovers.find((leftover) => leftover.id === id)
             if (existingLeftover) {
-                if (existingLeftover.smallestAmount > 1) {
-                    existingLeftover.smallestAmount--
+                if (existingLeftover.amount > existingLeftover.smallestAmount) {
+                    existingLeftover.amount -= existingLeftover.smallestAmount
                 } else {
                     state.leftovers = state.leftovers.filter((leftover) => leftover.id !== id)
                 }
