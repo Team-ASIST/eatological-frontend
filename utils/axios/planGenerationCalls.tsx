@@ -1,7 +1,7 @@
 import { backend } from "./config";
-import { Recipe, FrontendPlan, BackendPlan, RecipeSwipeObject } from "../dataTypes";
+import { FrontendPlan, BackendPlan, RecipeSwipeObject, smallIngredient } from "../dataTypes";
 
-export const createPlan = async (portions: number[], leftovers: string[], preferences: string[]): Promise<FrontendPlan> => {
+export const createPlan = async (portions: number[], leftovers: smallIngredient[], preferences: string[]): Promise<FrontendPlan> => {
     // Input parsing to JSON strings
     let portionsArg: string = JSON.stringify(portions)
     let leftoverArg: string = JSON.stringify(leftovers)

@@ -10,7 +10,7 @@ import { HiddenCard } from "../../components/ui/recipe/hiddenCard";
 import { ILeftOver, IMealAmount, resetPlanConfiguration, selectNewPlanConfiguration } from "../../redux/slice/newPlanSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { updateRecipes } from "../../redux/slice/currentPlanSlice";
-import { Meal, RecipeSwipeObject, FrontendPlan } from "../../utils/dataTypes";
+import { Meal, RecipeSwipeObject, FrontendPlan, smallIngredient } from "../../utils/dataTypes";
 import NewPlanNavigationBar from '../NewPlanPage/NavigationNewPlanBar'
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { createPlan, swipeleft, swiperight } from "../../utils/axios/planGenerationCalls";
@@ -85,7 +85,8 @@ const SwapMealsPage = ({ navigation }: SwapMealsPageProps) => {
 
   // Fetch Initial Plan on First Mounting
   useEffect(() => {
-    createPlan(mealAmount.map((m: IMealAmount) => m.amount), leftovers.map((l: ILeftOver) => l.name), preferences).then(
+    console.log("triggered UseEffect SwapMeals")
+    createPlan(mealAmount.map((m: IMealAmount) => m.amount), leftovers.map((l: ILeftOver) => ({id: l.id, smallestAmountNumber: (l.amount / l.smallestAmount)})), preferences).then(
       (initialPlan: FrontendPlan) => {
         setRecipeList(initialPlan.recipeSwipeObjects)
         setSwipeTracker(Array(initialPlan.recipeSwipeObjects.length).fill(0))

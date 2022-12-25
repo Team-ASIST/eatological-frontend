@@ -23,6 +23,7 @@ import MealQuantityScreen from './pages/NewPlanPage/MealQuantity';
 import LeftoversScreen from './pages/NewPlanPage/Leftovers';
 import { ingredientAdded } from './redux/slice/ingredientSlice';
 import { Ingredient } from './utils/dataTypes';
+import { ingredients } from './utils/axios/planUsageCalls';
 
 const NewPlan = createNativeStackNavigator<RootStackParamList>();
 const Tab = createBottomTabNavigator<RootTabParamList>();
@@ -45,8 +46,8 @@ const PlanStackScreen = () => { //TODO change initialRoute
 //Wrapper component which enables the usage of useDispatch in App component
 const AppWrapper = () => {
   return (
-    <Provider store={store}> 
-      <App /> 
+    <Provider store={store}>
+      <App />
     </Provider>
   )
 }
@@ -55,23 +56,13 @@ const App = () => {
   //load ingredients and store them in redux store (ingredientSlice)
   const dispatch = useDispatch()
 
-  useEffect(()=>{
-    fetch('https://eatological-dev.azurewebsites.net/ingredients',
-    {
-      method: 'GET',
-      headers: {
-          'accept': 'application/json',
-          'EatologicalToken': 'dev@eatological.de'
-      }
-  }
-    )
-    .then(res => {
-      return res.json()
-    })
-    .then(data => {
-      data.map((item: any) => dispatch(ingredientAdded(item)))
-    })
-    .catch((error) => console.error(error))
+  useEffect(() => {
+    console.log("triggered useEffect App")
+    ingredients()
+      .then(ingredients => {
+        ingredients.map((item: Ingredient) => dispatch(ingredientAdded(item)))
+      })
+      .catch((error) => console.error(error))
   }, []
   )
 
@@ -123,7 +114,7 @@ const App = () => {
             <Tab.Screen
               name="NewPlan"
               component={PlanStackScreen}
-              options={{ headerShown: false, tabBarStyle: { display: 'none' }, unmountOnBlur:true }}
+              options={{ headerShown: false, tabBarStyle: { display: 'none' }, unmountOnBlur: true }}
             />
             <Tab.Screen name="CurrentPlan" options={{ headerShown: false }} component={CurrentPlan} />
             <Tab.Screen name="GroceryList" options={{ headerShown: false }} component={GroceryListPage} />
