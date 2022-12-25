@@ -85,7 +85,6 @@ const SwapMealsPage = ({ navigation }: SwapMealsPageProps) => {
 
   // Fetch Initial Plan on First Mounting
   useEffect(() => {
-    console.log("triggered UseEffect SwapMeals")
     createPlan(mealAmount.map((m: IMealAmount) => m.amount), leftovers.map((l: ILeftOver) => ({id: l.id, smallestAmountNumber: (l.amount / l.smallestAmount)})), preferences).then(
       (initialPlan: FrontendPlan) => {
         setRecipeList(initialPlan.recipeSwipeObjects)

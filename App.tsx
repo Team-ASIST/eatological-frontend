@@ -57,7 +57,6 @@ const App = () => {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    console.log("triggered useEffect App")
     ingredients()
       .then(ingredients => {
         ingredients.map((item: Ingredient) => dispatch(ingredientAdded(item)))
