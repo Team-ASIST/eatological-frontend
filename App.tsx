@@ -1,9 +1,9 @@
 import React from 'react';
-import { useColorScheme, Text, SafeAreaView } from 'react-native';
+import { useColorScheme, Text, SafeAreaView, Platform, StatusBar } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { createBox, ThemeProvider, useTheme } from '@shopify/restyle';
+import { createBox, ThemeProvider } from '@shopify/restyle';
 import { Provider } from 'react-redux'
 import { store } from './redux/store'
 import theme, { darkTheme, Theme } from './utils/theme';
@@ -29,7 +29,7 @@ const Box = createBox<Theme>();
 const PlanStackScreen = () => { //TODO change initialRoute
   return (
     <Box backgroundColor="mainBackground" flex={1}>
-      <SafeAreaView style={{ flex: 1 }}>
+      <SafeAreaView style={{ flex: 1, paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0 }}>
         <NewPlan.Navigator>
           <NewPlan.Screen name="MealQuantity" options={{ headerShown: false }} component={MealQuantityScreen} />
           <NewPlan.Screen name="LeftOvers" options={{ headerShown: false }} component={LeftoversScreen} />
