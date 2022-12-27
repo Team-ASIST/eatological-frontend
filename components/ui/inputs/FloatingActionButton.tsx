@@ -1,5 +1,5 @@
 import { createText, createBox } from '@shopify/restyle'
-import { Theme } from '../../../utils/theme'
+import theme, { Theme } from '../../../utils/theme'
 import React from 'react'
 import { TouchableOpacity } from 'react-native'
 import { NavigationScreenProp } from 'react-navigation'
@@ -16,16 +16,15 @@ type FloatingActionButtonProps = {
 
 export const FloatingActionButton = ({ route, navigation }: FloatingActionButtonProps) => {
     return (
-        // TODO Fine Tune to match new React Navigation
+        // TODO Fine Tune to match new React Navigation and Change borderColor / IconColor to Accent Color
         <TouchableOpacity style={{ position: 'absolute', bottom: 20, right: 30, borderRadius: 50, elevation: 5 }} onPress={() => navigation.navigate(route)}>
             <Box
-                // TODO apply accent color instead of primaryButton
-                backgroundColor="primaryButtonColor"
+                backgroundColor="primaryCardBackground"
                 borderRadius={50}
-                width={75}
-                height={75}
+                width={60}
+                height={60}
                 borderWidth={3}
-                borderColor="navigationButtonColor"
+                borderColor="primaryCardText"
                 alignItems="center"
                 justifyContent={"center"}
                 //  ios - Android uses elevation in TouchableOpacity - produces ugly bug if defined in Box
@@ -33,7 +32,7 @@ export const FloatingActionButton = ({ route, navigation }: FloatingActionButton
                 shadowRadius={5}
                 shadowOpacity={1}
             >
-                <Ionicons name="add-outline" size={60} color="white" />
+                <Ionicons name="add-outline" size={50} color="white" />
             </Box>
         </TouchableOpacity >
     )
