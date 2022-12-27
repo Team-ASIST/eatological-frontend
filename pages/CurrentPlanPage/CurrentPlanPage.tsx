@@ -7,8 +7,10 @@ import recipeCard from "../../components/ui/recipe/recipeCard";
 import { RefreshControl, ScrollView } from "react-native-gesture-handler";
 import { useSelector } from "react-redux";
 import { selectAllRecipes } from "../../redux/slice/currentPlanSlice";
-import { RecipeSwipeObject } from "../SwapMealsPage/SwapMealsCalls";
+import { RecipeSwipeObject } from "../../utils/dataTypes";
 import { Meal } from "../../utils/dataTypes";
+import { FloatingActionButton } from "../../components/ui/inputs/FloatingActionButton";
+import { NavigationScreenProp } from 'react-navigation'
 
 const Text = createText<Theme>();
 const Box = createBox<Theme>();
@@ -17,12 +19,13 @@ const wait = (timeout: number) => {
   return new Promise(resolve => setTimeout(resolve, timeout));
 }
 
+type CurrentPlanProps = {
+  navigation: NavigationScreenProp<any, any>
+}
 
-const CurrentPlan = () => {
+const CurrentPlan = ({ navigation }: CurrentPlanProps) => {
   const [refreshing, setRefreshing] = React.useState(false);
   const recipes = useSelector(selectAllRecipes)
-
-  console.log(recipes)
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
@@ -30,7 +33,7 @@ const CurrentPlan = () => {
   }, []);
 
   return (
-    <Box backgroundColor="mainBackground" flex={1}>
+    <Box backgroundColor="mainBackground" flex={1} zIndex={1}>
       <SafeAreaView style={{ flex: 1 }}>
         <ScrollView refreshControl={
           <RefreshControl
@@ -44,6 +47,7 @@ const CurrentPlan = () => {
             })
           }
         </ScrollView>
+        <FloatingActionButton route="NewPlan" navigation={navigation}/>
       </SafeAreaView >
     </Box>
 
