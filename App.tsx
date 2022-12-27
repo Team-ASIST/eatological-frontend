@@ -26,7 +26,7 @@ const NewPlan = createNativeStackNavigator<RootStackParamList>();
 const Tab = createBottomTabNavigator<RootTabParamList>();
 const Box = createBox<Theme>();
 
-const PlanStackScreen = () => { //TODO change initialRoute
+const PlanStackScreen = () => {
   return (
     <Box backgroundColor="mainBackground" flex={1}>
       <SafeAreaView style={{ flex: 1 }}>
@@ -66,11 +66,11 @@ const App = () => {
                     iconName = focused
                       ? 'add'
                       : 'add-outline'
-                  } else if (route.name === 'CurrentPlan') {
+                  } else if (route.name === 'GroceryList') {
                     iconName = focused
                       ? 'basket'
                       : 'basket-outline';
-                  } else if (route.name === 'GroceryList') {
+                  } else if (route.name === 'CurrentPlan') {
                     iconName = focused
                       ? 'ios-list'
                       : 'ios-list-outline';
@@ -82,6 +82,14 @@ const App = () => {
 
                   return <Ionicons name={iconName} size={size} color={color} />;
                 },
+                // Hide the following routes from the bottom-tabs
+                tabBarButton: [
+                  "NewPlan"
+                ].includes(route.name)
+                  ? () => {
+                    return null;
+                  }
+                  : undefined,
                 tabBarActiveTintColor: theme.colors.primaryButtonColor,
                 tabBarInactiveTintColor: theme.colors.inactiveButtonColor,
               })}
@@ -89,10 +97,10 @@ const App = () => {
             <Tab.Screen
               name="NewPlan"
               component={PlanStackScreen}
-              options={{ headerShown: false, tabBarStyle: { display: 'none' }, unmountOnBlur:true }}
+              options={{ headerShown: false, tabBarStyle: { display: 'none' }, unmountOnBlur: true }}
             />
-            <Tab.Screen name="CurrentPlan" options={{ headerShown: false }} component={CurrentPlan} />
             <Tab.Screen name="GroceryList" options={{ headerShown: false }} component={GroceryListPage} />
+            <Tab.Screen name="CurrentPlan" options={{ headerShown: false }} component={CurrentPlan} />
             <Tab.Screen name="Settings" options={{ headerShown: false }} component={SettingsPage} />
           </Tab.Navigator>
         </NavigationContainer>
