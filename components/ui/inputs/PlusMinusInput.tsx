@@ -19,7 +19,7 @@ const PlusMinusInput = ({ increment, decrement, value, title }: PlusMinusInputPr
         <Box
             marginVertical="s"
             padding="m"
-            backgroundColor="primaryCardBackground"
+            backgroundColor="accent"
             opacity={0.78}
             borderRadius={10}
             flexDirection="row"

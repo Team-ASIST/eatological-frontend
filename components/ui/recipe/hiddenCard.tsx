@@ -31,7 +31,7 @@ export const HiddenCard = (props: HiddenCardProps) => {
           borderTopLeftRadius={50}
           alignItems={"flex-start"}
           justifyContent={"center"}
-          backgroundColor="primaryCardBackground"
+          backgroundColor="accent"
           paddingLeft={"s"}
         >
           {indicator(props.loading, true)}
@@ -46,7 +46,7 @@ export const HiddenCard = (props: HiddenCardProps) => {
           borderTopRightRadius={50}
           alignItems={"flex-end"}
           justifyContent={"center"}
-          backgroundColor="primaryCardBackground"
+          backgroundColor="accent"
           paddingRight={"s"}
         >
           {indicator(props.loading, false)}
