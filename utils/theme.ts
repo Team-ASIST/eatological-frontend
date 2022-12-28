@@ -17,6 +17,12 @@ export const palette = {
     red: '#FF3021'
 };
 
+export const fonts = {
+    light: 'Fraunces_300Light',
+    medium: 'Fraunces_500Medium',
+    bold: 'Fraunces_700Bold'
+}
+
 const theme = createTheme({
     spacing: {
         xs: 4,

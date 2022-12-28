@@ -3,7 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { RootTabParamList } from './types';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import theme from '../utils/theme';
+import theme, { fonts } from '../utils/theme';
 import GroceryListPage from '../pages/GroceryListPage/GroceryListPage';
 import CurrentPlan from '../pages/CurrentPlanPage/CurrentPlanPage';
 import SettingsPage from '../pages/SettingsPage/SettingsPage';
@@ -22,25 +22,21 @@ export const TabNavigator = () => {
                         tabBarIcon: ({ focused, color, size }) => {
                             let iconName: string = "";
 
-                            if (route.name === 'NewPlan') {
+                            if (route.name === 'GroceryList') {
                                 iconName = focused
-                                    ? 'add'
-                                    : 'add-outline'
-                            } else if (route.name === 'GroceryList') {
-                                iconName = focused
-                                    ? 'basket'
-                                    : 'basket-outline';
+                                    ? 'cart'
+                                    : 'cart-outline';
                             } else if (route.name === 'CurrentPlan') {
                                 iconName = focused
-                                    ? 'ios-list'
-                                    : 'ios-list-outline';
+                                    ? 'list'
+                                    : 'list-outline';
                             } else if (route.name === 'Settings') {
                                 iconName = focused
                                     ? 'settings'
                                     : 'settings-outline';
                             }
 
-                            return <Ionicons name={iconName} size={size} color={color} />;
+                            return <Ionicons name={iconName} size={route.name === 'CurrentPlan' ? size : size} color={color} />;
                         },
                         // Hide the following routes from the bottom-tabs
                         tabBarButton: [
@@ -50,8 +46,13 @@ export const TabNavigator = () => {
                                 return null;
                             }
                             : undefined,
+
                         tabBarActiveTintColor: theme.colors.primaryButtonColor,
                         tabBarInactiveTintColor: theme.colors.inactiveButtonColor,
+                        tabBarLabelStyle: {
+                            fontFamily: fonts.light,
+                            fontSize: 12,
+                        }
                     })}
             >
                 <Tab.Screen
@@ -59,8 +60,8 @@ export const TabNavigator = () => {
                     component={PlanStackScreen}
                     options={{ headerShown: false, tabBarStyle: { display: 'none' }, unmountOnBlur: true }}
                 />
-                <Tab.Screen name="GroceryList" options={{ headerShown: false }} component={GroceryListPage} />
-                <Tab.Screen name="CurrentPlan" options={{ headerShown: false }} component={CurrentPlan} />
+                <Tab.Screen name="GroceryList" options={{ headerShown: false, title: "Grocery List" }} component={GroceryListPage} />
+                <Tab.Screen name="CurrentPlan" options={{ headerShown: false, title: "Current Plan" }} component={CurrentPlan} />
                 <Tab.Screen name="Settings" options={{ headerShown: false }} component={SettingsPage} />
             </Tab.Navigator>
         </NavigationContainer>
