@@ -92,13 +92,13 @@ const NavigationNewPlanBar = (props: NavigationNewPlanBarProps): ReactElement =>
     </Box>
     <>{props.children}</>
     <Box flexDirection={"row"} justifyContent="space-between">
-      {props.onClickBack ?
-        <View style={{ width: 60 }} /> :
-        <IconButton
-          onPress={props.onClickBack}
-          icon={'chevron-back-circle-outline'}
-          size={60}
-          color={theme.colors.inactiveButtonColor} />
+      {
+        props.onClickBack ? <IconButton
+            onPress={props.onClickBack}
+            icon={'chevron-back-circle-outline'}
+            size={60}
+            color={theme.colors.inactiveButtonColor} /> : 
+            <View style={{ width: 60 }} />
       }
       <IconButton
         onPress={
@@ -120,13 +120,14 @@ const NavigationNewPlanBar = (props: NavigationNewPlanBarProps): ReactElement =>
         icon={'close-circle-outline'}
         size={50}
         color={theme.colors.alert} />
-        {props.onClickNext ?
-        <View style={{ width: 60 }} /> :
-        <IconButton
-        onPress={props.onClickNext}
-        icon={ScreenToPosition[route.name] == WorkflowLength - 1 ? 'checkmark-circle-outline' : 'chevron-forward-circle-outline'}
-        size={60}
-        color={ScreenToPosition[route.name] == WorkflowLength - 1 ? theme.colors.success : theme.colors.inactiveButtonColor} />
+      {
+        props.onClickNext ?
+          <IconButton
+            onPress={props.onClickNext}
+            icon={ScreenToPosition[route.name] == WorkflowLength - 1 ? 'checkmark-circle-outline' : 'chevron-forward-circle-outline'}
+            size={60}
+            color={ScreenToPosition[route.name] == WorkflowLength - 1 ? theme.colors.success : theme.colors.inactiveButtonColor} /> : 
+            <View style={{ width: 60 }} />
       }
     </Box>
   </>)

@@ -29,11 +29,11 @@ const MealQuantityScreen = ({ navigation }: Props) => {
     const addMeal = (
         <AddItemButton
             onPress={() => dispatch(mealAdded())}
-             />
+        />
     )
 
     return (
-        <Box padding="m" backgroundColor="mainBackground" flex={1}>
+        <Box padding="l" backgroundColor="mainBackground" flex={1}>
             <NewPlanNavigationBar
                 onClickNext={
                     () => navigation.navigate('LeftOvers')}
@@ -42,9 +42,9 @@ const MealQuantityScreen = ({ navigation }: Props) => {
                         dispatch(resetPlanConfiguration())
                         navigation.navigate('CurrentPlan')
                     }
-                }>                
+                }>
                 <Box marginVertical="l" marginHorizontal="xs" padding="m" height={"75%"}>
-                <Text variant="subheader">How many meals are you planning for?</Text>
+                    <Text variant="subheader">How many meals are you planning for?</Text>
                     <Box marginVertical="l">
                         <ScrollView alwaysBounceVertical={false} showsVerticalScrollIndicator={false}>
                             {mealInputs}
