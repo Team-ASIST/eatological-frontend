@@ -17,7 +17,7 @@ type FloatingActionButtonProps = {
 export const FloatingActionButton = ({ route, navigation }: FloatingActionButtonProps) => {
     return (
         // TODO Fine Tune to match new React Navigation and Change borderColor / IconColor to Accent Color
-        <TouchableOpacity style={{ position: 'absolute', bottom: 20, right: 30, borderRadius: 50, elevation: 5 }} onPress={() => navigation.navigate(route)}>
+        <TouchableOpacity style={{ position: 'absolute', bottom: 20, right: 30, borderRadius: 50, elevation: 3 }} onPress={() => navigation.navigate(route)}>
             <Box
                 backgroundColor="primaryCardBackground"
                 borderRadius={50}
@@ -29,8 +29,10 @@ export const FloatingActionButton = ({ route, navigation }: FloatingActionButton
                 justifyContent={"center"}
                 //  ios - Android uses elevation in TouchableOpacity - produces ugly bug if defined in Box
                 overflow='hidden'
-                shadowRadius={5}
-                shadowOpacity={1}
+                shadowColor={"secondaryCardText"}
+                shadowOffset={{width: 0, height: 3}}
+                shadowRadius={3}
+                shadowOpacity={0.5}
             >
                 <Ionicons name="add-outline" size={50} color="white" />
             </Box>

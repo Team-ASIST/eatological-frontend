@@ -33,7 +33,7 @@ const CurrentPlan = ({ navigation }: CurrentPlanProps) => {
   }, []);
 
   return (
-    <Box backgroundColor="mainBackground" flex={1} zIndex={1}>
+    <Box backgroundColor="mainBackground" flex={1}>
       <SafeAreaView style={{ flex: 1 }}>
         <ScrollView refreshControl={
           <RefreshControl
@@ -47,8 +47,8 @@ const CurrentPlan = ({ navigation }: CurrentPlanProps) => {
             })
           }
         </ScrollView>
-        <FloatingActionButton route="NewPlan" navigation={navigation}/>
       </SafeAreaView >
+      <FloatingActionButton route="NewPlan" navigation={navigation}/>
     </Box>
 
   );
