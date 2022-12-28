@@ -3,7 +3,6 @@ import theme, { Theme } from '../../../utils/theme'
 import React from 'react'
 import { TouchableOpacity } from 'react-native'
 import { NavigationScreenProp } from 'react-navigation'
-import Ionicons from 'react-native-vector-icons/Ionicons';
 
 
 const Text = createText<Theme>()
@@ -16,24 +15,23 @@ type FloatingActionButtonProps = {
 
 export const FloatingActionButton = ({ route, navigation }: FloatingActionButtonProps) => {
     return (
-        // TODO Fine Tune to match new React Navigation and Change borderColor / IconColor to Accent Color
         <TouchableOpacity style={{ position: 'absolute', bottom: 20, right: 30, borderRadius: 50, elevation: 3 }} onPress={() => navigation.navigate(route)}>
             <Box
-                backgroundColor="primaryCardBackground"
+                backgroundColor="white"
                 borderRadius={50}
                 width={60}
                 height={60}
                 borderWidth={3}
-                borderColor="primaryCardText"
+                borderColor="accent"
                 alignItems="center"
                 justifyContent={"center"}
                 //  ios - Android uses elevation in TouchableOpacity - produces ugly bug if defined in Box
-                shadowColor={"secondaryCardText"}
+                shadowColor={"black"}
                 shadowOffset={{width: 0, height: 3}}
                 shadowRadius={3}
                 shadowOpacity={0.5}
             >
-                <Text variant={"header"} color={"primaryCardText"}>+</Text>
+                <Text variant={"header"} color={"accent"}>+</Text>
             </Box>
         </TouchableOpacity >
     )

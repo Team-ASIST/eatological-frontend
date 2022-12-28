@@ -46,8 +46,8 @@ export const TabNavigator = () => {
                         }
                         : undefined,
 
-                    tabBarActiveTintColor: theme.colors.primaryButtonColor,
-                    tabBarInactiveTintColor: theme.colors.inactiveButtonColor,
+                    tabBarActiveTintColor: theme.colors.accent,
+                    tabBarInactiveTintColor: theme.colors.navigationButtonColor,
                     tabBarLabelStyle: {
                         fontFamily: fonts.light,
                         fontSize: 12,

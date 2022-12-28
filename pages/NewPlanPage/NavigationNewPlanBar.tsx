@@ -30,19 +30,19 @@ const NavigationNewPlanBar = (props: NavigationNewPlanBarProps): ReactElement =>
   const route = useRoute();
 
   const customStyles = {
-    stepStrokeCurrentColor: theme.colors.primaryButtonColor,
+    stepStrokeCurrentColor: theme.colors.accent,
     stepStrokeUnFinishedColor: '#aaaaaa',
-    stepStrokeFinishedColor: theme.colors.primaryButtonColor,
+    stepStrokeFinishedColor: theme.colors.accent,
     separatorUnFinishedColor: '#aaaaaa',
-    separatorFinishedColor: theme.colors.primaryButtonColor,
+    separatorFinishedColor: theme.colors.accent,
     stepIndicatorUnFinishedColor: '#ffffff',
     stepIndicatorCurrentColor: '#ffffff',
-    stepIndicatorFinishedColor: theme.colors.primaryButtonColor,
-    stepIndicatorLabelCurrentColor: theme.colors.primaryButtonColor,
+    stepIndicatorFinishedColor: theme.colors.accent,
+    stepIndicatorLabelCurrentColor: theme.colors.accent,
     stepIndicatorLabelFinishedColor: '#ffffff',
     stepIndicatorLabelUnFinishedColor: '#aaaaaa',
     labelColor: '#999999',
-    currentStepLabelColor: theme.colors.primaryButtonColor
+    currentStepLabelColor: theme.colors.accent
   }
 
   const getStepIndicatorIconConfig = ({
@@ -54,7 +54,7 @@ const NavigationNewPlanBar = (props: NavigationNewPlanBarProps): ReactElement =>
   }) => {
     const iconConfig = {
       name: 'feed',
-      color: stepStatus === 'finished' ? '#ffffff' : theme.colors.primaryButtonColor,
+      color: stepStatus === 'finished' ? '#ffffff' : theme.colors.accent,
       size: 15,
     };
     switch (position) {
