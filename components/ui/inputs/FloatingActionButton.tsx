@@ -28,13 +28,12 @@ export const FloatingActionButton = ({ route, navigation }: FloatingActionButton
                 alignItems="center"
                 justifyContent={"center"}
                 //  ios - Android uses elevation in TouchableOpacity - produces ugly bug if defined in Box
-                overflow='hidden'
                 shadowColor={"secondaryCardText"}
                 shadowOffset={{width: 0, height: 3}}
                 shadowRadius={3}
                 shadowOpacity={0.5}
             >
-                <Ionicons name="add-outline" size={50} color="white" />
+                <Text variant={"header"} color={"primaryCardText"}>+</Text>
             </Box>
         </TouchableOpacity >
     )
