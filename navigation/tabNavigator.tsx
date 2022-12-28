@@ -14,56 +14,54 @@ const Tab = createBottomTabNavigator<RootTabParamList>();
 
 export const TabNavigator = () => {
     return (
-        <NavigationContainer>
-            <Tab.Navigator initialRouteName="CurrentPlan"
-                screenOptions={
-                    ({ route }) => ({
-                        headerShown: false,
-                        tabBarIcon: ({ focused, color, size }) => {
-                            let iconName: string = "";
+        <Tab.Navigator initialRouteName="CurrentPlan"
+            screenOptions={
+                ({ route }) => ({
+                    headerShown: false,
+                    tabBarIcon: ({ focused, color, size }) => {
+                        let iconName: string = "";
 
-                            if (route.name === 'GroceryList') {
-                                iconName = focused
-                                    ? 'cart'
-                                    : 'cart-outline';
-                            } else if (route.name === 'CurrentPlan') {
-                                iconName = focused
-                                    ? 'list'
-                                    : 'list-outline';
-                            } else if (route.name === 'Settings') {
-                                iconName = focused
-                                    ? 'settings'
-                                    : 'settings-outline';
-                            }
-
-                            return <Ionicons name={iconName} size={route.name === 'CurrentPlan' ? size : size} color={color} />;
-                        },
-                        // Hide the following routes from the bottom-tabs
-                        tabBarButton: [
-                            "NewPlan"
-                        ].includes(route.name)
-                            ? () => {
-                                return null;
-                            }
-                            : undefined,
-
-                        tabBarActiveTintColor: theme.colors.primaryButtonColor,
-                        tabBarInactiveTintColor: theme.colors.inactiveButtonColor,
-                        tabBarLabelStyle: {
-                            fontFamily: fonts.light,
-                            fontSize: 12,
+                        if (route.name === 'GroceryList') {
+                            iconName = focused
+                                ? 'cart'
+                                : 'cart-outline';
+                        } else if (route.name === 'CurrentPlan') {
+                            iconName = focused
+                                ? 'list'
+                                : 'list-outline';
+                        } else if (route.name === 'Settings') {
+                            iconName = focused
+                                ? 'settings'
+                                : 'settings-outline';
                         }
-                    })}
-            >
-                <Tab.Screen
-                    name="NewPlan"
-                    component={PlanStackScreen}
-                    options={{ headerShown: false, tabBarStyle: { display: 'none' }, unmountOnBlur: true }}
-                />
-                <Tab.Screen name="GroceryList" options={{ headerShown: false, title: "Grocery List" }} component={GroceryListPage} />
-                <Tab.Screen name="CurrentPlan" options={{ headerShown: false, title: "Current Plan" }} component={CurrentPlan} />
-                <Tab.Screen name="Settings" options={{ headerShown: false }} component={SettingsPage} />
-            </Tab.Navigator>
-        </NavigationContainer>
+
+                        return <Ionicons name={iconName} size={route.name === 'CurrentPlan' ? size : size} color={color} />;
+                    },
+                    // Hide the following routes from the bottom-tabs
+                    tabBarButton: [
+                        "NewPlan"
+                    ].includes(route.name)
+                        ? () => {
+                            return null;
+                        }
+                        : undefined,
+
+                    tabBarActiveTintColor: theme.colors.primaryButtonColor,
+                    tabBarInactiveTintColor: theme.colors.inactiveButtonColor,
+                    tabBarLabelStyle: {
+                        fontFamily: fonts.light,
+                        fontSize: 12,
+                    }
+                })}
+        >
+            <Tab.Screen
+                name="NewPlan"
+                component={PlanStackScreen}
+                options={{ headerShown: false, tabBarStyle: { display: 'none' }, unmountOnBlur: true }}
+            />
+            <Tab.Screen name="GroceryList" options={{ headerShown: false, title: "Grocery List" }} component={GroceryListPage} />
+            <Tab.Screen name="CurrentPlan" options={{ headerShown: false, title: "Current Plan" }} component={CurrentPlan} />
+            <Tab.Screen name="Settings" options={{ headerShown: false }} component={SettingsPage} />
+        </Tab.Navigator>
     )
 }
