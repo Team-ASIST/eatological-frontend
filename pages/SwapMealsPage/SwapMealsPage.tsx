@@ -136,6 +136,7 @@ const SwapMealsPage = ({ navigation }: SwapMealsPageProps) => {
         onClickBack={
           () => navigation.navigate('LeftOvers')}
         onClickNext={
+          recipeList.length > 0 ? 
           () => {
             dispatch(updateRecipes({
               recipes: recipeList.map((r: RecipeSwipeObject) => {
@@ -148,7 +149,8 @@ const SwapMealsPage = ({ navigation }: SwapMealsPageProps) => {
             }))
             dispatch(resetPlanConfiguration())
             navigation.navigate('CurrentPlan')
-          }
+          } : 
+          undefined
         }
         onClickAbort={
           () => {

@@ -16,11 +16,10 @@ type Props = {
 }
 
 const LeftoversScreen = ({ navigation }: Props) => {
-    const route = useRoute()
     const dispatch = useDispatch()
 
     return (
-        <Box padding="m" backgroundColor="mainBackground" flex={1}>
+        <Box padding="l" backgroundColor="mainBackground" flex={1}>
             <NewPlanNavigationBar
                 onClickBack={
                     () => navigation.navigate('MealQuantity')}
@@ -32,7 +31,7 @@ const LeftoversScreen = ({ navigation }: Props) => {
                         navigation.navigate('CurrentPlan')
                     }
                 }>
-                <Box marginVertical="l" marginHorizontal="xs" padding="m" flexGrow={1}>
+                <Box marginVertical="l" marginHorizontal="xs" padding="m" height={"75%"}>
                     <Text variant="subheader">Do you have any leftovers?</Text>
                     <SearchBar></SearchBar>
                 </Box>

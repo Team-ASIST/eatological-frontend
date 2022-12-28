@@ -1,5 +1,5 @@
 import React from 'react';
-import { useColorScheme, Text, SafeAreaView } from 'react-native';
+import { useColorScheme, Text, SafeAreaView, Platform, StatusBar } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -29,13 +29,11 @@ const Box = createBox<Theme>();
 const PlanStackScreen = () => {
   return (
     <Box backgroundColor="mainBackground" flex={1}>
-      <SafeAreaView style={{ flex: 1 }}>
-        <NewPlan.Navigator>
-          <NewPlan.Screen name="MealQuantity" options={{ headerShown: false }} component={MealQuantityScreen} />
-          <NewPlan.Screen name="LeftOvers" options={{ headerShown: false }} component={LeftoversScreen} />
-          <NewPlan.Screen name="SwapMeals" options={{ headerShown: false }} component={SwapMealsPage} />
-        </ NewPlan.Navigator>
-      </SafeAreaView>
+      <NewPlan.Navigator>
+        <NewPlan.Screen name="MealQuantity" options={{ headerShown: false }} component={MealQuantityScreen} />
+        <NewPlan.Screen name="LeftOvers" options={{ headerShown: false }} component={LeftoversScreen} />
+        <NewPlan.Screen name="SwapMeals" options={{ headerShown: false }} component={SwapMealsPage} />
+      </ NewPlan.Navigator>
     </Box>
   );
 }
@@ -55,54 +53,56 @@ const App = () => {
     <Provider store={store}>
       <ThemeProvider theme={colorTheme === 'dark' ? darkTheme : theme}>
         <NavigationContainer>
-          <Tab.Navigator initialRouteName="CurrentPlan"
-            screenOptions={
-              ({ route }) => ({
-                headerShown: false,
-                tabBarIcon: ({ focused, color, size }) => {
-                  let iconName: string = "";
+          <SafeAreaView style={{ flex: 1, paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0 }}>
+            <Tab.Navigator initialRouteName="CurrentPlan"
+              screenOptions={
+                ({ route }) => ({
+                  headerShown: false,
+                  tabBarIcon: ({ focused, color, size }) => {
+                    let iconName: string = "";
 
-                  if (route.name === 'NewPlan') {
-                    iconName = focused
-                      ? 'add'
-                      : 'add-outline'
-                  } else if (route.name === 'GroceryList') {
-                    iconName = focused
-                      ? 'basket'
-                      : 'basket-outline';
-                  } else if (route.name === 'CurrentPlan') {
-                    iconName = focused
-                      ? 'ios-list'
-                      : 'ios-list-outline';
-                  } else if (route.name === 'Settings') {
-                    iconName = focused
-                      ? 'settings'
-                      : 'settings-outline';
-                  }
+                    if (route.name === 'NewPlan') {
+                      iconName = focused
+                        ? 'add'
+                        : 'add-outline'
+                    } else if (route.name === 'GroceryList') {
+                      iconName = focused
+                        ? 'basket'
+                        : 'basket-outline';
+                    } else if (route.name === 'CurrentPlan') {
+                      iconName = focused
+                        ? 'ios-list'
+                        : 'ios-list-outline';
+                    } else if (route.name === 'Settings') {
+                      iconName = focused
+                        ? 'settings'
+                        : 'settings-outline';
+                    }
 
-                  return <Ionicons name={iconName} size={size} color={color} />;
-                },
-                // Hide the following routes from the bottom-tabs
-                tabBarButton: [
-                  "NewPlan"
-                ].includes(route.name)
-                  ? () => {
-                    return null;
-                  }
-                  : undefined,
-                tabBarActiveTintColor: theme.colors.primaryButtonColor,
-                tabBarInactiveTintColor: theme.colors.inactiveButtonColor,
-              })}
-          >
-            <Tab.Screen
-              name="NewPlan"
-              component={PlanStackScreen}
-              options={{ headerShown: false, tabBarStyle: { display: 'none' }, unmountOnBlur: true }}
-            />
-            <Tab.Screen name="GroceryList" options={{ headerShown: false }} component={GroceryListPage} />
-            <Tab.Screen name="CurrentPlan" options={{ headerShown: false }} component={CurrentPlan} />
-            <Tab.Screen name="Settings" options={{ headerShown: false }} component={SettingsPage} />
-          </Tab.Navigator>
+                    return <Ionicons name={iconName} size={size} color={color} />;
+                  },
+                  // Hide the following routes from the bottom-tabs
+                  tabBarButton: [
+                    "NewPlan"
+                  ].includes(route.name)
+                    ? () => {
+                      return null;
+                    }
+                    : undefined,
+                  tabBarActiveTintColor: theme.colors.primaryButtonColor,
+                  tabBarInactiveTintColor: theme.colors.inactiveButtonColor,
+                })}
+            >
+              <Tab.Screen
+                name="NewPlan"
+                component={PlanStackScreen}
+                options={{ headerShown: false, tabBarStyle: { display: 'none' }, unmountOnBlur: true }}
+              />
+              <Tab.Screen name="GroceryList" options={{ headerShown: false }} component={GroceryListPage} />
+              <Tab.Screen name="CurrentPlan" options={{ headerShown: false }} component={CurrentPlan} />
+              <Tab.Screen name="Settings" options={{ headerShown: false }} component={SettingsPage} />
+            </Tab.Navigator>
+          </SafeAreaView>
         </NavigationContainer>
       </ThemeProvider>
     </Provider>
