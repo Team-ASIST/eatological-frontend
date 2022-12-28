@@ -16,7 +16,6 @@ type Props = {
 }
 
 const LeftoversScreen = ({ navigation }: Props) => {
-    const route = useRoute()
     const dispatch = useDispatch()
 
     return (

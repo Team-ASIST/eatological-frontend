@@ -35,8 +35,6 @@ const MealQuantityScreen = ({ navigation }: Props) => {
     return (
         <Box padding="m" backgroundColor="mainBackground" flex={1}>
             <NewPlanNavigationBar
-                onClickBack={
-                    () => navigation.navigate('CurrentPlan')}
                 onClickNext={
                     () => navigation.navigate('LeftOvers')}
                 onClickAbort={

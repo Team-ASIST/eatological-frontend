@@ -20,9 +20,9 @@ const ScreenToPosition: { [id: string]: number; } = {
 
 interface NavigationNewPlanBarProps {
   children: typeof React.Children | ReactNode | ReactElement;
-  onClickBack: () => void;
-  onClickNext: () => void;
-  onClickAbort: () => void;
+  onClickBack?: () => void;
+  onClickNext?: () => void;
+  onClickAbort?: () => void;
 }
 
 const NavigationNewPlanBar = (props: NavigationNewPlanBarProps): ReactElement => {
@@ -92,7 +92,7 @@ const NavigationNewPlanBar = (props: NavigationNewPlanBarProps): ReactElement =>
     </Box>
     <>{props.children}</>
     <Box flexDirection={"row"} justifyContent="space-between">
-      {ScreenToPosition[route.name] == 0 ?
+      {props.onClickBack ?
         <View style={{ width: 60 }} /> :
         <IconButton
           onPress={props.onClickBack}
@@ -120,11 +120,14 @@ const NavigationNewPlanBar = (props: NavigationNewPlanBarProps): ReactElement =>
         icon={'close-circle-outline'}
         size={50}
         color={theme.colors.alert} />
-      <IconButton
+        {props.onClickNext ?
+        <View style={{ width: 60 }} /> :
+        <IconButton
         onPress={props.onClickNext}
         icon={ScreenToPosition[route.name] == WorkflowLength - 1 ? 'checkmark-circle-outline' : 'chevron-forward-circle-outline'}
         size={60}
         color={ScreenToPosition[route.name] == WorkflowLength - 1 ? theme.colors.success : theme.colors.inactiveButtonColor} />
+      }
     </Box>
   </>)
 };
