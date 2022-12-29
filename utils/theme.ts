@@ -126,6 +126,7 @@ export const darkTheme: Theme = {
 
         secondaryCardBackground: palette.navyGreen,
         secondaryCardText: palette.black,
+        accent: palette.salmonPink,
     },
 };
 
