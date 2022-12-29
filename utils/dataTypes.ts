@@ -35,6 +35,12 @@ export type BackendPlan = {
     sustainabilityScore: number
 }
 
+export type Grocery = {
+    ingredientID: number,
+    required: number,
+    bought: number
+}
+
 // Data Types for the Frontend Data
 
 export type Meal = {
