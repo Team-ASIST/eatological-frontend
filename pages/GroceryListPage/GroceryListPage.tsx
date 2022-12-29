@@ -1,20 +1,11 @@
 import React from "react";
-import { useEffect } from "react";
 import { createBox, createText } from '@shopify/restyle';
 import { Theme } from '../../utils/theme';
-import { token } from "../../utils/axios/userManagementCalls";
 
 const Text = createText<Theme>();
 const Box = createBox<Theme>();
 
 const GroceryListPage = () => {
-  useEffect(() => {
-    token("sepp").then(
-      
-    ).catch(
-      error => { console.error(error) }
-    )
-  }, [])
 
     return (
         <Box padding="m" backgroundColor="mainBackground" flex={1}>
