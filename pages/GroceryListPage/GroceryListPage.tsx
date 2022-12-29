@@ -4,8 +4,8 @@ import { createBox, createText } from '@shopify/restyle';
 import { Theme } from '../../utils/theme';
 import { ScrollView } from "react-native";
 import GroceryButton from "../../components/ui/inputs/groceryButton";
-import { Grocery } from "../../utils/dataTypes";
-import { groceries, buyGrocery } from "../../utils/axios/planUsageCalls";
+import { Grocery, Ingredient } from "../../utils/dataTypes";
+import { groceries, buyGrocery, ingredients } from "../../utils/axios/planUsageCalls";
 
 const Text = createText<Theme>();
 const Box = createBox<Theme>();
@@ -14,13 +14,29 @@ const Box = createBox<Theme>();
 
 const GroceryListPage = () => {
   const [groceryList, setGroceryList] = useState([] as Grocery[])
+  const [ingredientInfo, setIngredientInfo] = useState([] as Ingredient[])
 
   // Fetch GroceryList
   useEffect(() => {
-    groceries().then(
-      (list: Grocery[]) => {
-        setGroceryList(list)
-      }
+    groceries().then((groceries: Grocery[]) =>
+      ingredients().then(
+        (ingredients: Ingredient[]) => {
+          // Horrible -> consider alternatives later
+          const ingredientInfos: Ingredient[] = []
+          for (let i = 0; i < groceries.length; i++) {
+            for (let j = 0; j < ingredients.length; j++) {
+              if (groceries[i].ingredientId === ingredients[j].ingredientId) {
+                ingredientInfos.push(ingredients[j])
+                break
+              }
+            }
+          }
+          setIngredientInfo(ingredients)
+          setGroceryList(groceries)
+        }
+      ).catch(
+        error => { console.error(error) }
+      )
     ).catch(
       error => { console.error(error) }
     )
@@ -33,17 +49,22 @@ const GroceryListPage = () => {
 
   return (
     <Box padding="m" backgroundColor="mainBackground" flex={1}>
-      <ScrollView>
+      <ScrollView showsVerticalScrollIndicator={false}>
         {
-          groceryList.map((elem: Grocery) => {
+          groceryList.map((elem: Grocery, index: number) => {
             return (
-            <GroceryButton
-              ingredientID={elem.ingredientID}
-              ingredientName=""
-              bought={elem.bought}
-              required={elem.required}
-              onClick={buy}
-            />
+              <GroceryButton
+                key={elem.ingredientId}
+                ingredientId={elem.ingredientId}
+                ingredientName={ingredientInfo[index].name}
+                unit={ingredientInfo[index].unit}
+                season={ingredientInfo[index].season}
+                local={ingredientInfo[index].local}
+                alternative={ingredientInfo[index].alternative}
+                bought={elem.bought}
+                required={elem.required}
+                onClick={buy}
+              />
             )
           })
         }

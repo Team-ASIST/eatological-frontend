@@ -7,7 +7,7 @@ export const token = async (username: string) : Promise<string> => {
             '/token',
             {
                 headers: {
-                    'user': username
+                    'username': username
                 }
             }
         )
@@ -32,7 +32,7 @@ export const addUser = async (username: string) : Promise<boolean> => {
             '/user/add',
             {
                 headers: {
-                    'user': username
+                    'username': username
                 }
             }
         )
@@ -56,7 +56,7 @@ export const renameUser = async (newName: string) : Promise<boolean> => {
             '/user/rename',
             {
                 headers: {
-                    'user': newName
+                    'username': newName
                 }
             }
         )
