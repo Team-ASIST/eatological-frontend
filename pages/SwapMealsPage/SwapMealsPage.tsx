@@ -149,7 +149,7 @@ const SwapMealsPage = ({ navigation }: SwapMealsPageProps) => {
                 groceries().then(
                   response => {
                     dispatch(updateGroceries(
-                      response as Grocery[]
+                      {groceries: response}
                     ))
                   }
                 )

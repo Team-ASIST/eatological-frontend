@@ -7,7 +7,7 @@ import GroceryButton from "../../components/ui/inputs/groceryButton";
 import { Grocery, Ingredient } from "../../utils/dataTypes";
 import { groceries, buyGrocery, ingredients } from "../../utils/axios/planUsageCalls";
 import { useDispatch, useSelector } from "react-redux";
-import { selectAllGroceries, updateGroceries } from "../../redux/slice/currentPlanSlice";
+import { selectAllGroceries, buyGroc } from "../../redux/slice/currentPlanSlice";
 
 const Text = createText<Theme>();
 const Box = createBox<Theme>();
@@ -17,7 +17,8 @@ const Box = createBox<Theme>();
 const GroceryListPage = () => {
   const [groceryList, setGroceryList] = useState([] as Grocery[])
   const [ingredientInfo, setIngredientInfo] = useState([] as Ingredient[])
- const groc = useSelector(selectAllGroceries)
+  const groc = useSelector(selectAllGroceries)
+  console.log(groc)
 
   const dispatch = useDispatch()
 
@@ -39,7 +40,7 @@ const GroceryListPage = () => {
               }
             }
           }
-          
+
           setIngredientInfo(ingredientInfos)
           setGroceryList(groceries)
         }
@@ -52,19 +53,20 @@ const GroceryListPage = () => {
   }, [])
 
   // Handle Bought Grocery
-  const buy = async (index : number, ingredientID: number) => {
-    const newGroceries = groceryList.map((x) => x)
-    newGroceries[index].bought = newGroceries[index].required
-    newGroceries.push(newGroceries.splice(index, 1)[0])
-    const newIngredientInfos = ingredientInfo.map((x) => x)
-    newIngredientInfos.push(newIngredientInfos.splice(index, 1)[0])
+  const buy = async (index: number, ingredientID: number) => {
+    if (groceryList[index].bought !== groceryList[index].required) {
+      const newGroceries = groceryList.map((x) => x)
+      newGroceries[index].bought = newGroceries[index].required
+      newGroceries.push(newGroceries.splice(index, 1)[0])
+      const newIngredientInfos = ingredientInfo.map((x) => x)
+      newIngredientInfos.push(newIngredientInfos.splice(index, 1)[0])
 
-    setIngredientInfo(newIngredientInfos)
-    setGroceryList(newGroceries)
+      setIngredientInfo(newIngredientInfos)
+      setGroceryList(newGroceries)
 
-    //await buyGrocery(ingredientID)
-    dispatch(updateGroceries(newGroceries as Grocery[]))
-    
+      dispatch(buyGroc({ id: ingredientID }))
+      await buyGrocery(ingredientID)
+    }
   };
 
   return (

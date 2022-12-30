@@ -9,7 +9,7 @@ export const unprotectedBackend  = axios.create({
   baseURL: 'https://eatological-dev.azurewebsites.net',
   timeout: 10000,
   headers: {
-    Accept: 'application/json'
+    'accept': 'application/json'
   }
 });
 
@@ -18,7 +18,7 @@ export const backend = axios.create({
     timeout: 10000,
     headers: {
       'EatologicalToken': getActiveToken(),
-      Accept: 'application/json'
+      'accept': 'application/json'
     }
   });
 

@@ -25,11 +25,18 @@ const currentPlanSlice = createSlice({
         updateGroceries(state, action) {
             const { groceries } = action.payload
             state.groceries = groceries
+        },
+        buyGroc(state, action) {
+            const { id } = action.payload
+            const grocery = state.groceries.find(grocery => grocery.ingredientId === id)
+            if (grocery) {
+                grocery.bought = grocery.required
+            }
         }
     }
 })
 
-export const { updateRecipes, updateGroceries } = currentPlanSlice.actions
+export const { updateRecipes, updateGroceries, buyGroc } = currentPlanSlice.actions
 
 export const selectAllRecipes = (state: RootState) => state.currentPlan.recipes
 export const selectAllGroceries = (state: RootState) => state.currentPlan.groceries
