@@ -14,7 +14,6 @@ export const token = async (username: string) : Promise<string> => {
 
         if (response.status = 200) {
             // Extract token
-            console.log(response.data)
             let token: string = response.data
             return token
         }
@@ -28,7 +27,7 @@ export const token = async (username: string) : Promise<string> => {
 
 export const addUser = async (username: string) : Promise<boolean> => {
     try {
-        const response = await backend.get(
+        const response = await backend.post(
             '/user/add',
             {
                 headers: {
@@ -38,6 +37,7 @@ export const addUser = async (username: string) : Promise<boolean> => {
         )
 
         if (response.status = 200) {
+            console.log(response)
             return true
         }
         console.error("Call AddUser aborted!")
@@ -52,7 +52,7 @@ export const addUser = async (username: string) : Promise<boolean> => {
 
 export const renameUser = async (newName: string) : Promise<boolean> => {
     try {
-        const response = await backend.get(
+        const response = await backend.put(
             '/user/rename',
             {
                 headers: {
@@ -74,7 +74,7 @@ export const renameUser = async (newName: string) : Promise<boolean> => {
 
 export const deleteUser = async () : Promise<boolean> => {
     try {
-        const response = await backend.get(
+        const response = await backend.delete(
             '/user/delete'
         )
 
@@ -111,7 +111,7 @@ export const getRestrictions = async () : Promise<string[]> => {
 // Currently only string Restrictions defined
 export const setRestrictions = async (restriction: string) : Promise<boolean> => {
     try {
-        const response = await backend.get(
+        const response = await backend.post(
             '/restrictions/set',
             {
                 headers: {

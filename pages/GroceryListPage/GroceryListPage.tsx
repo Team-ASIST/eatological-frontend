@@ -6,6 +6,7 @@ import { ScrollView } from "react-native";
 import GroceryButton from "../../components/ui/inputs/groceryButton";
 import { Grocery, Ingredient } from "../../utils/dataTypes";
 import { groceries, buyGrocery, ingredients } from "../../utils/axios/planUsageCalls";
+import { addUser } from "../../utils/axios/userManagementCalls";
 
 const Text = createText<Theme>();
 const Box = createBox<Theme>();
@@ -25,13 +26,13 @@ const GroceryListPage = () => {
           const ingredientInfos: Ingredient[] = []
           for (let i = 0; i < groceries.length; i++) {
             for (let j = 0; j < ingredients.length; j++) {
-              if (groceries[i].ingredientId === ingredients[j].ingredientId) {
+              if (groceries[i].ingredientId === ingredients[j].id) {
                 ingredientInfos.push(ingredients[j])
                 break
               }
             }
           }
-          setIngredientInfo(ingredients)
+          setIngredientInfo(ingredientInfos)
           setGroceryList(groceries)
         }
       ).catch(
@@ -43,8 +44,18 @@ const GroceryListPage = () => {
   }, [])
 
   // Handle Bought Grocery
-  const buy = async (ingredientID: number) => {
-    setGroceryList(await buyGrocery(ingredientID))
+  const buy = async (index : number, ingredientID: number) => {
+    addUser("sepp")
+
+    const newGroceries = groceryList.map((x) => x)
+    newGroceries[index].bought = newGroceries[index].required
+    newGroceries.push(newGroceries.splice(index, 1)[0])
+    const newIngredientInfos = ingredientInfo.map((x) => x)
+    newIngredientInfos.push(newIngredientInfos.splice(index, 1)[0])
+
+    setIngredientInfo(newIngredientInfos)
+    setGroceryList(newGroceries)
+    await buyGrocery(ingredientID)
   };
 
   return (
@@ -55,6 +66,7 @@ const GroceryListPage = () => {
             return (
               <GroceryButton
                 key={elem.ingredientId}
+                index={index}
                 ingredientId={elem.ingredientId}
                 ingredientName={ingredientInfo[index].name}
                 unit={ingredientInfo[index].unit}

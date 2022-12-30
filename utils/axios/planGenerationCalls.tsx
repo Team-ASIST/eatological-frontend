@@ -50,7 +50,7 @@ export const swipeleft = async (currentList: RecipeSwipeObject[], mealID: number
     const result = currentList.map((x) => x)
     try {
         // Get Plan with old Recipe API
-        const response = await backend.get(
+        const response = await backend.put(
             '/plan/swipeleft',
             {
                 headers: {
@@ -77,7 +77,7 @@ export const swiperight = async (currentList: RecipeSwipeObject[], mealID: numbe
     const result = currentList.map((x) => x)
     try {
         // Get Plan with new Recipe API
-        const response = await backend.get(
+        const response = await backend.put(
             '/plan/swiperight',
             {
                 headers: {
@@ -103,7 +103,7 @@ export const swiperight = async (currentList: RecipeSwipeObject[], mealID: numbe
 
 export const acceptPlan = async () => {
     try {
-        const response = await backend.get(
+        const response = await backend.post(
             '/plan/accept'
         )
     } catch (error) {

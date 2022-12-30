@@ -1,7 +1,7 @@
 // Data Types for the Backend Data
 
 export type Ingredient = {
-    ingredientId: number,
+    id: number,
     name: string,
     smallestAmount: number,
     amount: number,
