@@ -1,9 +1,9 @@
-import { backend } from "./config";
+import { unprotectedBackend, backend } from "./config";
 
 // Calls without token
 export const token = async (username: string) : Promise<string> => {
     try {
-        const response = await backend.get(
+        const response = await unprotectedBackend.get(
             '/token',
             {
                 headers: {
@@ -14,7 +14,7 @@ export const token = async (username: string) : Promise<string> => {
 
         if (response.status = 200) {
             // Extract token
-            let token: string = response.data
+            let token: string = response.data.token
             return token
         }
         console.error("Call Token aborted!")
@@ -27,8 +27,9 @@ export const token = async (username: string) : Promise<string> => {
 
 export const addUser = async (username: string) : Promise<boolean> => {
     try {
-        const response = await backend.post(
+        const response = await unprotectedBackend.post(
             '/user/add',
+            {},
             {
                 headers: {
                     'username': username
@@ -37,7 +38,6 @@ export const addUser = async (username: string) : Promise<boolean> => {
         )
 
         if (response.status = 200) {
-            console.log(response)
             return true
         }
         console.error("Call AddUser aborted!")
@@ -54,6 +54,7 @@ export const renameUser = async (newName: string) : Promise<boolean> => {
     try {
         const response = await backend.put(
             '/user/rename',
+            {},
             {
                 headers: {
                     'username': newName
@@ -75,7 +76,8 @@ export const renameUser = async (newName: string) : Promise<boolean> => {
 export const deleteUser = async () : Promise<boolean> => {
     try {
         const response = await backend.delete(
-            '/user/delete'
+            '/user/delete',
+            {}
         )
 
         if (response.status = 200) {
@@ -113,6 +115,7 @@ export const setRestrictions = async (restriction: string) : Promise<boolean> =>
     try {
         const response = await backend.post(
             '/restrictions/set',
+            {},
             {
                 headers: {
                     'restriction': restriction

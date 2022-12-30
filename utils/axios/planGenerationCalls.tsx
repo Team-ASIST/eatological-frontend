@@ -52,6 +52,7 @@ export const swipeleft = async (currentList: RecipeSwipeObject[], mealID: number
         // Get Plan with old Recipe API
         const response = await backend.put(
             '/plan/swipeleft',
+            {},
             {
                 headers: {
                     'Slot': mealID.toString()
@@ -59,12 +60,12 @@ export const swipeleft = async (currentList: RecipeSwipeObject[], mealID: number
             }
         )
         if (response.status = 200){
-
         // Extract data and parse new recipe by swapping into previous plan
         let newPlan: BackendPlan = response.data
         result[mealID].swapRecipe(newPlan.meals[mealID].recipe)
         return { recipeSwipeObjects: result, sustainabilityScore: newPlan.sustainabilityScore } as FrontendPlan
         }
+
         console.error("Call SwipeLeft aborted!")
     } catch (error) {
         console.error(error)
@@ -79,6 +80,7 @@ export const swiperight = async (currentList: RecipeSwipeObject[], mealID: numbe
         // Get Plan with new Recipe API
         const response = await backend.put(
             '/plan/swiperight',
+            {},
             {
                 headers: {
                     'Slot': mealID.toString()
@@ -104,7 +106,9 @@ export const swiperight = async (currentList: RecipeSwipeObject[], mealID: numbe
 export const acceptPlan = async () => {
     try {
         const response = await backend.post(
-            '/plan/accept'
+            '/plan/accept',
+            {},
+            {headers:{}}
         )
     } catch (error) {
         // Call erroneous

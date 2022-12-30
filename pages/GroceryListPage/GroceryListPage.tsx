@@ -6,7 +6,7 @@ import { ScrollView } from "react-native";
 import GroceryButton from "../../components/ui/inputs/groceryButton";
 import { Grocery, Ingredient } from "../../utils/dataTypes";
 import { groceries, buyGrocery, ingredients } from "../../utils/axios/planUsageCalls";
-import { addUser } from "../../utils/axios/userManagementCalls";
+import { addUser, renameUser, token, deleteUser } from "../../utils/axios/userManagementCalls";
 
 const Text = createText<Theme>();
 const Box = createBox<Theme>();
@@ -20,6 +20,7 @@ const GroceryListPage = () => {
   // Fetch GroceryList
   useEffect(() => {
     groceries().then((groceries: Grocery[]) =>
+      // TODO Get Ingredients from Redux instead of API
       ingredients().then(
         (ingredients: Ingredient[]) => {
           // Horrible -> consider alternatives later
@@ -32,6 +33,7 @@ const GroceryListPage = () => {
               }
             }
           }
+          
           setIngredientInfo(ingredientInfos)
           setGroceryList(groceries)
         }
@@ -45,8 +47,6 @@ const GroceryListPage = () => {
 
   // Handle Bought Grocery
   const buy = async (index : number, ingredientID: number) => {
-    addUser("sepp")
-
     const newGroceries = groceryList.map((x) => x)
     newGroceries[index].bought = newGroceries[index].required
     newGroceries.push(newGroceries.splice(index, 1)[0])

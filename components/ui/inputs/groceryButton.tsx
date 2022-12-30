@@ -46,13 +46,13 @@ const CheckIcon = ({ bought }: CheckIconProps) => {
 const GroceryButton = ({ ingredientId, index, ingredientName, unit, season, local, alternative, bought, required, onClick }: GroceryButtonProps) => {
     return (
         <Box
-            backgroundColor={required === bought ? 'inactiveButtonColor' : 'accent'}
+            backgroundColor={bought === required ? 'inactiveButtonColor' : 'accent'}
             borderRadius={50}
             flexDirection={"row"}
             justifyContent={"space-between"}
             alignItems={"center"}
             height={75}
-            marginTop={"m"}
+            marginTop={"s"}
             paddingLeft={"m"}
             paddingRight={"xs"}
         >
@@ -61,9 +61,16 @@ const GroceryButton = ({ ingredientId, index, ingredientName, unit, season, loca
                     <CheckIcon bought={(required === bought)} />
                 </TouchableOpacity>
             </Box>
+
             <Box flex={6}>
-                <Text variant={"body"} color="primaryCardText">{ingredientName}</Text>
+                <Text variant={"body"} color="primaryCardText">
+                    {ingredientName}
+                    {alternative===null ? "" : "\nAlt: [ " + alternative + " ]"}
+                </Text>
             </Box>
+
+
+            {/* Season, Amounts, Local */}
             <Box flexDirection={"column"} alignItems="flex-start" flex={4}>
                 <Box flexDirection={"row"} alignItems="center">
                     <Ionicons
@@ -71,7 +78,7 @@ const GroceryButton = ({ ingredientId, index, ingredientName, unit, season, loca
                         size={15}
                         color={theme.colors.white}
                     />
-                    <Text variant={"body"}> season </Text>
+                    <Text variant={"body"}> Season </Text>
                 </Box>
                 <Text variant={"body"} color="primaryCardText">
                     {bought} / {required} {unit}
@@ -82,7 +89,7 @@ const GroceryButton = ({ ingredientId, index, ingredientName, unit, season, loca
                         size={15}
                         color={theme.colors.white}
                     />
-                    <Text variant={"body"}> local </Text>
+                    <Text variant={"body"}> Local </Text>
                 </Box>
             </Box>
         </Box>

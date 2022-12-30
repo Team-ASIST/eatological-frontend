@@ -75,6 +75,7 @@ export const planCook = async (recipeID: number) : Promise<Meal[]> => {
     try {
         const response = await backend.put(
             '/plan/cook',
+            {},
             {
                 headers: {
                     'recipe': recipeArg
@@ -128,14 +129,14 @@ export const groceries = async (): Promise<Grocery[]> => {
 }
 
 export const buyGrocery = async (ingredientID: number): Promise<Grocery[]> => {
-    let ingredientArg = JSON.stringify(ingredientID)
     try {
         // Get Groceries for the User
         const response = await backend.put(
-            '/groceries',
+            '/groceries/buy',
+            {},
             {
                 headers: {
-                    'Ingredient': ingredientArg
+                    'Ingredient': ingredientID.toString()
                 }
             }
         )
