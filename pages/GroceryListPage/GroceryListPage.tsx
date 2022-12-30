@@ -6,7 +6,8 @@ import { ScrollView } from "react-native";
 import GroceryButton from "../../components/ui/inputs/groceryButton";
 import { Grocery, Ingredient } from "../../utils/dataTypes";
 import { groceries, buyGrocery, ingredients } from "../../utils/axios/planUsageCalls";
-import { addUser, renameUser, token, deleteUser } from "../../utils/axios/userManagementCalls";
+import { useDispatch, useSelector } from "react-redux";
+import { selectAllGroceries, updateGroceries } from "../../redux/slice/currentPlanSlice";
 
 const Text = createText<Theme>();
 const Box = createBox<Theme>();
@@ -16,11 +17,16 @@ const Box = createBox<Theme>();
 const GroceryListPage = () => {
   const [groceryList, setGroceryList] = useState([] as Grocery[])
   const [ingredientInfo, setIngredientInfo] = useState([] as Ingredient[])
+ const groc = useSelector(selectAllGroceries)
 
-  // Fetch GroceryList
+  const dispatch = useDispatch()
+
+  /* TODO
+  Fetch Groceries and Ingredients to get relevant information
+  --> Replace with useSelector from CurrentPlan and Ingredients once #37 merged
+  */
   useEffect(() => {
     groceries().then((groceries: Grocery[]) =>
-      // TODO Get Ingredients from Redux instead of API
       ingredients().then(
         (ingredients: Ingredient[]) => {
           // Horrible -> consider alternatives later
@@ -55,7 +61,10 @@ const GroceryListPage = () => {
 
     setIngredientInfo(newIngredientInfos)
     setGroceryList(newGroceries)
-    await buyGrocery(ingredientID)
+
+    //await buyGrocery(ingredientID)
+    dispatch(updateGroceries(newGroceries as Grocery[]))
+    
   };
 
   return (
