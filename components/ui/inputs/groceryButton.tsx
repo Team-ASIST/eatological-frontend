@@ -8,6 +8,7 @@ const Box = createBox<Theme>();
 
 export type GroceryButtonProps = {
     ingredientId: number,
+    index: number,
     ingredientName: string,
     unit: string,
     season: boolean,
@@ -15,7 +16,7 @@ export type GroceryButtonProps = {
     alternative: string,
     bought: number,
     required: number,
-    onClick: (arg0: number) => void,
+    onClick: (arg0: number, arg1: number) => void,
 }
 
 export type CheckIconProps = {
@@ -42,10 +43,10 @@ const CheckIcon = ({ bought }: CheckIconProps) => {
     }
 }
 
-const GroceryButton = ({ ingredientId, ingredientName, unit, season, local, alternative, bought, required, onClick }: GroceryButtonProps) => {
+const GroceryButton = ({ ingredientId, index, ingredientName, unit, season, local, alternative, bought, required, onClick }: GroceryButtonProps) => {
     return (
         <Box
-            backgroundColor={"accent"}
+            backgroundColor={required === bought ? 'inactiveButtonColor' : 'accent'}
             borderRadius={50}
             flexDirection={"row"}
             justifyContent={"space-between"}
@@ -53,10 +54,10 @@ const GroceryButton = ({ ingredientId, ingredientName, unit, season, local, alte
             height={75}
             marginTop={"m"}
             paddingLeft={"m"}
-            paddingRight={"s"}
+            paddingRight={"xs"}
         >
             <Box flex={2}>
-                <TouchableOpacity onPress={() => onClick(ingredientId)}>
+                <TouchableOpacity onPress={() => onClick(index, ingredientId)}>
                     <CheckIcon bought={(required === bought)} />
                 </TouchableOpacity>
             </Box>
