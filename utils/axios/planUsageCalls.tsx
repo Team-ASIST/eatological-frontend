@@ -136,7 +136,7 @@ export const buyGrocery = async (ingredientID: number): Promise<Grocery[]> => {
             {},
             {
                 headers: {
-                    'Ingredient': ingredientID.toString()
+                    'IngredientId': ingredientID.toString()
                 }
             }
         )

@@ -18,7 +18,6 @@ const GroceryListPage = () => {
   const [groceryList, setGroceryList] = useState([] as Grocery[])
   const [ingredientInfo, setIngredientInfo] = useState([] as Ingredient[])
   const groc = useSelector(selectAllGroceries)
-  console.log(groc)
 
   const dispatch = useDispatch()
 
