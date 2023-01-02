@@ -59,7 +59,7 @@ export const TabNavigator = () => {
                 component={PlanStackScreen}
                 options={{ headerShown: false, tabBarStyle: { display: 'none' }, unmountOnBlur: true }}
             />
-            <Tab.Screen name="GroceryList" options={{ headerShown: false, title: "Grocery List" }} component={GroceryListPage} />
+            <Tab.Screen name="GroceryList" options={{ headerShown: false, title: "Grocery List", unmountOnBlur: true }} component={GroceryListPage} />
             <Tab.Screen name="CurrentPlan" options={{ headerShown: false, title: "Current Plan" }} component={CurrentPlan} />
             <Tab.Screen name="Settings" options={{ headerShown: false }} component={SettingsPage} />
         </Tab.Navigator>

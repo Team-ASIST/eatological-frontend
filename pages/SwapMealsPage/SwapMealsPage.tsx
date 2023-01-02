@@ -9,11 +9,12 @@ import RecipeCard from "../../components/ui/recipe/recipeCard";
 import { HiddenCard } from "../../components/ui/recipe/hiddenCard";
 import { IMealAmount, resetPlanConfiguration, selectNewPlanConfiguration } from "../../redux/slice/newPlanSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { updateRecipes } from "../../redux/slice/currentPlanSlice";
-import { Meal, RecipeSwipeObject, FrontendPlan } from "../../utils/dataTypes";
+import { updateGroceries, updateRecipes } from "../../redux/slice/currentPlanSlice";
+import { Meal, RecipeSwipeObject, FrontendPlan, Grocery } from "../../utils/dataTypes";
 import NewPlanNavigationBar from '../NewPlanPage/NavigationNewPlanBar'
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { createPlan, swipeleft, swiperight } from "../../utils/axios/planGenerationCalls";
+import { createPlan, swipeleft, swiperight, acceptPlan } from "../../utils/axios/planGenerationCalls";
+import { groceries } from "../../utils/axios/planUsageCalls";
 
 const Text = createText<Theme>()
 const Box = createBox<Theme>()
@@ -21,10 +22,6 @@ const Box = createBox<Theme>()
 export type SwapMealsPageProps = {
   navigation: NavigationScreenProp<any, any>
 };
-
-const wait = (timeout: number) => {
-  return new Promise(resolve => setTimeout(resolve, timeout))
-}
 
 const TopBar = () => {
   return (
@@ -74,7 +71,7 @@ const SwapMealsPage = ({ navigation }: SwapMealsPageProps) => {
   const { mealAmount, leftovers, preferences } = useSelector(selectNewPlanConfiguration)
   // Track Progression of Individual Swipes
   const [swipeTracker, setSwipeTracker] = useState(Array(mealAmount.length).fill(0) as number[])
-  // Current PlangetInitialPlan
+  // Current Plan
   const [recipeList, setRecipeList] = useState([] as RecipeSwipeObject[])
   // Manages Locking, Loading Animation
   const [loading, setLoading] = useState(false)
@@ -147,6 +144,17 @@ const SwapMealsPage = ({ navigation }: SwapMealsPageProps) => {
                 } as Meal
               })
             }))
+            acceptPlan().then(
+              () => {
+                groceries().then(
+                  response => {
+                    dispatch(updateGroceries(
+                      {groceries: response}
+                    ))
+                  }
+                )
+              }
+            )
             dispatch(resetPlanConfiguration())
             navigation.navigate('CurrentPlan')
           } : 
