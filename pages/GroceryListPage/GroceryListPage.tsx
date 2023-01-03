@@ -52,6 +52,7 @@ const GroceryListPage = () => {
   }, [])
 
   // Handle Bought Grocery
+  // TODO: Move code to some logic file. This logic shouldnt't be in the UI 
   const buy = async (index: number, ingredientID: number) => {
     if (groceryList[index].bought !== groceryList[index].required) {
       const newGroceries = groceryList.map((x) => x)

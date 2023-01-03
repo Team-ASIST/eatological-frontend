@@ -1,13 +1,10 @@
 import React from "react";
 import { createBox, createText } from '@shopify/restyle';
 import { Theme } from '../../utils/theme';
-import RecipeCard, { RecipeCardProps } from "../../components/ui/recipe/recipeCard";
-import { SafeAreaView } from "react-native-safe-area-context";
-import recipeCard from "../../components/ui/recipe/recipeCard";
+import RecipeCard from "../../components/ui/recipe/recipeCard";
 import { RefreshControl, ScrollView } from "react-native-gesture-handler";
 import { useSelector } from "react-redux";
 import { selectAllRecipes } from "../../redux/slice/currentPlanSlice";
-import { RecipeSwipeObject } from "../../utils/dataTypes";
 import { Meal } from "../../utils/dataTypes";
 import { FloatingActionButton } from "../../components/ui/inputs/FloatingActionButton";
 import { NavigationScreenProp } from 'react-navigation'
@@ -42,7 +39,7 @@ const CurrentPlan = ({ navigation }: CurrentPlanProps) => {
         }>
           {
             recipes.map((el: Meal) => {
-              return <RecipeCard key={el.id} imageSource={el.recipe.imageUrl} cookingTime={el.recipe.prepTime} recipeName={el.recipe.name} ready={Math.random() < 0.5} persons={el.portions} />
+              return <RecipeCard key={el.id} imageSource={el.recipe.imageUrl} cookingTime={el.recipe.prepTime} recipeName={el.recipe.name} ready={Math.random() < 0.5} persons={el.portions} onClick={() => {navigation.navigate('Recipe', { recipe: el.recipe})}} />
             })
           }
         </ScrollView>

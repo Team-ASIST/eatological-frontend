@@ -7,7 +7,7 @@ const getActiveToken = () : string => {
 
 export const unprotectedBackend  = axios.create({
   baseURL: 'https://eatological-dev.azurewebsites.net',
-  timeout: 10000,
+  timeout: 100000,
   headers: {
     'accept': 'application/json'
   }
@@ -15,7 +15,7 @@ export const unprotectedBackend  = axios.create({
 
 export const backend = axios.create({
     baseURL: 'https://eatological-dev.azurewebsites.net',
-    timeout: 10000,
+    timeout: 100000,
     headers: {
       'EatologicalToken': getActiveToken(),
       'accept': 'application/json'
