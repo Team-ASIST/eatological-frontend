@@ -11,6 +11,8 @@
   "dependencies": {
     "@expo-google-fonts/fraunces": "^0.2.2",
     "@expo/webpack-config": "^0.17.2",
+    "@react-native-async-storage/async-storage": "^1.17.11",
+    "@react-native-community/async-storage": "^1.12.1",
     "@react-navigation/bottom-tabs": "^6.4.3",
     "@react-navigation/native": "^6.0.16",
     "@react-navigation/native-stack": "^6.9.4",
@@ -37,6 +39,7 @@
     "react-native-web": "~0.18.9",
     "react-navigation": "^4.4.4",
     "react-redux": "^8.0.5",
+    "redux-persist": "^6.0.0",
     "undefined": "@expo/vector-icons/Ionicons"
   },
   "devDependencies": {
