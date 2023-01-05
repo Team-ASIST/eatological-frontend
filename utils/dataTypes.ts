@@ -1,7 +1,7 @@
 // Data Types for the Backend Data
 
 export type Ingredient = {
-    id: number
+    id: number,
     name: string,
     smallestAmount: number,
     amount: number,
@@ -34,6 +34,12 @@ export type RecipeState = {
 export type BackendPlan = {
     meals: RecipeState[],
     sustainabilityScore: number
+}
+
+export type Grocery = {
+    ingredientId: number,
+    required: number,
+    bought: number
 }
 
 // Data Types for the Frontend Data

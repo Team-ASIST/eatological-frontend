@@ -30,7 +30,7 @@ const SearchBarDisplay = ({
             backgroundColor="mainBackground"
             borderRadius={50}
             borderWidth={2}
-            borderColor="primaryCardBackground"
+            borderColor="accent"
             justifyContent="space-between">
             {/* Input field */}
             <TextInput

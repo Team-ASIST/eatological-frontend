@@ -20,9 +20,9 @@ const ScreenToPosition: { [id: string]: number; } = {
 
 interface NavigationNewPlanBarProps {
   children: typeof React.Children | ReactNode | ReactElement;
-  onClickBack: () => void;
-  onClickNext: () => void;
-  onClickAbort: () => void;
+  onClickBack?: () => void;
+  onClickNext?: () => void;
+  onClickAbort?: () => void;
 }
 
 const NavigationNewPlanBar = (props: NavigationNewPlanBarProps): ReactElement => {
@@ -30,19 +30,19 @@ const NavigationNewPlanBar = (props: NavigationNewPlanBarProps): ReactElement =>
   const route = useRoute();
 
   const customStyles = {
-    stepStrokeCurrentColor: theme.colors.primaryButtonColor,
+    stepStrokeCurrentColor: theme.colors.accent,
     stepStrokeUnFinishedColor: '#aaaaaa',
-    stepStrokeFinishedColor: theme.colors.primaryButtonColor,
+    stepStrokeFinishedColor: theme.colors.accent,
     separatorUnFinishedColor: '#aaaaaa',
-    separatorFinishedColor: theme.colors.primaryButtonColor,
+    separatorFinishedColor: theme.colors.accent,
     stepIndicatorUnFinishedColor: '#ffffff',
     stepIndicatorCurrentColor: '#ffffff',
-    stepIndicatorFinishedColor: theme.colors.primaryButtonColor,
-    stepIndicatorLabelCurrentColor: theme.colors.primaryButtonColor,
+    stepIndicatorFinishedColor: theme.colors.accent,
+    stepIndicatorLabelCurrentColor: theme.colors.accent,
     stepIndicatorLabelFinishedColor: '#ffffff',
     stepIndicatorLabelUnFinishedColor: '#aaaaaa',
     labelColor: '#999999',
-    currentStepLabelColor: theme.colors.primaryButtonColor
+    currentStepLabelColor: theme.colors.accent
   }
 
   const getStepIndicatorIconConfig = ({
@@ -54,7 +54,7 @@ const NavigationNewPlanBar = (props: NavigationNewPlanBarProps): ReactElement =>
   }) => {
     const iconConfig = {
       name: 'feed',
-      color: stepStatus === 'finished' ? '#ffffff' : theme.colors.primaryButtonColor,
+      color: stepStatus === 'finished' ? '#ffffff' : theme.colors.accent,
       size: 15,
     };
     switch (position) {
@@ -92,13 +92,13 @@ const NavigationNewPlanBar = (props: NavigationNewPlanBarProps): ReactElement =>
     </Box>
     <>{props.children}</>
     <Box flexDirection={"row"} justifyContent="space-between">
-      {ScreenToPosition[route.name] == 0 ?
-        <View style={{ width: 60 }} /> :
-        <IconButton
-          onPress={props.onClickBack}
-          icon={'chevron-back-circle-outline'}
-          size={60}
-          color={theme.colors.inactiveButtonColor} />
+      {
+        props.onClickBack ? <IconButton
+            onPress={props.onClickBack}
+            icon={'chevron-back-circle-outline'}
+            size={60}
+            color={theme.colors.inactiveButtonColor} /> : 
+            <View style={{ width: 60 }} />
       }
       <IconButton
         onPress={
@@ -120,11 +120,15 @@ const NavigationNewPlanBar = (props: NavigationNewPlanBarProps): ReactElement =>
         icon={'close-circle-outline'}
         size={50}
         color={theme.colors.alert} />
-      <IconButton
-        onPress={props.onClickNext}
-        icon={ScreenToPosition[route.name] == WorkflowLength - 1 ? 'checkmark-circle-outline' : 'chevron-forward-circle-outline'}
-        size={60}
-        color={ScreenToPosition[route.name] == WorkflowLength - 1 ? theme.colors.success : theme.colors.inactiveButtonColor} />
+      {
+        props.onClickNext ?
+          <IconButton
+            onPress={props.onClickNext}
+            icon={ScreenToPosition[route.name] == WorkflowLength - 1 ? 'checkmark-circle-outline' : 'chevron-forward-circle-outline'}
+            size={60}
+            color={ScreenToPosition[route.name] == WorkflowLength - 1 ? theme.colors.success : theme.colors.inactiveButtonColor} /> : 
+            <View style={{ width: 60 }} />
+      }
     </Box>
   </>)
 };

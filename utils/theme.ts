@@ -1,21 +1,32 @@
 import { createTheme } from '@shopify/restyle';
 
 export const palette = {
-    coral: '#F88379',
-    lightCoral: '#FF9F96',
-    darkCoral: '#AB4B43',
-    darkMintGreen: '#32AB67',
-    lightMintGreen: '#79F7B1',
+    // Main Palette
+    pastelPink: '#FFD0D0',
+    lightPink: '#FFADAD',
+    salmonPink:'#FF9999',
+    congoPink: '#FF7070',
 
+    //Accent
+    navyGreen:'#304C09',
+    avocado: '#53810E',
 
+    //Various
+    green: '#42ba96',
+    yellow: '#ffc107',
+    red: '#df4759',
+     
     white: '#ffffff',
     black: '#000000',
     grey: '#5E5854',
-    creme: '#FFE5E3',
-    spacegrey: '#646464',
-
-    red: '#FF3021'
+    sonicSilver: '#7E7570'
 };
+
+export const fonts = {
+    light: 'Fraunces_300Light',
+    medium: 'Fraunces_500Medium',
+    bold: 'Fraunces_700Bold'
+}
 
 const theme = createTheme({
     spacing: {
@@ -31,18 +42,23 @@ const theme = createTheme({
         l: 250, 
     },
     colors: {
-        mainBackground: palette.creme,
-        mainForeground: palette.darkCoral,
-        primaryCardBackground: palette.coral,
-        secondaryCardBackground: palette.darkMintGreen,
+        mainBackground: palette.pastelPink,
+        mainForeground: palette.congoPink,
+        primaryCardBackground: palette.congoPink,
+        secondaryCardBackground: palette.lightPink,
         primaryCardText: palette.white,
         secondaryCardText: palette.black,
-        primaryButtonColor: palette.coral,
-        secondaryButtonColor: palette.lightMintGreen,
+        primaryButtonColor: palette.salmonPink,
+        secondaryButtonColor: palette.congoPink,
         inactiveButtonColor: palette.grey,
-        navigationButtonColor: palette.spacegrey,
+        navigationButtonColor: palette.sonicSilver,
         alert: palette.red,
-        success: palette.lightMintGreen
+        warn: palette.yellow,
+        success: palette.green,
+        accent: palette.navyGreen,
+        lightAccent: palette.avocado,
+        black: palette.black,
+        white: palette.white
     },
     breakpoints: {
         phone: 0,
@@ -108,8 +124,9 @@ export const darkTheme: Theme = {
         mainBackground: palette.grey,
         mainForeground: palette.white,
 
-        secondaryCardBackground: palette.darkMintGreen,
+        secondaryCardBackground: palette.navyGreen,
         secondaryCardText: palette.black,
+        accent: palette.salmonPink,
     },
 };
 

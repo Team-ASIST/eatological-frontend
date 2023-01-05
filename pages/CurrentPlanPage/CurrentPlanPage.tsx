@@ -9,6 +9,8 @@ import { useSelector } from "react-redux";
 import { selectAllRecipes } from "../../redux/slice/currentPlanSlice";
 import { RecipeSwipeObject } from "../../utils/dataTypes";
 import { Meal } from "../../utils/dataTypes";
+import { FloatingActionButton } from "../../components/ui/inputs/FloatingActionButton";
+import { NavigationScreenProp } from 'react-navigation'
 
 const Text = createText<Theme>();
 const Box = createBox<Theme>();
@@ -17,8 +19,11 @@ const wait = (timeout: number) => {
   return new Promise(resolve => setTimeout(resolve, timeout));
 }
 
+type CurrentPlanProps = {
+  navigation: NavigationScreenProp<any, any>
+}
 
-const CurrentPlan = () => {
+const CurrentPlan = ({ navigation }: CurrentPlanProps) => {
   const [refreshing, setRefreshing] = React.useState(false);
   const recipes = useSelector(selectAllRecipes)
 
@@ -29,7 +34,6 @@ const CurrentPlan = () => {
 
   return (
     <Box backgroundColor="mainBackground" flex={1}>
-      <SafeAreaView style={{ flex: 1 }}>
         <ScrollView refreshControl={
           <RefreshControl
             refreshing={refreshing}
@@ -42,7 +46,7 @@ const CurrentPlan = () => {
             })
           }
         </ScrollView>
-      </SafeAreaView >
+        <FloatingActionButton route="NewPlan" navigation={navigation}/>
     </Box>
 
   );

@@ -1,15 +1,39 @@
 import { configureStore } from '@reduxjs/toolkit'
-
+import {
+  persistStore,
+  persistReducer,
+  FLUSH,
+  REHYDRATE,
+  PAUSE,
+  PERSIST,
+  PURGE,
+  REGISTER,
+} from 'redux-persist'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import newPlanReducer from './slice/newPlanSlice'
 import currentPlanReducer from './slice/currentPlanSlice'
 import ingredientSlice from './slice/ingredientSlice'
 
+const persistConfig = {
+  key: 'root',
+  version: 1,
+  storage: AsyncStorage,
+}
+
+const persistedReducer = persistReducer(persistConfig, currentPlanReducer)
+
 export const store = configureStore({
-    reducer: {
-        newPlan: newPlanReducer,
-        currentPlan: currentPlanReducer,
-        currentIngredients: ingredientSlice,
-    },
+  reducer: {
+    newPlan: newPlanReducer,
+    currentPlan: persistedReducer,
+    currentIngredients: ingredientSlice,
+  },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+      },
+    }),
 })
 
 // Infer the `RootState` and `AppDispatch` types from the store itself

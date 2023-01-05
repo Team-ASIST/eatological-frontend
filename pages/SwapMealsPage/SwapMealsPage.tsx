@@ -13,7 +13,8 @@ import { updateRecipes } from "../../redux/slice/currentPlanSlice";
 import { Meal, RecipeSwipeObject, FrontendPlan, smallIngredient } from "../../utils/dataTypes";
 import NewPlanNavigationBar from '../NewPlanPage/NavigationNewPlanBar'
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { createPlan, swipeleft, swiperight } from "../../utils/axios/planGenerationCalls";
+import { createPlan, swipeleft, swiperight, acceptPlan } from "../../utils/axios/planGenerationCalls";
+import { groceries } from "../../utils/axios/planUsageCalls";
 
 const Text = createText<Theme>()
 const Box = createBox<Theme>()
@@ -21,10 +22,6 @@ const Box = createBox<Theme>()
 export type SwapMealsPageProps = {
   navigation: NavigationScreenProp<any, any>
 };
-
-const wait = (timeout: number) => {
-  return new Promise(resolve => setTimeout(resolve, timeout))
-}
 
 const TopBar = () => {
   return (
@@ -74,7 +71,7 @@ const SwapMealsPage = ({ navigation }: SwapMealsPageProps) => {
   const { mealAmount, leftovers, preferences } = useSelector(selectNewPlanConfiguration)
   // Track Progression of Individual Swipes
   const [swipeTracker, setSwipeTracker] = useState(Array(mealAmount.length).fill(0) as number[])
-  // Current PlangetInitialPlan
+  // Current Plan
   const [recipeList, setRecipeList] = useState([] as RecipeSwipeObject[])
   // Manages Locking, Loading Animation
   const [loading, setLoading] = useState(false)
@@ -136,6 +133,7 @@ const SwapMealsPage = ({ navigation }: SwapMealsPageProps) => {
         onClickBack={
           () => navigation.navigate('LeftOvers')}
         onClickNext={
+          recipeList.length > 0 ? 
           () => {
             dispatch(updateRecipes({
               recipes: recipeList.map((r: RecipeSwipeObject) => {
@@ -146,9 +144,21 @@ const SwapMealsPage = ({ navigation }: SwapMealsPageProps) => {
                 } as Meal
               })
             }))
+            acceptPlan().then(
+              () => {
+                groceries().then(
+                  response => {
+                    dispatch(updateGroceries(
+                      {groceries: response}
+                    ))
+                  }
+                )
+              }
+            )
             dispatch(resetPlanConfiguration())
             navigation.navigate('CurrentPlan')
-          }
+          } : 
+          undefined
         }
         onClickAbort={
           () => {
