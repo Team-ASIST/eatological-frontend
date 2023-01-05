@@ -20,7 +20,6 @@ const PlusMinusInput = ({ increment, decrement, value, title }: PlusMinusInputPr
             marginVertical="s"
             padding="m"
             backgroundColor="accent"
-            opacity={0.78}
             borderRadius={10}
             flexDirection="row"
             justifyContent="space-between">

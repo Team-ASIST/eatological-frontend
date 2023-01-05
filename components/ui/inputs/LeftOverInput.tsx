@@ -27,8 +27,7 @@ const LeftOverInput = ({
             <Box
                 marginVertical="s"
                 padding="m"
-                backgroundColor="primaryCardBackground"
-                opacity={0.78}
+                backgroundColor="accent"
                 borderRadius={10}
                 flexDirection="row"
                 justifyContent="space-between">
@@ -42,7 +41,7 @@ const LeftOverInput = ({
                         onPress={decrement}
                         icon={'ios-remove-circle-outline'}
                         size={28}></IconButton>
-                    <Box flexDirection="row" alignContent="center" marginHorizontal="m">
+                    <Box flexDirection="row" alignContent="center" marginHorizontal="s">
                         <Text variant="subsubheader" color={'primaryCardText'} marginLeft="xs">
                             {value} {unit}
                         </Text>

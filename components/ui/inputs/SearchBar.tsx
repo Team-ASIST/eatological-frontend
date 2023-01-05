@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { createBox, createText } from '@shopify/restyle'
 import { TextInput, Keyboard, FlatList, ListRenderItemInfo, View } from 'react-native'
-import { Theme } from '../../../utils/theme'
+import theme, { Theme } from '../../../utils/theme'
 import IconButton from './IconButton'
 import { leftoverAdded, selectAllLeftovers } from '../../../redux/slice/newPlanSlice'
 import { useDispatch, useSelector } from 'react-redux'
@@ -27,6 +27,7 @@ const SearchBarDisplay = ({
         <Box
             flexDirection="row"
             padding="m"
+            marginBottom="s"
             backgroundColor="mainBackground"
             borderRadius={50}
             borderWidth={2}
@@ -34,7 +35,7 @@ const SearchBarDisplay = ({
             justifyContent="space-between">
             {/* Input field */}
             <TextInput
-                style={{ width: 265 }}
+                style={{ width: 235 }}
                 placeholder="Search..."
                 value={searchPhrase}
                 onChangeText={setSearchPhrase}
@@ -51,7 +52,8 @@ const SearchBarDisplay = ({
                         setSearchPhrase('')
                     }}
                     icon={'close'}
-                    size={15}></IconButton>
+                    size={15}
+                    color={theme.colors.black}/>
             )}
         </Box>
     )
@@ -75,12 +77,13 @@ const Item = ({ id, name, smallestAmount, amount, unit }: ItemProps) => {
             borderRadius={10}
             flexDirection="row"
             justifyContent="space-between">
-            <Text variant="navigationButton">{name}</Text>
+            <Text variant="subsubheader">{name}</Text>
             {/* icon button for adding food items to leftovers */}
             <IconButton
                 onPress={() => dispatch(leftoverAdded({ id, name, smallestAmount, amount, unit }))}
                 icon={'ios-add-circle-outline'}
-                size={25}></IconButton>
+                size={25}
+                color={theme.colors.black}/>
         </Box>
     )
 }
