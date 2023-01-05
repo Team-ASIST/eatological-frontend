@@ -9,7 +9,7 @@ import RecipeCard from "../../components/ui/recipe/recipeCard";
 import { HiddenCard } from "../../components/ui/recipe/hiddenCard";
 import { ILeftOver, IMealAmount, resetPlanConfiguration, selectNewPlanConfiguration } from "../../redux/slice/newPlanSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { updateRecipes } from "../../redux/slice/currentPlanSlice";
+import { updateRecipes, updateGroceries } from "../../redux/slice/currentPlanSlice";
 import { Meal, RecipeSwipeObject, FrontendPlan, smallIngredient } from "../../utils/dataTypes";
 import NewPlanNavigationBar from '../NewPlanPage/NavigationNewPlanBar'
 import Ionicons from 'react-native-vector-icons/Ionicons';
