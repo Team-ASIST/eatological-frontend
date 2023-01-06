@@ -4,67 +4,59 @@ import { createBox, createText } from '@shopify/restyle';
 import { Theme } from '../../utils/theme';
 import { ScrollView } from "react-native";
 import GroceryButton from "../../components/ui/inputs/groceryButton";
-import { Grocery, Ingredient } from "../../utils/dataTypes";
-import { groceries, buyGrocery, ingredients } from "../../utils/axios/planUsageCalls";
+import { Grocery, Ingredient, largeGrocery } from "../../utils/dataTypes";
+import { getGroceries, buyGrocery, ingredients } from "../../utils/axios/planUsageCalls";
 import { useDispatch, useSelector } from "react-redux";
-import { selectAllGroceries, buyGroc } from "../../redux/slice/currentPlanSlice";
+import { buyGroc, selectSortedGroceries } from "../../redux/slice/currentPlanSlice";
 
 const Text = createText<Theme>();
 const Box = createBox<Theme>();
 
-
-
 const GroceryListPage = () => {
-  const [groceryList, setGroceryList] = useState([] as Grocery[])
-  const [ingredientInfo, setIngredientInfo] = useState([] as Ingredient[])
-  const groc = useSelector(selectAllGroceries)
-
   const dispatch = useDispatch()
+  const groceries = useSelector(selectSortedGroceries)
 
-  /* TODO
-  Fetch Groceries and Ingredients to get relevant information
-  --> Replace with useSelector from CurrentPlan and Ingredients once #37 merged
-  */
+  // Synchronize deviated states for both local and backend deviations
   useEffect(() => {
-    groceries().then((groceries: Grocery[]) =>
-      ingredients().then(
-        (ingredients: Ingredient[]) => {
-          // Horrible -> consider alternatives later
-          const ingredientInfos: Ingredient[] = []
-          for (let i = 0; i < groceries.length; i++) {
-            for (let j = 0; j < ingredients.length; j++) {
-              if (groceries[i].ingredientId === ingredients[j].id) {
-                ingredientInfos.push(ingredients[j])
-                break
-              }
+    //console.log(groceries)
+    getGroceries().then(
+      backendGroceries => {
+        // Collect all missing updates for backend
+        const unsyncedGroceriesBackend: Grocery[] = []
+        for (const grocery of backendGroceries) {
+          const largeGrocery = groceries.find(largeGrocery => largeGrocery.ingredientId === grocery.ingredientId)
+          if (largeGrocery) {
+            // Local missing information from backend
+            if (largeGrocery.grocery.bought < grocery.bought) {
+              dispatch(buyGroc({ id: grocery.ingredientId }))
+            }
+
+            // Backend missing information from local
+            if (largeGrocery.grocery.bought > grocery.bought) {
+              unsyncedGroceriesBackend.push({ ingredientId: grocery.ingredientId, required: grocery.required, bought: grocery.required })
             }
           }
-
-          setIngredientInfo(ingredientInfos)
-          setGroceryList(groceries)
         }
-      ).catch(
-        error => { console.error(error) }
-      )
-    ).catch(
-      error => { console.error(error) }
+        buyGrocery(unsyncedGroceriesBackend)
+      }
     )
   }, [])
 
   // Handle Bought Grocery
-  const buy = async (index: number, ingredientID: number) => {
-    if (groceryList[index].bought !== groceryList[index].required) {
-      const newGroceries = groceryList.map((x) => x)
-      newGroceries[index].bought = newGroceries[index].required
-      newGroceries.push(newGroceries.splice(index, 1)[0])
-      const newIngredientInfos = ingredientInfo.map((x) => x)
-      newIngredientInfos.push(newIngredientInfos.splice(index, 1)[0])
+  const buy = async (ingredientID: number) => {
+    const largeGrocery = groceries.find(largeGrocery => largeGrocery.ingredientId === ingredientID)
+    if (largeGrocery) {
+      if (largeGrocery.grocery.bought !== largeGrocery.grocery.required) {
+        dispatch(buyGroc({ id: ingredientID }))
 
-      setIngredientInfo(newIngredientInfos)
-      setGroceryList(newGroceries)
-
-      dispatch(buyGroc({ id: ingredientID }))
-      await buyGrocery(ingredientID)
+        const update: Grocery[] = []
+        update.push({
+          ingredientId: ingredientID,
+          required: largeGrocery.grocery.required,
+          bought: largeGrocery.grocery.required
+        })
+        await buyGrocery(update)
+      }
     }
   };
 
@@ -72,19 +64,13 @@ const GroceryListPage = () => {
     <Box padding="m" backgroundColor="mainBackground" flex={1}>
       <ScrollView showsVerticalScrollIndicator={false}>
         {
-          groceryList.map((elem: Grocery, index: number) => {
+          groceries.map((elem: largeGrocery) => {
             return (
               <GroceryButton
                 key={elem.ingredientId}
-                index={index}
                 ingredientId={elem.ingredientId}
-                ingredientName={ingredientInfo[index].name}
-                unit={ingredientInfo[index].unit}
-                season={ingredientInfo[index].season}
-                local={ingredientInfo[index].local}
-                alternative={ingredientInfo[index].alternative}
-                bought={elem.bought}
-                required={elem.required}
+                grocery={elem.grocery}
+                ingredient={elem.ingredient}
                 onClick={buy}
               />
             )
