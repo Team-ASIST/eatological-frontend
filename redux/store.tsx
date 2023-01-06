@@ -12,6 +12,7 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import newPlanReducer from './slice/newPlanSlice'
 import currentPlanReducer from './slice/currentPlanSlice'
+import ingredientSlice from './slice/ingredientSlice'
 
 const persistConfig = {
   key: 'root',
@@ -24,7 +25,8 @@ const persistedReducer = persistReducer(persistConfig, currentPlanReducer)
 export const store = configureStore({
   reducer: {
     newPlan: newPlanReducer,
-    currentPlan: persistedReducer
+    currentPlan: persistedReducer,
+    currentIngredients: ingredientSlice,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
