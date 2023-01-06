@@ -4,7 +4,7 @@ import { NavigationContainer } from '@react-navigation/native'
 import { ThemeProvider } from '@shopify/restyle'
 import { PersistGate } from 'redux-persist/integration/react'
 import { Provider, useDispatch } from 'react-redux'
-import { store } from './redux/store'
+import { AppDispatch, store } from './redux/store'
 import {
   persistStore
 } from 'redux-persist'
@@ -16,9 +16,7 @@ import {
   Fraunces_700Bold,
 } from '@expo-google-fonts/fraunces'
 import { TabNavigator } from './navigation/tabNavigator'
-import { ingredientAdded } from './redux/slice/ingredientSlice';
-import { Ingredient } from './utils/dataTypes';
-import { ingredients } from './utils/axios/planUsageCalls';
+import { getIngredients } from './redux/slice/currentPlanSlice'
 //Wrapper component which enables the usage of useDispatch in App component
 const AppWrapper = () => {
   return (
@@ -30,14 +28,10 @@ const AppWrapper = () => {
 
 const App = () => {
   //load ingredients and store them in redux store (ingredientSlice)
-  const dispatch = useDispatch()
+  const dispatch = useDispatch<AppDispatch>()
 
   useEffect(() => {
-    ingredients()
-      .then(ingredients => {
-        ingredients.map((item: Ingredient) => dispatch(ingredientAdded(item)))
-      })
-      .catch((error) => console.error(error))
+    dispatch(getIngredients())
   }, []
   )
 

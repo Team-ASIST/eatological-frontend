@@ -75,7 +75,7 @@ export type FrontendPlan = {
     sustainabilityScore: number
 }
 
-export type largeGrocery = {
+export type LargeGrocery = {
     ingredientId: number,
     grocery: Grocery,
     ingredient: Ingredient
