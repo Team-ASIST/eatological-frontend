@@ -1,6 +1,7 @@
 export type RootStackParamList = {
     MealQuantity: undefined;
     LeftOvers: undefined;
+    FoodPreferences: undefined;
     SwapMeals: undefined;
 };
 

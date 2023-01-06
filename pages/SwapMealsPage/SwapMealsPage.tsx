@@ -131,7 +131,7 @@ const SwapMealsPage = ({ navigation }: SwapMealsPageProps) => {
     <Box padding="m" backgroundColor="mainBackground" flex={1}>
       <NewPlanNavigationBar
         onClickBack={
-          () => navigation.navigate('LeftOvers')}
+          () => navigation.navigate('FoodPreferences')}
         onClickNext={
           recipeList.length > 0 ? 
           () => {
