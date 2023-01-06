@@ -17,6 +17,7 @@ import NewPlanNavigationBar from './NavigationNewPlanBar'
 import { useRoute } from '@react-navigation/native'
 import { resetPlanConfiguration } from '../../redux/slice/newPlanSlice'
 
+
 const Text = createText<Theme>()
 const Box = createBox<Theme>()
 
@@ -48,7 +49,7 @@ const LeftoversScreen = ({ navigation }: Props) => {
                 onClickBack={
                     () => navigation.navigate('MealQuantity')}
                 onClickNext={
-                    () => navigation.navigate('SwapMeals')}
+                    () => navigation.navigate('FoodPreferences')}
                 onClickAbort={
                     () => {
                         dispatch(resetPlanConfiguration())
