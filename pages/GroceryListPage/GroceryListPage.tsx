@@ -1,11 +1,11 @@
 import React from "react";
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { createBox, createText } from '@shopify/restyle';
 import { Theme } from '../../utils/theme';
 import { ScrollView } from "react-native";
 import GroceryButton from "../../components/ui/inputs/groceryButton";
-import { Grocery, Ingredient, largeGrocery } from "../../utils/dataTypes";
-import { getGroceries, buyGrocery, ingredients } from "../../utils/axios/planUsageCalls";
+import { Grocery, largeGrocery } from "../../utils/dataTypes";
+import { getGroceries, buyGrocery } from "../../utils/axios/planUsageCalls";
 import { useDispatch, useSelector } from "react-redux";
 import { buyGroc, selectSortedGroceries } from "../../redux/slice/currentPlanSlice";
 
@@ -49,13 +49,13 @@ const GroceryListPage = () => {
       if (largeGrocery.grocery.bought !== largeGrocery.grocery.required) {
         dispatch(buyGroc({ id: ingredientID }))
 
-        const update: Grocery[] = []
-        update.push({
-          ingredientId: ingredientID,
-          required: largeGrocery.grocery.required,
-          bought: largeGrocery.grocery.required
-        })
-        await buyGrocery(update)
+        await buyGrocery([
+          {
+            ingredientId: ingredientID,
+            required: largeGrocery.grocery.required,
+            bought: largeGrocery.grocery.required
+          } as Grocery
+        ])
       }
     }
   };

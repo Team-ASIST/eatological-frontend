@@ -26,7 +26,7 @@ const CheckIcon = ({ bought }: CheckIconProps) => {
     if (bought) {
         return (
             <Ionicons
-                name={'checkmark-circle-outline'}
+                name={'checkmark'}
                 size={50}
                 color={theme.colors.white}
             />
@@ -34,7 +34,7 @@ const CheckIcon = ({ bought }: CheckIconProps) => {
     } else {
         return (
             <Ionicons
-                name={'add-circle-outline'}
+                name={'close'}
                 size={50}
                 color={theme.colors.white}
             />
@@ -45,18 +45,18 @@ const CheckIcon = ({ bought }: CheckIconProps) => {
 export const IngredientItem = ({ ingredientName, unit, season, local, alternative, bought, required }: IngredientItemProps) => {
     return (
         <Box
-            backgroundColor={bought === required ? 'inactiveButtonColor' : 'accent'}
+            backgroundColor={bought >= required ? 'navigationButtonColor' : 'mainBackground' }
             flexDirection={"row"}
             justifyContent={"space-between"}
             alignItems={"center"}
             borderColor={'black'}
-            borderTopWidth={1.5}
+            borderTopWidth={0.75}
             height={75}
             paddingLeft={"s"}
             paddingRight={"xs"}
         >
             <Box flex={2}>
-                <CheckIcon bought={(required === bought)} />
+                <CheckIcon bought={(bought >= required)} />
             </Box>
 
             <Box flex={6}>
@@ -78,7 +78,7 @@ export const IngredientItem = ({ ingredientName, unit, season, local, alternativ
                     <Text variant={"body"}> Season </Text>
                 </Box>
                 <Text variant={"body"} color="primaryCardText">
-                    {bought} / {required} {unit}
+                    {bought.toFixed(2) >= required.toFixed(2) ? required.toFixed(2) : 0.0} / {required.toFixed(2)} {unit}
                 </Text>
                 <Box flexDirection={"row"} alignItems="center">
                     <Ionicons

@@ -47,7 +47,8 @@ export type Grocery = {
 export type Meal = {
     id: number,
     recipe: Recipe,
-    portions: number
+    portions: number,
+    cooked: boolean
 }
 
 export class RecipeSwipeObject {

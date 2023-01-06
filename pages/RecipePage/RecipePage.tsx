@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { createBox, createText } from '@shopify/restyle';
 import theme, { Theme } from '../../utils/theme';
-import { smallIngredient } from "../../utils/dataTypes";
+import { Ingredient, largeGrocery, smallIngredient } from "../../utils/dataTypes";
 import { RootTabParamList } from "../../navigation/types";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { Animated, ScrollView, View } from "react-native";
@@ -9,6 +9,11 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import { IngredientItem } from "./components/IngredientItem";
 import DirectionList from "./components/DirectionList";
 import InstructionItem from "./components/DirectionList";
+import { useDispatch, useSelector } from "react-redux";
+import { selectAllIngredients } from "../../redux/slice/ingredientSlice";
+import { selectSortedGroceries } from "../../redux/slice/currentPlanSlice";
+import IconButton from "../../components/ui/inputs/IconButton";
+import TextButton from "../../components/ui/inputs/TextButton";
 
 
 const Text = createText<Theme>();
@@ -26,6 +31,9 @@ type RecipePageProps = NativeStackScreenProps<RootTabParamList, 'Recipe'>;
 
 const RecipePage = (props: RecipePageProps) => {
     const [currentAction, setCurrentAction] = useState<RecipeAction>(RecipeAction.Ingredients)
+    const dispatch = useDispatch()
+    const groceries = useSelector(selectSortedGroceries)
+
     const { recipe } = props.route.params;
 
     const pan = React.useRef(new Animated.ValueXY()).current;
@@ -80,14 +88,8 @@ const RecipePage = (props: RecipePageProps) => {
                     <Box flex={1} backgroundColor="mainBackground">
                         <Box padding="m">
                             <Text
-                                numberOfLines={2}
-                                variant="header">
+                                variant="subheader">
                                 {recipe.name ?? ''}
-                            </Text>
-                            <Text
-                                numberOfLines={2}
-                                variant="subsubheader">
-                                {'The healthy and sustainable fries'}
                             </Text>
                             <View style={{
                                 borderWidth: 0.5,
@@ -104,32 +106,35 @@ const RecipePage = (props: RecipePageProps) => {
                                     <Text variant={"boldBody"}>{recipe.totalTime}m</Text>
                                 </Box>
                             </Box>
-                            <View style={{
-                                borderWidth: 0.5,
-                                borderColor: 'black',
-                                margin: 10,
-                            }} />
                         </Box>
-                        <Box justifyContent={"space-evenly"} flexDirection="row">
-                            <Box padding={"m"} backgroundColor={currentAction == RecipeAction.Ingredients ? "accent" : "lightAccent"} flexDirection="row" flex={1} onTouchEnd={() => { setCurrentAction(RecipeAction.Ingredients) }}>
+                        <Box justifyContent={"space-evenly"} flexDirection="row" borderTopWidth={0.75}>
+                            <Box padding={"m"} backgroundColor={currentAction == RecipeAction.Ingredients ? "primaryButtonColor" : "secondaryButtonColor"} flexDirection="row" flex={1} onTouchEnd={() => { setCurrentAction(RecipeAction.Ingredients) }}>
                                 <Text variant={"subsubheader"}>Ingredients</Text>
                             </Box>
-                            <Box padding={"m"} backgroundColor={currentAction == RecipeAction.Directions ? "accent" : "lightAccent"} flexDirection="row" flex={1} onTouchEnd={() => { setCurrentAction(RecipeAction.Directions) }}>
+                            <Box padding={"m"} backgroundColor={currentAction == RecipeAction.Directions ? "primaryButtonColor" : "secondaryButtonColor"} flexDirection="row" flex={1} onTouchEnd={() => { setCurrentAction(RecipeAction.Directions) }}>
                                 <Text variant={"subsubheader"}>Directions</Text>
                             </Box>
                         </Box>
                         {
                             currentAction == RecipeAction.Ingredients ?
                                 recipe.items.map(
-                                    (ingredient: smallIngredient, idx: number) => <IngredientItem
-                                        key={ingredient.id}
-                                        ingredientName={"testName"}
-                                        unit={"testUnit"}
-                                        season={true}
-                                        local={false}
-                                        alternative={"testAlt"}
-                                        bought={2}
-                                        required={2} />
+                                    (ingredient: smallIngredient, idx: number) => {
+
+                                        const grocery = groceries.find((groc: largeGrocery) => groc.ingredientId === ingredient.id)
+
+                                        if (grocery) {
+                                            return <IngredientItem
+                                                key={ingredient.id}
+                                                ingredientName={grocery.ingredient.name}
+                                                unit={grocery.ingredient.unit}
+                                                season={grocery.ingredient.season}
+                                                local={grocery.ingredient.local}
+                                                alternative={grocery.ingredient.alternative}
+                                                bought={grocery.grocery.bought}
+                                                required={ingredient.smallestAmountNumber} />
+                                        }
+                                    }
+
                                 )
                                 :
                                 <Box padding={"m"}>
@@ -140,6 +145,9 @@ const RecipePage = (props: RecipePageProps) => {
                                             )
                                         )
                                     }
+                                    <Box>
+                                        <TextButton icon={'checkmark'} size={30} label="Mark as cooked" />
+                                    </Box>
                                 </Box>
                         }
                     </Box>
