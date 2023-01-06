@@ -6,6 +6,9 @@ import { RootTabParamList } from "../../navigation/types";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { Animated, ScrollView, View } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import { IngredientItem } from "./components/IngredientItem";
+import DirectionList from "./components/DirectionList";
+import InstructionItem from "./components/DirectionList";
 
 
 const Text = createText<Theme>();
@@ -19,98 +22,11 @@ enum RecipeAction {
     Ingredients
 }
 
-export type CheckIconProps = {
-    bought: boolean
-}
-
-export type IngredientItemProps = {
-    ingredientName: string,
-    unit: string,
-    season: boolean,
-    local: boolean,
-    alternative: string,
-    bought: number,
-    required: number,
-}
-
-const CheckIcon = ({ bought }: CheckIconProps) => {
-    if (bought) {
-        return (
-            <Ionicons
-                name={'checkmark-circle-outline'}
-                size={50}
-                color={theme.colors.white}
-            />
-        )
-    } else {
-        return (
-            <Ionicons
-                name={'add-circle-outline'}
-                size={50}
-                color={theme.colors.white}
-            />
-        )
-    }
-}
-
-const IngredientItem = ({ ingredientName, unit, season, local, alternative, bought, required }: IngredientItemProps) => {
-    return (
-        <Box
-            backgroundColor={bought === required ? 'inactiveButtonColor' : 'accent'}
-            flexDirection={"row"}
-            justifyContent={"space-between"}
-            alignItems={"center"}
-            borderColor={'black'}
-            borderTopWidth={1.5}
-            height={75}
-            paddingLeft={"s"}
-            paddingRight={"xs"}
-        >
-            <Box flex={2}>
-                <CheckIcon bought={(required === bought)} />
-            </Box>
-
-            <Box flex={6}>
-                <Text variant={"body"} color="primaryCardText">
-                    {ingredientName}
-                    {alternative === null ? "" : "\nAlt: [ " + alternative + " ]"}
-                </Text>
-            </Box>
-
-
-            {/* Season, Amounts, Local */}
-            <Box flexDirection={"column"} alignItems="flex-start" flex={4}>
-                <Box flexDirection={"row"} alignItems="center">
-                    <Ionicons
-                        name={season ? 'checkmark-circle-outline' : 'close-circle-outline'}
-                        size={15}
-                        color={theme.colors.white}
-                    />
-                    <Text variant={"body"}> Season </Text>
-                </Box>
-                <Text variant={"body"} color="primaryCardText">
-                    {bought} / {required} {unit}
-                </Text>
-                <Box flexDirection={"row"} alignItems="center">
-                    <Ionicons
-                        name={local ? 'checkmark-circle-outline' : 'close-circle-outline'}
-                        size={15}
-                        color={theme.colors.white}
-                    />
-                    <Text variant={"body"}> Local </Text>
-                </Box>
-            </Box>
-        </Box>
-    )
-}
-
 type RecipePageProps = NativeStackScreenProps<RootTabParamList, 'Recipe'>;
 
 const RecipePage = (props: RecipePageProps) => {
     const [currentAction, setCurrentAction] = useState<RecipeAction>(RecipeAction.Ingredients)
     const { recipe } = props.route.params;
-
-    console.log(recipe)
 
     const pan = React.useRef(new Animated.ValueXY()).current;
 
@@ -219,10 +135,9 @@ const RecipePage = (props: RecipePageProps) => {
                                 <Box padding={"m"}>
                                     {
                                         recipe.steps.map(
-                                            (step: string, idx: number) => (<Box>
-                                                <Text paddingBottom={"m"} variant={"subsubheader"}>{idx + 1}. Schritt</Text>
-                                                <Text paddingBottom={"m"} variant={"body"}>{step}</Text>
-                                            </Box>)
+                                            (step: string, idx: number) => (
+                                                <InstructionItem stepNumber={idx + 1} stepInstruction={step} />
+                                            )
                                         )
                                     }
                                 </Box>
