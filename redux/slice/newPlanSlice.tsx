@@ -1,5 +1,7 @@
-import { createSlice, nanoid } from '@reduxjs/toolkit'
-import { RootState } from '../store'
+import { createAsyncThunk, createSlice, nanoid } from '@reduxjs/toolkit'
+import { backend } from '../../utils/axios/config'
+import { BackendPlan, FrontendPlan, RecipeSwipeObject } from '../../utils/dataTypes'
+import { AppDispatch, RootState } from '../store'
 
 export interface IMealAmount {
     id: string
@@ -98,8 +100,9 @@ const newPlanSlice = createSlice({
             }
         },
         resetPlanConfiguration: () => initialState,
-    },
+    }
 })
+
 
 export const {
     mealAdded,
