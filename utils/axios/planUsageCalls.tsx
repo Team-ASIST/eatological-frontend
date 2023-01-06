@@ -1,7 +1,7 @@
 import { backend } from "./config";
-import { Grocery, Ingredient , Recipe, BackendPlan, Meal} from "../dataTypes";
+import { Grocery, Ingredient, Recipe, BackendPlan, Meal } from "../dataTypes";
 
-export const ingredients = async () : Promise<Ingredient[]> => {
+export const ingredients = async (): Promise<Ingredient[]> => {
     try {
         const response = await backend.get(
             '/ingredients'
@@ -20,7 +20,7 @@ export const ingredients = async () : Promise<Ingredient[]> => {
     return [] as Ingredient[]
 }
 
-export const recipes = async () : Promise<Recipe[]> => {
+export const recipes = async (): Promise<Recipe[]> => {
     try {
         const response = await backend.get(
             '/recipes'
@@ -39,7 +39,7 @@ export const recipes = async () : Promise<Recipe[]> => {
     return [] as Recipe[]
 }
 
-export const plan = async () : Promise<Meal[]> => {
+export const plan = async (): Promise<Meal[]> => {
     try {
         const response = await backend.get(
             '/plan'
@@ -53,9 +53,9 @@ export const plan = async () : Promise<Meal[]> => {
             while (i < plan.meals.length) {
                 meals.push(
                     {
-                     id: i,
-                     recipe: plan.meals[i].recipe,
-                     portions: plan.meals[i].portion   
+                        id: i,
+                        recipe: plan.meals[i].recipe,
+                        portions: plan.meals[i].portion
                     } as Meal
                 )
                 i += 1
@@ -70,7 +70,7 @@ export const plan = async () : Promise<Meal[]> => {
     return [] as Meal[]
 }
 
-export const planCook = async (recipeID: number) : Promise<Meal[]> => {
+export const planCook = async (recipeID: number): Promise<Meal[]> => {
     let recipeArg = JSON.stringify(recipeID)
     try {
         const response = await backend.put(
@@ -91,9 +91,9 @@ export const planCook = async (recipeID: number) : Promise<Meal[]> => {
             while (i < plan.meals.length) {
                 meals.push(
                     {
-                     id: i,
-                     recipe: plan.meals[i].recipe,
-                     portions: plan.meals[i].portion   
+                        id: i,
+                        recipe: plan.meals[i].recipe,
+                        portions: plan.meals[i].portion
                     } as Meal
                 )
                 i += 1
@@ -108,7 +108,7 @@ export const planCook = async (recipeID: number) : Promise<Meal[]> => {
     return [] as Meal[]
 }
 
-export const groceries = async (): Promise<Grocery[]> => {
+export const getGroceries = async (): Promise<Grocery[]> => {
     try {
         // Get Groceries for the User
         const response = await backend.get(
@@ -128,7 +128,8 @@ export const groceries = async (): Promise<Grocery[]> => {
     return [] as Grocery[]
 }
 
-export const buyGrocery = async (ingredientID: number): Promise<Grocery[]> => {
+export const buyGrocery = async (groceries: Grocery[]): Promise<Grocery[]> => {
+    let groceriesArg = JSON.stringify(groceries)
     try {
         // Get Groceries for the User
         const response = await backend.put(
@@ -136,7 +137,7 @@ export const buyGrocery = async (ingredientID: number): Promise<Grocery[]> => {
             {},
             {
                 headers: {
-                    'IngredientId': ingredientID.toString()
+                    'Groceries': groceriesArg
                 }
             }
         )

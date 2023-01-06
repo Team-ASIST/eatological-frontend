@@ -74,3 +74,9 @@ export type FrontendPlan = {
     recipeSwipeObjects: RecipeSwipeObject[],
     sustainabilityScore: number
 }
+
+export type largeGrocery = {
+    ingredientId: number,
+    grocery: Grocery,
+    ingredient: Ingredient
+}

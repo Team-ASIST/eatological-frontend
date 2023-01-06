@@ -15,6 +15,7 @@ const WorkflowLength = 3
 const ScreenToPosition: { [id: string]: number; } = {
   MealQuantity: 0,
   LeftOvers: 1,
+  FoodPreferences: 1,
   SwapMeals: 2
 }
 

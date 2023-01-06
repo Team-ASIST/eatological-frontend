@@ -7,14 +7,15 @@ import { NavigationScreenProp } from "react-navigation";
 import { SwipeListView } from 'react-native-swipe-list-view';
 import RecipeCard from "../../components/ui/recipe/recipeCard";
 import { HiddenCard } from "../../components/ui/recipe/hiddenCard";
-import { IMealAmount, resetPlanConfiguration, selectNewPlanConfiguration } from "../../redux/slice/newPlanSlice";
+import { ILeftOver, IMealAmount, resetPlanConfiguration, selectNewPlanConfiguration } from "../../redux/slice/newPlanSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { updateGroceries, updateRecipes } from "../../redux/slice/currentPlanSlice";
-import { Meal, RecipeSwipeObject, FrontendPlan, Grocery } from "../../utils/dataTypes";
+import { updateRecipes, updateGroceries } from "../../redux/slice/currentPlanSlice";
+import { Meal, RecipeSwipeObject, FrontendPlan, largeGrocery } from "../../utils/dataTypes";
 import NewPlanNavigationBar from '../NewPlanPage/NavigationNewPlanBar'
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { createPlan, swipeleft, swiperight, acceptPlan } from "../../utils/axios/planGenerationCalls";
-import { groceries } from "../../utils/axios/planUsageCalls";
+import { getGroceries } from "../../utils/axios/planUsageCalls";
+import { selectAllIngredients } from "../../redux/slice/ingredientSlice";
 
 const Text = createText<Theme>()
 const Box = createBox<Theme>()
@@ -55,7 +56,7 @@ const Animation = (props: animationProps) => {
     return (
       <Box alignItems={"center"} flexGrow={1} flexDirection={"column"} justifyContent={"center"}>
         <Image
-          style={{ width: windowWidth, height: 9/16 * windowWidth }}
+          style={{ width: windowWidth, height: 9 / 16 * windowWidth }}
           source={require('../../assets/animation.gif')} />
       </Box>
     )
@@ -65,6 +66,7 @@ const Animation = (props: animationProps) => {
 }
 
 const SwapMealsPage = ({ navigation }: SwapMealsPageProps) => {
+  const ingredients = useSelector(selectAllIngredients)
   // Initial State for Animation
   const [setupPhase, setSetupPhase] = useState(true)
   // Load Initial data for recipes
@@ -82,7 +84,7 @@ const SwapMealsPage = ({ navigation }: SwapMealsPageProps) => {
 
   // Fetch Initial Plan on First Mounting
   useEffect(() => {
-    createPlan(mealAmount.map((m: IMealAmount) => m.amount), leftovers, preferences).then(
+    createPlan(mealAmount.map((m: IMealAmount) => m.amount), leftovers.map((l: ILeftOver) => ({ id: l.id, smallestAmountNumber: (l.amount / l.smallestAmount) })), preferences).then(
       (initialPlan: FrontendPlan) => {
         setRecipeList(initialPlan.recipeSwipeObjects)
         setSwipeTracker(Array(initialPlan.recipeSwipeObjects.length).fill(0))
@@ -99,7 +101,7 @@ const SwapMealsPage = ({ navigation }: SwapMealsPageProps) => {
   const swipeLeft = async (rowKey: any, rowMap: any) => {
     if (swipeTracker[rowKey] > 0 && !loading) {
       setLoading(true)
-      const newPlan : FrontendPlan = await swipeleft(recipeList, rowKey)
+      const newPlan: FrontendPlan = await swipeleft(recipeList, rowKey)
       setRecipeList(newPlan.recipeSwipeObjects)
       setSustainabilityScore(newPlan.sustainabilityScore)
 
@@ -115,7 +117,7 @@ const SwapMealsPage = ({ navigation }: SwapMealsPageProps) => {
   const swipeRight = async (rowKey: any, rowMap: any) => {
     if (!loading) {
       setLoading(true)
-      const newPlan : FrontendPlan = await swiperight(recipeList, rowKey)
+      const newPlan: FrontendPlan = await swiperight(recipeList, rowKey)
       setRecipeList(newPlan.recipeSwipeObjects)
       setSustainabilityScore(newPlan.sustainabilityScore)
 
@@ -131,34 +133,48 @@ const SwapMealsPage = ({ navigation }: SwapMealsPageProps) => {
     <Box padding="m" backgroundColor="mainBackground" flex={1}>
       <NewPlanNavigationBar
         onClickBack={
-          () => navigation.navigate('LeftOvers')}
+          () => navigation.navigate('FoodPreferences')}
         onClickNext={
-          recipeList.length > 0 ? 
-          () => {
-            dispatch(updateRecipes({
-              recipes: recipeList.map((r: RecipeSwipeObject) => {
-                return {
-                  id: r.id,
-                  recipe: r.recipe,
-                  portions: r.portions
-                } as Meal
-              })
-            }))
-            acceptPlan().then(
-              () => {
-                groceries().then(
-                  response => {
-                    dispatch(updateGroceries(
-                      {groceries: response}
-                    ))
-                  }
-                )
-              }
-            )
-            dispatch(resetPlanConfiguration())
-            navigation.navigate('CurrentPlan')
-          } : 
-          undefined
+          recipeList.length > 0 ?
+            () => {
+              dispatch(updateRecipes({
+                recipes: recipeList.map((r: RecipeSwipeObject) => {
+                  return {
+                    id: r.id,
+                    recipe: r.recipe,
+                    portions: r.portions
+                  } as Meal
+                })
+              }))
+              acceptPlan().then(
+                () => {
+                  getGroceries().then(
+                    groceries => {
+                      const largeGroceries: largeGrocery[] = []
+
+                      for (const groc of groceries) {
+                        for (const ing of ingredients) {
+                          if (groc.ingredientId === ing.id) {
+                            largeGroceries.push({
+                              ingredientId: groc.ingredientId,
+                              grocery: groc,
+                              ingredient: ing
+                            })
+                          }
+                        }
+                      }
+
+                      dispatch(updateGroceries(
+                        { groceries: largeGroceries }
+                      ))
+                    }
+                  )
+                }
+              )
+              dispatch(resetPlanConfiguration())
+              navigation.navigate('CurrentPlan')
+            } :
+            undefined
         }
         onClickAbort={
           () => {
@@ -167,51 +183,51 @@ const SwapMealsPage = ({ navigation }: SwapMealsPageProps) => {
           }
         }>
         <Box flexGrow={1} height="50%">
-        <TopBar />
-      <Animation setupPhase={setupPhase} />
-      <SwipeListView
-        data={recipeList}
-        keyExtractor={(data) => "" + data.id}
-        useFlatList={true}
+          <TopBar />
+          <Animation setupPhase={setupPhase} />
+          <SwipeListView
+            data={recipeList}
+            keyExtractor={(data) => "" + data.id}
+            useFlatList={true}
 
-        disableLeftSwipe={loading}
-        disableRightSwipe={loading}
+            disableLeftSwipe={loading}
+            disableRightSwipe={loading}
 
-        stopLeftSwipe={50}
-        stopRightSwipe={-50}
+            stopLeftSwipe={50}
+            stopRightSwipe={-50}
 
-        leftActivationValue={25}
-        rightActivationValue={-25}
-        leftActionValue={50}
-        rightActionValue={-50}
+            leftActivationValue={25}
+            rightActivationValue={-25}
+            leftActionValue={50}
+            rightActionValue={-50}
 
-        onLeftAction={swipeLeft}
-        onRightAction={swipeRight}
+            onLeftAction={swipeLeft}
+            onRightAction={swipeRight}
 
-        previewRowKey={"0"}
-        previewDuration={1000}
-        previewOpenValue={-50}
+            previewRowKey={"0"}
+            previewDuration={1000}
+            previewOpenValue={-50}
 
-        showsVerticalScrollIndicator={false}
+            showsVerticalScrollIndicator={false}
 
-        renderItem={(data, rowMap) => (
-          <TouchableOpacity activeOpacity={1}>
-            <Box paddingTop={"m"}>
-              <RecipeCard
-                imageSource={data.item.recipe.imageUrl}
-                cookingTime={data.item.recipe.prepTime}
-                recipeName={data.item.recipe.name}
-                persons={data.item.portions}
-                ready={false} />
-            </Box>
-          </TouchableOpacity>
-        )}
-        renderHiddenItem={(data, rowMap) => (
-          <HiddenCard loading={loading} />
-        )}
-        leftOpenValue={50}
-        rightOpenValue={-50}
-      />
+            renderItem={(data, rowMap) => (
+              <TouchableOpacity activeOpacity={1}>
+                <Box paddingTop={"m"}>
+                  <RecipeCard
+                    imageSource={data.item.recipe.imageUrl}
+                    cookingTime={data.item.recipe.prepTime}
+                    recipeName={data.item.recipe.name}
+                    persons={data.item.portions}
+                    ready={false} />
+                </Box>
+              </TouchableOpacity>
+            )}
+            renderHiddenItem={(data, rowMap) => (
+              <HiddenCard loading={loading} />
+            )}
+            leftOpenValue={50}
+            rightOpenValue={-50}
+          />
         </Box>
       </ NewPlanNavigationBar>
     </Box >

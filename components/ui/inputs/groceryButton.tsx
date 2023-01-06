@@ -2,51 +2,22 @@ import { createBox, createText } from '@shopify/restyle';
 import theme, { Theme } from '../../../utils/theme';
 import { TouchableOpacity } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons'
+import { Grocery, Ingredient } from '../../../utils/dataTypes';
 
 const Text = createText<Theme>();
 const Box = createBox<Theme>();
 
 export type GroceryButtonProps = {
     ingredientId: number,
-    index: number,
-    ingredientName: string,
-    unit: string,
-    season: boolean,
-    local: boolean,
-    alternative: string,
-    bought: number,
-    required: number,
-    onClick: (arg0: number, arg1: number) => void,
+    grocery: Grocery,
+    ingredient: Ingredient,
+    onClick: (arg0: number) => void,
 }
 
-export type CheckIconProps = {
-    bought: boolean
-}
-
-const CheckIcon = ({ bought }: CheckIconProps) => {
-    if (bought) {
-        return (
-            <Ionicons
-                name={'checkmark-circle-outline'}
-                size={50}
-                color={theme.colors.white}
-            />
-        )
-    } else {
-        return (
-            <Ionicons
-                name={'add-circle-outline'}
-                size={50}
-                color={theme.colors.white}
-            />
-        )
-    }
-}
-
-const GroceryButton = ({ ingredientId, index, ingredientName, unit, season, local, alternative, bought, required, onClick }: GroceryButtonProps) => {
+const GroceryButton = ({ ingredientId, grocery, ingredient, onClick }: GroceryButtonProps) => {
     return (
         <Box
-            backgroundColor={bought === required ? 'inactiveButtonColor' : 'accent'}
+            backgroundColor={grocery.bought === grocery.required ? 'inactiveButtonColor' : 'accent'}
             borderRadius={50}
             flexDirection={"row"}
             justifyContent={"space-between"}
@@ -57,15 +28,28 @@ const GroceryButton = ({ ingredientId, index, ingredientName, unit, season, loca
             paddingRight={"xs"}
         >
             <Box flex={2}>
-                <TouchableOpacity onPress={() => onClick(index, ingredientId)}>
-                    <CheckIcon bought={(required === bought)} />
+                <TouchableOpacity onPress={() => onClick(ingredientId)}>
+                    {
+                        grocery.bought === grocery.required ?
+                            <Ionicons
+                                name={'checkmark-circle-outline'}
+                                size={50}
+                                color={theme.colors.white}
+                            /> :
+                            <Ionicons
+                                name={'add-circle-outline'}
+                                size={50}
+                                color={theme.colors.white}
+                            />
+
+                    }
                 </TouchableOpacity>
             </Box>
 
             <Box flex={6}>
                 <Text variant={"body"} color="primaryCardText">
-                    {ingredientName}
-                    {alternative===null ? "" : "\nAlt: [ " + alternative + " ]"}
+                    {ingredient.name}
+                    {ingredient.alternative === null ? "" : "\nAlt: [ " + ingredient.alternative + " ]"}
                 </Text>
             </Box>
 
@@ -74,18 +58,18 @@ const GroceryButton = ({ ingredientId, index, ingredientName, unit, season, loca
             <Box flexDirection={"column"} alignItems="flex-start" flex={4}>
                 <Box flexDirection={"row"} alignItems="center">
                     <Ionicons
-                        name={season ? 'checkmark-circle-outline' : 'close-circle-outline'}
+                        name={ingredient.season ? 'checkmark-circle-outline' : 'close-circle-outline'}
                         size={15}
                         color={theme.colors.white}
                     />
                     <Text variant={"body"}> Season </Text>
                 </Box>
                 <Text variant={"body"} color="primaryCardText">
-                    {bought} / {required} {unit}
+                    {grocery.bought} / {grocery.required} {ingredient.unit}
                 </Text>
                 <Box flexDirection={"row"} alignItems="center">
                     <Ionicons
-                        name={local ? 'checkmark-circle-outline' : 'close-circle-outline'}
+                        name={ingredient.local ? 'checkmark-circle-outline' : 'close-circle-outline'}
                         size={15}
                         color={theme.colors.white}
                     />
