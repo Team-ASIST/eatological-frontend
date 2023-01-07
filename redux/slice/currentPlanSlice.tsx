@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice, current, nanoid } from '@reduxjs/toolkit'
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { backend } from '../../utils/axios/config'
 import { Meal, LargeGrocery, Grocery, Ingredient, BackendPlan } from '../../utils/dataTypes'
 import { AppDispatch, RootState } from '../store'
