@@ -17,6 +17,7 @@ import {
 } from '@expo-google-fonts/fraunces'
 import { TabNavigator } from './navigation/tabNavigator'
 import { getIngredients } from './redux/slice/currentPlanSlice'
+import SplashScreen from './pages/SplashScreen/SplashScreen'
 //Wrapper component which enables the usage of useDispatch in App component
 const AppWrapper = () => {
   return (
@@ -49,7 +50,7 @@ const App = () => {
   }
   return (
     <Provider store={store}>
-      <PersistGate loading={null} persistor={persistor}>
+      <PersistGate loading={<SplashScreen/>} persistor={persistor}>
         <ThemeProvider theme={colorTheme === 'dark' ? darkTheme : theme}>
           <NavigationContainer>
             <SafeAreaView style={{ flex: 1, paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0 }}>
