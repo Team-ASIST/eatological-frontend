@@ -14,7 +14,7 @@ import NewPlanNavigationBar from '../NewPlanPage/NavigationNewPlanBar'
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { createPlan, swipeleft, swiperight } from "../../utils/axios/planGenerationCalls";
 import { AppDispatch } from "../../redux/store";
-import { acceptPlan, getGroceries } from "../../redux/slice/currentPlanSlice";
+import { acceptPlan } from "../../redux/slice/currentPlanSlice";
 
 const Text = createText<Theme>()
 const Box = createBox<Theme>()

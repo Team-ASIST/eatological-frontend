@@ -2,11 +2,11 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { createBox, createText } from '@shopify/restyle';
 import { Theme } from '../../utils/theme';
-import { ScrollView } from "react-native";
+import { RefreshControl, ScrollView } from "react-native";
 import GroceryButton from "../../components/ui/inputs/groceryButton";
 import { Grocery, Ingredient, LargeGrocery } from "../../utils/dataTypes";
 import { useDispatch, useSelector } from "react-redux";
-import { getGroceries, selectSortedGroceries, updateGroceries } from "../../redux/slice/currentPlanSlice";
+import { getGroceries, getPlan, selectSortedGroceries, selectUpdatingPlan, updateGroceries } from "../../redux/slice/currentPlanSlice";
 import { AppDispatch } from "../../redux/store";
 
 const Text = createText<Theme>();
@@ -15,12 +15,19 @@ const Box = createBox<Theme>();
 const GroceryListPage = () => {
   const dispatch = useDispatch<AppDispatch>()
   const groceries = useSelector(selectSortedGroceries)
+  const updating = useSelector(selectUpdatingPlan)
+  const [refreshing, setRefreshing] = React.useState(false)
 
   // Synchronize deviated states for both local and backend deviations
   useEffect(() => {
     //console.log(groceries)
     dispatch(getGroceries())
   }, [])
+
+  const onRefresh = React.useCallback(() => {
+    dispatch(getPlan())
+    dispatch(getGroceries())
+  }, []);
 
   // Handle Bought Grocery
   const buy = async (ingredientID: number) => {
@@ -41,7 +48,12 @@ const GroceryListPage = () => {
 
   return (
     <Box padding="m" backgroundColor="mainBackground" flex={1}>
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView refreshControl={
+          <RefreshControl
+            refreshing={updating}
+            onRefresh={onRefresh}
+          />
+        }>
         {
           groceries.map((elem: LargeGrocery) => {
             return (

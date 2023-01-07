@@ -1,19 +1,21 @@
 import { createAsyncThunk, createSlice, current, nanoid } from '@reduxjs/toolkit'
 import { backend } from '../../utils/axios/config'
-import { Meal, LargeGrocery, Grocery, Ingredient } from '../../utils/dataTypes'
+import { Meal, LargeGrocery, Grocery, Ingredient, BackendPlan } from '../../utils/dataTypes'
 import { AppDispatch, RootState } from '../store'
 
 
 interface IState {
     recipes: Meal[], // TODO: Now we have meal and recipe type, this is very confusing
     groceries: LargeGrocery[],
-    ingredients: Ingredient[]
+    ingredients: Ingredient[],
+    updating: boolean
 }
 
 const initialState: IState = {
     recipes: [],
     groceries: [],
     ingredients: [],
+    updating: false
 }
 
 const currentPlanSlice = createSlice({
@@ -26,25 +28,37 @@ const currentPlanSlice = createSlice({
     },
     extraReducers(builder) {
         builder
-            .addCase(acceptPlan.fulfilled, (state, action) => {
-                const meals = action.payload as Meal[]
+            .addCase(acceptPlan.pending, (state, { meta }) => {
+                const meals = meta.arg as Meal[]
                 state.recipes = meals
+            })
+            .addCase(getGroceries.pending, (state) => {
+                state.updating = true
+            })
+            .addCase(getGroceries.rejected, (state) => {
+                state.updating = false
             })
             .addCase(getGroceries.fulfilled, (state, action) => {
                 const groceries = action.payload as Grocery[]
-                let largeGroceries: LargeGrocery[] = state.groceries
+                let largeGroceries: LargeGrocery[] = []
 
                 for (const grocery of groceries) {
                     let largeGrocery = state.groceries.find(largeGrocery => largeGrocery.ingredientId === grocery.ingredientId)
                     if (largeGrocery) {
                         if (largeGrocery.grocery.bought < grocery.bought) {
-                            Object.assign(largeGrocery, {
+                            largeGroceries.push(Object.assign(largeGrocery, {
                                 ...largeGrocery,
                                 grocery: {
                                     ...largeGrocery.grocery,
                                     bought: largeGrocery.grocery.required
                                 }
-                            });
+                            }))
+                        } else {
+                            largeGroceries.push({
+                                ingredientId: grocery.ingredientId,
+                                grocery: grocery,
+                                ingredient: largeGrocery.ingredient
+                            })
                         }
                     } else {
                         for (const ing of state.ingredients) {
@@ -60,11 +74,43 @@ const currentPlanSlice = createSlice({
                 }
 
                 state.groceries = largeGroceries
+                state.updating = false
             })
             .addCase(getIngredients.fulfilled, (state, action) => {
                 const ingredients = action.payload as Ingredient[]
 
                 state.ingredients = ingredients
+            })
+            .addCase(getPlan.pending, (state) => {
+                state.updating = true
+            })
+            .addCase(getPlan.rejected, (state) => {
+                state.updating = false
+            })
+            .addCase(getPlan.fulfilled, (state, action) => {
+                const meals = action.payload as Meal[]
+
+                state.recipes = meals
+                state.updating = false
+            })
+            .addCase(updateGroceries.pending, (state, { meta }) => {
+                const groceries = meta.arg as Grocery[]
+
+                for (const grocery of groceries) {
+                    let largeGrocery = state.groceries.find(largeGrocery => largeGrocery.ingredientId === grocery.ingredientId)
+                    if (largeGrocery) {
+                        // Local missing information from backend
+                        if (largeGrocery.grocery.bought < grocery.bought) {
+                            Object.assign(largeGrocery, {
+                                ...largeGrocery,
+                                grocery: {
+                                    ...largeGrocery.grocery,
+                                    bought: largeGrocery.grocery.required
+                                }
+                            });
+                        }
+                    }
+                }
             })
             .addCase(updateGroceries.fulfilled, (state, action) => {
                 const groceries = action.payload as Grocery[]
@@ -84,8 +130,9 @@ const currentPlanSlice = createSlice({
                         }
                     }
                 }
-            }
-            )
+            })
+            .addCase(updateGroceries.rejected, (state, action) => {
+            })
     }
 })
 
@@ -120,16 +167,16 @@ export const updateGroceries = createAsyncThunk<
 
             if (response.status = 200) {
                 // Return data
-
                 return response.data.groceries as Grocery[]
+            } else {
+                console.error("Call Groceries aborted!")
+                throw Error("Response was not 200")
             }
-            console.error("Call BuyGrocery aborted!")
         } catch (error) {
             // Call erroneous
             console.error(error)
+            throw error
         }
-        // Send Empty GroceryList
-        return [] as Grocery[]
     }
 )
 
@@ -151,9 +198,47 @@ export const acceptPlan = createAsyncThunk<
         } catch (error) {
             // Call erroneous
             console.error(error)
+            throw error
         }
+    }
+)
 
-        return [] as Meal[]
+export const getPlan = createAsyncThunk<
+    Meal[],
+    void
+>(
+    'currentPlan/getPlan',
+    async () => {
+        try {
+            const response = await backend.get(
+                '/plan'
+            )
+
+            if (response.status = 200) {
+                // Extract data and parse results into Meal Array
+                let plan: BackendPlan = response.data
+                const meals: Meal[] = []
+                let i: number = 0
+                while (i < plan.meals.length) {
+                    meals.push(
+                        {
+                            id: i,
+                            recipe: plan.meals[i].recipe,
+                            portions: plan.meals[i].portion
+                        } as Meal
+                    )
+                    i += 1
+                }
+
+                return meals
+            } else {
+                console.error("Call Groceries aborted!")
+                throw Error("Response was not 200")
+            }
+        } catch (error) {
+            console.error(error)
+            throw error
+        }
     }
 )
 
@@ -171,13 +256,14 @@ export const getIngredients = createAsyncThunk<
                 // Extract data and parse results into Ingredient Array
                 let ingredients: Ingredient[] = response.data
                 return ingredients
+            } else {
+                console.error("Call Groceries aborted!")
+                throw Error("Response was not 200")
             }
-            console.error("Call Ingredients aborted!")
-
         } catch (error) {
             console.error(error)
+            throw error
         }
-        return [] as Ingredient[]
     }
 )
 
@@ -194,19 +280,20 @@ export const getGroceries = createAsyncThunk<
 
             if (response.status = 200) {
                 // Return data
-                console.log(response.data.groceries)
                 return response.data.groceries as Grocery[]
+            } else {
+                console.error("Call Groceries aborted!")
+                throw Error("Response was not 200")
             }
-            console.error("Call Groceries aborted!")
         } catch (error) {
             // Call erroneous
             console.error(error)
+            throw error
         }
-        // Send Empty GroceryList
-        return [] as Grocery[]
     }
 )
 
+export const selectUpdatingPlan = (state: RootState) => state.currentPlan.updating
 export const selectAllRecipes = (state: RootState) => state.currentPlan.recipes
 export const selectAllIngredients = (state: RootState) => state.currentPlan.ingredients
 export const selectNewPlanConfiguration = (state: RootState) => state.newPlan
