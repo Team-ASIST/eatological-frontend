@@ -63,7 +63,6 @@ export const TabNavigator = () => {
             <Tab.Screen name="GroceryList" options={{ headerShown: false, title: "Grocery List", unmountOnBlur: true }} component={GroceryListPage} />
             <Tab.Screen name="CurrentPlan" options={{ headerShown: false, title: "Current Plan" }} component={CurrentPlan} />
             <Tab.Screen name="Recipe" options={{ headerShown: false, title: "Recipe" }} component={RecipePage} />
-            <Tab.Screen name="Settings" options={{ headerShown: false }} component={SettingsPage} />
             <Tab.Screen name="Settings" options={{ headerShown: false, unmountOnBlur: true }} component={SettingsScreen} />
         </Tab.Navigator>
     )
