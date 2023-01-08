@@ -8,6 +8,7 @@ import { Restriction } from "../../utils/dataTypes";
 import { ScrollView } from "react-native";
 import { TouchableOpacity } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons'
+import IconButton from "../../components/ui/inputs/IconButton";
 
 const Text = createText<Theme>()
 const Box = createBox<Theme>()
@@ -95,6 +96,13 @@ const RestrictionsPage = ({ navigation }: RestrictionsPageProps) => {
                     })
                 }
             </ScrollView>
+            <Box alignItems="center">
+                <IconButton
+                    onPress={() => navigation.navigate("User")}
+                    icon={'chevron-back-circle-outline'}
+                    size={60}
+                    color={theme.colors.inactiveButtonColor} />
+            </Box>
         </Box>
     );
 }

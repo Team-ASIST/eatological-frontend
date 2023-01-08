@@ -15,8 +15,8 @@ export const SettingsScreen = () => {
       <Box backgroundColor="mainBackground" flex={1}>
         <SafeAreaView style={{ flex: 1 }}>
           <NewPlan.Navigator>
-            <NewPlan.Screen name="UserPage" options={{ headerShown: false }} component={UserPage} />
-            <NewPlan.Screen name="RestrictionsPage" options={{ headerShown: false }} component={RestrictionsPage} />
+            <NewPlan.Screen name="User" options={{ headerShown: false }} component={UserPage} />
+            <NewPlan.Screen name="Restrictions" options={{ headerShown: false }} component={RestrictionsPage} />
           </ NewPlan.Navigator>
         </SafeAreaView>
       </Box>

@@ -8,8 +8,8 @@ export type RootStackParamList = {
 };
 
 export type SettingsStackParamList = {
-    UserPage: undefined;
-    RestrictionsPage: undefined;
+    User: undefined;
+    Restrictions: undefined;
 }
 
 export type RootTabParamList = {

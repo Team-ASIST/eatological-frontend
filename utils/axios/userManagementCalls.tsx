@@ -1,10 +1,10 @@
-import { unprotectedBackend, backend } from "./config";
+import { backend } from "./config";
 import { Restriction } from "../dataTypes";
 
 // Calls without token
 export const token = async (username: string) : Promise<string> => {
     try {
-        const response = await unprotectedBackend.get(
+        const response = await backend.get(
             '/token',
             {
                 headers: {
@@ -28,7 +28,7 @@ export const token = async (username: string) : Promise<string> => {
 
 export const addUser = async (username: string) : Promise<boolean> => {
     try {
-        const response = await unprotectedBackend.post(
+        const response = await backend.post(
             '/user/add',
             {},
             {
