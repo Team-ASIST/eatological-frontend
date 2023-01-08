@@ -9,13 +9,12 @@ import RecipeCard from "../../components/ui/recipe/recipeCard";
 import { HiddenCard } from "../../components/ui/recipe/hiddenCard";
 import { ILeftOver, IMealAmount, resetPlanConfiguration, selectNewPlanConfiguration } from "../../redux/slice/newPlanSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { updateRecipes, updateGroceries } from "../../redux/slice/currentPlanSlice";
-import { Meal, RecipeSwipeObject, FrontendPlan, largeGrocery } from "../../utils/dataTypes";
+import { Meal, RecipeSwipeObject, FrontendPlan } from "../../utils/dataTypes";
 import NewPlanNavigationBar from '../NewPlanPage/NavigationNewPlanBar'
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { createPlan, swipeleft, swiperight, acceptPlan } from "../../utils/axios/planGenerationCalls";
-import { getGroceries } from "../../utils/axios/planUsageCalls";
-import { selectAllIngredients } from "../../redux/slice/ingredientSlice";
+import { createPlan, swipeleft, swiperight } from "../../utils/axios/planGenerationCalls";
+import { AppDispatch } from "../../redux/store";
+import { acceptPlan } from "../../redux/slice/currentPlanSlice";
 
 const Text = createText<Theme>()
 const Box = createBox<Theme>()
@@ -66,7 +65,6 @@ const Animation = (props: animationProps) => {
 }
 
 const SwapMealsPage = ({ navigation }: SwapMealsPageProps) => {
-  const ingredients = useSelector(selectAllIngredients)
   // Initial State for Animation
   const [setupPhase, setSetupPhase] = useState(true)
   // Load Initial data for recipes
@@ -80,7 +78,7 @@ const SwapMealsPage = ({ navigation }: SwapMealsPageProps) => {
   // Sustainability Score for future animations
   const [sustainabilityScore, setSustainabilityScore] = useState(0)
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch<AppDispatch>()
 
   // Fetch Initial Plan on First Mounting
   useEffect(() => {
@@ -137,40 +135,13 @@ const SwapMealsPage = ({ navigation }: SwapMealsPageProps) => {
         onClickNext={
           recipeList.length > 0 ?
             () => {
-              dispatch(updateRecipes({
-                recipes: recipeList.map((r: RecipeSwipeObject) => {
-                  return {
-                    id: r.id,
-                    recipe: r.recipe,
-                    portions: r.portions
-                  } as Meal
-                })
-              }))
-              acceptPlan().then(
-                () => {
-                  getGroceries().then(
-                    groceries => {
-                      const largeGroceries: largeGrocery[] = []
-
-                      for (const groc of groceries) {
-                        for (const ing of ingredients) {
-                          if (groc.ingredientId === ing.id) {
-                            largeGroceries.push({
-                              ingredientId: groc.ingredientId,
-                              grocery: groc,
-                              ingredient: ing
-                            })
-                          }
-                        }
-                      }
-
-                      dispatch(updateGroceries(
-                        { groceries: largeGroceries }
-                      ))
-                    }
-                  )
-                }
-              )
+              dispatch(acceptPlan(recipeList.map((r: RecipeSwipeObject) => {
+                return {
+                  id: r.id,
+                  recipe: r.recipe,
+                  portions: r.portions
+                } as Meal
+              })))
               dispatch(resetPlanConfiguration())
               navigation.navigate('CurrentPlan')
             } :

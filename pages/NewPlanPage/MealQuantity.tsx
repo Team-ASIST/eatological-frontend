@@ -7,6 +7,7 @@ import PlusMinusInput from '../../components/ui/inputs/PlusMinusInput'
 import AddItemButton from '../../components/ui/inputs/AddItemButton'
 import { ScrollView } from "react-native-gesture-handler";
 import NewPlanNavigationBar from './NavigationNewPlanBar'
+import { AppDispatch } from '../../redux/store'
 
 const Text = createText<Theme>()
 const Box = createBox<Theme>()
@@ -17,7 +18,7 @@ type Props = {
 
 const MealQuantityScreen = ({ navigation }: Props) => {
     const meals = useSelector(selectAllMeals)
-    const dispatch = useDispatch()
+    const dispatch = useDispatch<AppDispatch>()
 
     const mealInputs = meals.map((meal: IMealAmount, index: number) => (
         <PlusMinusInput key={meal.id}
