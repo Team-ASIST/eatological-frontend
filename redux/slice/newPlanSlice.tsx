@@ -98,8 +98,9 @@ const newPlanSlice = createSlice({
             }
         },
         resetPlanConfiguration: () => initialState,
-    },
+    }
 })
+
 
 export const {
     mealAdded,

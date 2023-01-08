@@ -1,12 +1,10 @@
 import { createBox, createText } from '@shopify/restyle'
 import { Theme } from '../../utils/theme'
 import { NavigationScreenProp } from 'react-navigation'
-import { useDispatch, useSelector } from 'react-redux'
-import { IMealAmount, mealAdded, mealIncrement, mealDecrement, selectAllMeals, resetPlanConfiguration } from '../../redux/slice/newPlanSlice'
-import PlusMinusInput from '../../components/ui/inputs/PlusMinusInput'
-import AddItemButton from '../../components/ui/inputs/AddItemButton'
-import { ScrollView } from "react-native-gesture-handler";
+import { useDispatch } from 'react-redux'
+import { resetPlanConfiguration } from '../../redux/slice/newPlanSlice'
 import NewPlanNavigationBar from './NavigationNewPlanBar'
+import { AppDispatch } from '../../redux/store'
 
 const Text = createText<Theme>()
 const Box = createBox<Theme>()
@@ -16,7 +14,7 @@ type Props = {
 }
 
 const FoodPreferencesScreen = ({ navigation }: Props) => {
-    const dispatch = useDispatch()
+    const dispatch = useDispatch<AppDispatch>()
 
     return (
         <Box padding="l" backgroundColor="mainBackground" flex={1}>
