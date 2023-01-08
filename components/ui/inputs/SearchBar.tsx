@@ -53,13 +53,16 @@ const SearchBarDisplay = ({
                     }}
                     icon={'close'}
                     size={15}
-                    color={theme.colors.black}/>
+                    color={theme.colors.black}
+                />
             )}
         </Box>
     )
 }
 
+//typeOfItem specifies if when pressing the plus button the item is supposed to be a leftover, a foodpreference, etc.
 type ItemProps = {
+    typeOfItem: string
     id: number
     name: string
     smallestAmount: number
@@ -68,7 +71,7 @@ type ItemProps = {
 }
 
 //Items for search bar proposals with important ingredient properties for leftovers
-const Item = ({ id, name, smallestAmount, amount, unit }: ItemProps) => {
+const Item = ({ id, name, smallestAmount, amount, unit, typeOfItem }: ItemProps) => {
     const dispatch = useDispatch()
     return (
         <Box
@@ -80,21 +83,31 @@ const Item = ({ id, name, smallestAmount, amount, unit }: ItemProps) => {
             <Text variant="subsubheader">{name}</Text>
             {/* icon button for adding food items to leftovers */}
             <IconButton
-                onPress={() => dispatch(leftoverAdded({ id, name, smallestAmount, amount, unit }))}
+                onPress={() => {
+                    if (typeOfItem === 'leftover') {
+                        dispatch(leftoverAdded({ id, name, smallestAmount, amount, unit }))
+                    } else if (typeOfItem === 'foodpreference') {
+                        console.log('foodpreference')
+                    } else {
+                        console.log('Unknown Type of item.')
+                    }
+                }}
                 icon={'ios-add-circle-outline'}
                 size={25}
-                color={theme.colors.black}/>
+                color={theme.colors.black}
+            />
         </Box>
     )
 }
 
 type ListProps = {
+    typeOfItems: string
     searchPhrase: string
     data: any
 }
 
 //List of displayed items, no case sensitivity
-const List = ({ searchPhrase, data }: ListProps) => {
+const List = ({ searchPhrase, data, typeOfItems }: ListProps) => {
     return (
         <FlatList
             data={data}
@@ -109,6 +122,7 @@ const List = ({ searchPhrase, data }: ListProps) => {
                 ) {
                     return (
                         <Item
+                            typeOfItem={typeOfItems}
                             name={item.name}
                             id={item.id}
                             smallestAmount={item.smallestAmount}
@@ -125,11 +139,15 @@ const List = ({ searchPhrase, data }: ListProps) => {
     )
 }
 
-const SearchBar = () => {
+type SearchBarProps = {
+    typeOfItems: string
+}
+
+const SearchBar = ({ typeOfItems }: SearchBarProps) => {
     const [searchPhrase, setSearchPhrase] = useState('')
     const [clicked, setClicked] = useState(false)
 
-    const leftovers = useSelector(selectAllIngredients)
+    const allIngredients = useSelector(selectAllIngredients)
 
     return (
         <Box marginVertical="m" paddingVertical="m">
@@ -139,7 +157,9 @@ const SearchBar = () => {
                 clicked={clicked}
                 setClicked={setClicked}
             />
-            {clicked && <List searchPhrase={searchPhrase} data={leftovers} />}
+            {clicked && (
+                <List typeOfItems={typeOfItems} searchPhrase={searchPhrase} data={allIngredients} />
+            )}
         </Box>
     )
 }

@@ -30,7 +30,7 @@ const LeftoversScreen = ({ navigation }: Props) => {
     const dispatch = useDispatch()
     const route = useRoute()
 
-    const mealInputs = leftovers.map((leftover: ILeftOver) => (
+    const leftoverInputs = leftovers.map((leftover: ILeftOver) => (
         <LeftOverInput
             key={leftover.id}
             increment={() => dispatch(leftoverIncrement({ id: leftover.id }))}
@@ -58,9 +58,9 @@ const LeftoversScreen = ({ navigation }: Props) => {
                 }>
                 <Box marginVertical="l" marginHorizontal="xs" padding="m" height={"75%"}>
                     <Text variant="subheader">Do you have any leftovers?</Text>
-                    <SearchBar></SearchBar>
+                    <SearchBar typeOfItems='leftover'></SearchBar>
                     <ScrollView alwaysBounceVertical={false} showsVerticalScrollIndicator={false}>
-                    {mealInputs}
+                    {leftoverInputs}
                 </ScrollView>
                 </Box>
             </NewPlanNavigationBar>
