@@ -3,7 +3,7 @@ import { createBox, createText } from '@shopify/restyle'
 import { TextInput, Keyboard, FlatList, ListRenderItemInfo, View } from 'react-native'
 import theme, { Theme } from '../../../utils/theme'
 import IconButton from './IconButton'
-import { leftoverAdded, selectAllLeftovers } from '../../../redux/slice/newPlanSlice'
+import { leftoverAdded, preferenceAdded, selectAllLeftovers } from '../../../redux/slice/newPlanSlice'
 import { useDispatch, useSelector } from 'react-redux'
 import { selectAllIngredients } from '../../../redux/slice/ingredientSlice'
 
@@ -70,7 +70,7 @@ type ItemProps = {
     unit: string
 }
 
-//Items for search bar proposals with important ingredient properties for leftovers
+//Items for search bar proposals with important ingredient properties for leftovers, preferences
 const Item = ({ id, name, smallestAmount, amount, unit, typeOfItem }: ItemProps) => {
     const dispatch = useDispatch()
     return (
@@ -81,13 +81,13 @@ const Item = ({ id, name, smallestAmount, amount, unit, typeOfItem }: ItemProps)
             flexDirection="row"
             justifyContent="space-between">
             <Text variant="subsubheader">{name}</Text>
-            {/* icon button for adding food items to leftovers */}
+            {/* icon button for adding food items to respective redux store*/}
             <IconButton
                 onPress={() => {
                     if (typeOfItem === 'leftover') {
                         dispatch(leftoverAdded({ id, name, smallestAmount, amount, unit }))
                     } else if (typeOfItem === 'foodpreference') {
-                        console.log('foodpreference')
+                        dispatch(preferenceAdded({ id, name }))
                     } else {
                         console.log('Unknown Type of item.')
                     }

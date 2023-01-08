@@ -139,5 +139,6 @@ export const {
 export const selectAllMeals = (state: RootState) => state.newPlan.mealAmount
 export const selectNewPlanConfiguration = (state: RootState) => state.newPlan
 export const selectAllLeftovers = (state: RootState) => state.newPlan.leftovers
+export const selectAllPreferences = (state: RootState) => state.newPlan.preferences
 
 export default newPlanSlice.reducer
