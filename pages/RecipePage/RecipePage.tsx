@@ -141,7 +141,7 @@ const RecipePage = (props: RecipePageProps) => {
                                     {
                                         recipe.steps.map(
                                             (step: string, idx: number) => (
-                                                <InstructionItem stepNumber={idx + 1} stepInstruction={step} />
+                                                <InstructionItem key={idx + 1} stepNumber={idx + 1} stepInstruction={step} />
                                             )
                                         )
                                     }
