@@ -36,7 +36,7 @@ const CurrentPlan = ({ navigation }: CurrentPlanProps) => {
         }>
           {
             recipes.map((el: Meal) => {
-              return <RecipeCard key={el.id} imageSource={el.recipe.imageUrl} cookingTime={el.recipe.prepTime} recipeName={el.recipe.name} ready={Math.random() < 0.5} persons={el.portions} />
+              return <RecipeCard key={el.id} imageSource={el.recipe.imageUrl} cookingTime={el.recipe.prepTime} recipeName={el.recipe.name} ready={Math.random() < 0.5} persons={el.portions} onClick={() => {navigation.navigate('Recipe', { recipe: el.recipe})}} />
             })
           }
         </ScrollView>

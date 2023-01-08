@@ -46,7 +46,7 @@ const theme = createTheme({
         mainForeground: palette.congoPink,
         primaryCardBackground: palette.congoPink,
         secondaryCardBackground: palette.lightPink,
-        primaryCardText: palette.white,
+        primaryCardText: palette.black,
         secondaryCardText: palette.black,
         primaryButtonColor: palette.salmonPink,
         secondaryButtonColor: palette.congoPink,
@@ -93,6 +93,12 @@ const theme = createTheme({
         },
         body: {
             fontFamily: 'Fraunces_300Light',
+            fontSize: 16,
+            lineHeight: 24,
+            color: 'primaryCardText',
+        },
+        boldBody: {
+            fontFamily: 'Fraunces_700Bold',
             fontSize: 16,
             lineHeight: 24,
             color: 'primaryCardText',
