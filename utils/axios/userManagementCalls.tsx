@@ -1,4 +1,5 @@
 import { unprotectedBackend, backend } from "./config";
+import { Restriction } from "../dataTypes";
 
 // Calls without token
 export const token = async (username: string) : Promise<string> => {
@@ -92,14 +93,21 @@ export const deleteUser = async () : Promise<boolean> => {
 }
 
 // Currently only string Restrictions defined
-export const getRestrictions = async () : Promise<string[]> => {
+export const getRestrictions = async () : Promise<Restriction[]> => {
     try {
         const response = await backend.get(
             '/restrictions'
         )
 
         if (response.status = 200) {
-            const restrictions : string[] = response.data
+            const names : string[] = response.data.restrictions
+            const restrictions : Restriction[] = []
+            for (const name of names ){
+                restrictions.push({name: name, active: false})
+            }
+            restrictions.push({name: "None", active: true})
+
+
             return restrictions
         }
         console.error("Call RenameUser aborted!")
@@ -107,7 +115,7 @@ export const getRestrictions = async () : Promise<string[]> => {
     } catch (error) {
         console.error(error)
     }
-    return [] as string[]
+    return [] as Restriction[]
 }
 
 // Currently only string Restrictions defined

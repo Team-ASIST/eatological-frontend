@@ -5,7 +5,7 @@ import { Theme } from '../../utils/theme';
 const Text = createText<Theme>();
 const Box = createBox<Theme>();
 
-const SettingsPage = () => {
+const UserPage = () => {
     return (
         <Box padding="m" backgroundColor="mainBackground" flex={1}>
         <Box
@@ -25,4 +25,4 @@ const SettingsPage = () => {
     );
   }
 
-export default SettingsPage; 
+export default UserPage; 

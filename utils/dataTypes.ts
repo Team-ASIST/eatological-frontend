@@ -80,3 +80,8 @@ export type largeGrocery = {
     grocery: Grocery,
     ingredient: Ingredient
 }
+
+export type Restriction = {
+    name: string,
+    active: boolean
+}
