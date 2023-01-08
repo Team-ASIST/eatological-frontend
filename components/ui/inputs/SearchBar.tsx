@@ -5,7 +5,8 @@ import theme, { Theme } from '../../../utils/theme'
 import IconButton from './IconButton'
 import { leftoverAdded, selectAllLeftovers } from '../../../redux/slice/newPlanSlice'
 import { useDispatch, useSelector } from 'react-redux'
-import { selectAllIngredients } from '../../../redux/slice/ingredientSlice'
+import { selectAllIngredients } from '../../../redux/slice/currentPlanSlice'
+import { AppDispatch } from '../../../redux/store'
 
 const Text = createText<Theme>()
 const Box = createBox<Theme>()
@@ -69,7 +70,7 @@ type ItemProps = {
 
 //Items for search bar proposals with important ingredient properties for leftovers
 const Item = ({ id, name, smallestAmount, amount, unit }: ItemProps) => {
-    const dispatch = useDispatch()
+    const dispatch = useDispatch<AppDispatch>()
     return (
         <Box
             padding="xs"
