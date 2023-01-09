@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { backend } from '../../utils/axios/config'
 import { AppDispatch, RootState } from '../store'
+import axios, { AxiosRequestConfig } from 'axios'
 
 interface IUserState {
     name: string,
@@ -9,8 +10,8 @@ interface IUserState {
 }
 
 const initialState: IUserState = {
-    name: "",
-    token: "",
+    name: "Guest",
+    token: "T_Guest196144",
     updating: false,
 }
 
@@ -44,6 +45,7 @@ const userSlice = createSlice({
             .addCase(getToken.fulfilled, (state, action) => {
                 const token = action.payload as string
                 state.token = token
+                console.log("updated")
             })
             .addCase(renameUser.pending, (state) => {
                 state.updating = true
@@ -63,7 +65,7 @@ const userSlice = createSlice({
             })
             .addCase(deleteUser.fulfilled, (state, action) => {
                 const success = action.payload as boolean
-                if(success){
+                if (success) {
                     state.name = ""
                     state.token = ""
                 }
@@ -83,7 +85,7 @@ export const getToken = createAsyncThunk<
     async (name, thunkApi) => {
         try {
             // Add new user to the database
-            const response = await backend.get(
+            const response = await backend().get(
                 '/token',
                 {
                     headers: {
@@ -125,7 +127,7 @@ export const addUser = createAsyncThunk<
     async (name, thunkApi) => {
         try {
             // Add new user to the database
-            const response = await backend.post(
+            const response = await backend().post(
                 '/user/add',
                 {},
                 {
@@ -140,10 +142,11 @@ export const addUser = createAsyncThunk<
 
                 if (!('errorCode' in message)) {
                     thunkApi.dispatch(getToken(name))
-
                     return name
                 } else {
-                    return thunkApi.getState().user.name
+                    // Should we fetch token for possibly taken user?
+                    thunkApi.dispatch(getToken(name))
+                    return name
                 }
 
             } else {
@@ -170,7 +173,7 @@ export const renameUser = createAsyncThunk<
     async (name, thunkApi) => {
         try {
             // Rename active user
-            const response = await backend.put(
+            const response = await backend().put(
                 '/user/rename',
                 {},
                 {
@@ -185,10 +188,11 @@ export const renameUser = createAsyncThunk<
 
                 if (!('errorCode' in message)) {
                     thunkApi.dispatch(getToken(name))
-
                     return name
                 } else {
-                    return thunkApi.getState().user.name
+                    // Should we fetch token for possibly taken user?
+                    thunkApi.dispatch(getToken(name))
+                    return name
                 }
 
             } else {
@@ -211,7 +215,7 @@ export const deleteUser = createAsyncThunk<
     async (name) => {
         try {
             // Delete User
-            const response = await backend.delete(
+            const response = await backend().delete(
                 '/user/delete',
                 {
                     headers: {
@@ -225,7 +229,7 @@ export const deleteUser = createAsyncThunk<
 
                 if (!('errorCode' in message)) {
                     return true
-                }else{
+                } else {
                     return false
                 }
 

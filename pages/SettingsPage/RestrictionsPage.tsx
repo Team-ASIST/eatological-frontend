@@ -6,9 +6,8 @@ import { NavigationScreenProp } from "react-navigation";
 import { getRestrictions, setRestrictions } from "../../utils/axios/userManagementCalls";
 import { Restriction } from "../../utils/dataTypes";
 import { ScrollView } from "react-native";
-import { TouchableOpacity } from 'react-native';
-import Ionicons from 'react-native-vector-icons/Ionicons'
 import IconButton from "../../components/ui/inputs/IconButton";
+import { RestrictionButton } from "../../components/ui/inputs/RestrictionButton";
 
 const Text = createText<Theme>()
 const Box = createBox<Theme>()
@@ -54,44 +53,11 @@ const RestrictionsPage = ({ navigation }: RestrictionsPageProps) => {
                 {
                     currentRestrictions.map((elem: Restriction) => {
                         return (
-                            <Box
+                            <RestrictionButton
                                 key={elem.name}
-                                backgroundColor={elem.active ? 'accent' : 'inactiveButtonColor'}
-                                borderRadius={50}
-                                flexDirection={"row"}
-                                justifyContent={"space-between"}
-                                alignItems={"center"}
-                                height={75}
-                                marginTop={"s"}
-                                paddingLeft={"m"}
-                                paddingRight={"xs"}
-                            >
-                                <Box flex={2}>
-                                    <TouchableOpacity onPress={() => setNewRestriction(elem.name)}>
-                                        {
-                                            elem.active ?
-                                                <Ionicons
-                                                    name={'checkmark-circle-outline'}
-                                                    size={50}
-                                                    color={theme.colors.white}
-                                                /> :
-                                                <Ionicons
-                                                    name={'add-circle-outline'}
-                                                    size={50}
-                                                    color={theme.colors.white}
-                                                />
-
-                                        }
-                                    </TouchableOpacity>
-                                </Box>
-
-                                <Box flex={8}>
-                                    <Text variant={"subsubheader"} color="primaryCardText">
-                                        {elem.name}
-                                    </Text>
-                                </Box>
-
-                            </Box>
+                                restriction={elem}
+                                setNewRestriction={setNewRestriction}
+                            />
                         )
                     })
                 }

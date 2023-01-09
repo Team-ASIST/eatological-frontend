@@ -4,7 +4,7 @@ import { Restriction } from "../dataTypes";
 // Calls without token
 export const token = async (username: string) : Promise<string> => {
     try {
-        const response = await backend.get(
+        const response = await backend().get(
             '/token',
             {
                 headers: {
@@ -28,7 +28,7 @@ export const token = async (username: string) : Promise<string> => {
 
 export const addUser = async (username: string) : Promise<boolean> => {
     try {
-        const response = await backend.post(
+        const response = await backend().post(
             '/user/add',
             {},
             {
@@ -53,7 +53,7 @@ export const addUser = async (username: string) : Promise<boolean> => {
 
 export const renameUser = async (newName: string) : Promise<boolean> => {
     try {
-        const response = await backend.put(
+        const response = await backend().put(
             '/user/rename',
             {},
             {
@@ -76,7 +76,7 @@ export const renameUser = async (newName: string) : Promise<boolean> => {
 
 export const deleteUser = async () : Promise<boolean> => {
     try {
-        const response = await backend.delete(
+        const response = await backend().delete(
             '/user/delete',
             {}
         )
@@ -95,7 +95,7 @@ export const deleteUser = async () : Promise<boolean> => {
 // Currently only string Restrictions defined
 export const getRestrictions = async () : Promise<Restriction[]> => {
     try {
-        const response = await backend.get(
+        const response = await backend().get(
             '/restrictions'
         )
 
@@ -121,7 +121,7 @@ export const getRestrictions = async () : Promise<Restriction[]> => {
 // Currently only string Restrictions defined
 export const setRestrictions = async (restriction: string) : Promise<boolean> => {
     try {
-        const response = await backend.post(
+        const response = await backend().post(
             '/restrictions/set',
             {},
             {
@@ -131,6 +131,7 @@ export const setRestrictions = async (restriction: string) : Promise<boolean> =>
             }
         )
 
+        console.log(response.config.headers)
         if (response.status = 200) {
             return true
         }
