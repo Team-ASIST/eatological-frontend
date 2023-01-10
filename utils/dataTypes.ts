@@ -3,7 +3,7 @@
 export type Ingredient = {
     id: number,
     name: string,
-    smallestAmount: number,
+    smallestAmount: number, 
     amount: number,
     unit: string,
     season: boolean,
@@ -13,7 +13,7 @@ export type Ingredient = {
 
 export type smallIngredient = {
     id: number, 
-    smallestAmountNumber: number
+    smallestAmountNumber: number // smallestAmountNumber (what's meant with that? the amount of the unit?)
 }
 
 export type Recipe = {
@@ -47,7 +47,8 @@ export type Grocery = {
 export type Meal = {
     id: number,
     recipe: Recipe,
-    portions: number
+    portions: number,
+    cooked: boolean
 }
 
 export class RecipeSwipeObject {
@@ -75,7 +76,7 @@ export type FrontendPlan = {
     sustainabilityScore: number
 }
 
-export type largeGrocery = {
+export type LargeGrocery = {
     ingredientId: number,
     grocery: Grocery,
     ingredient: Ingredient

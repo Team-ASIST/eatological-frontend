@@ -1,6 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit'
 import {
-  persistStore,
   persistReducer,
   FLUSH,
   REHYDRATE,
@@ -12,12 +11,12 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import newPlanReducer from './slice/newPlanSlice'
 import currentPlanReducer from './slice/currentPlanSlice'
-import ingredientSlice from './slice/ingredientSlice'
 
 const persistConfig = {
   key: 'root',
   version: 1,
   storage: AsyncStorage,
+  blacklist: ['updated']
 }
 
 const persistedReducer = persistReducer(persistConfig, currentPlanReducer)
@@ -25,8 +24,7 @@ const persistedReducer = persistReducer(persistConfig, currentPlanReducer)
 export const store = configureStore({
   reducer: {
     newPlan: newPlanReducer,
-    currentPlan: persistedReducer,
-    currentIngredients: ingredientSlice,
+    currentPlan: persistedReducer
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

@@ -102,16 +102,3 @@ export const swiperight = async (currentList: RecipeSwipeObject[], mealID: numbe
     // Send Previous plan (Sustainability Score?)
     return { recipeSwipeObjects: currentList, sustainabilityScore: 0 } as FrontendPlan
 }
-
-export const acceptPlan = async () => {
-    try {
-        const response = await backend.post(
-            '/plan/accept',
-            {},
-            {headers:{}}
-        )
-    } catch (error) {
-        // Call erroneous
-        console.error(error)
-    }
-}

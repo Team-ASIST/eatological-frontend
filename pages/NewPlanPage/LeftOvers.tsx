@@ -16,6 +16,7 @@ import { ScrollView } from 'react-native-gesture-handler'
 import NewPlanNavigationBar from './NavigationNewPlanBar'
 import { useRoute } from '@react-navigation/native'
 import { resetPlanConfiguration } from '../../redux/slice/newPlanSlice'
+import { AppDispatch } from '../../redux/store'
 
 
 const Text = createText<Theme>()
@@ -27,7 +28,7 @@ type Props = {
 
 const LeftoversScreen = ({ navigation }: Props) => {
     const leftovers = useSelector(selectAllLeftovers)
-    const dispatch = useDispatch()
+    const dispatch = useDispatch<AppDispatch>()
     const route = useRoute()
 
     const leftoverInputs = leftovers.map((leftover: ILeftOver) => (

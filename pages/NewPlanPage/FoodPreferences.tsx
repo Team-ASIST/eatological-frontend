@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { resetPlanConfiguration, selectAllPreferences, IFoodPreference, preferenceRemoved } from '../../redux/slice/newPlanSlice'
 import { ScrollView } from "react-native-gesture-handler";
 import NewPlanNavigationBar from './NavigationNewPlanBar'
+import { AppDispatch } from '../../redux/store'
 import { useRoute } from '@react-navigation/native'
 import React from 'react'
 import IngredientInput from '../../components/ui/inputs/IngredientInput'
@@ -19,7 +20,7 @@ type Props = {
 
 const FoodPreferencesScreen = ({ navigation }: Props) => {
     const preferences = useSelector(selectAllPreferences)
-    const dispatch = useDispatch()
+    const dispatch = useDispatch<AppDispatch>()
     const route = useRoute()
 
     const preferenceInputs = preferences.map((preference: IFoodPreference) => (
