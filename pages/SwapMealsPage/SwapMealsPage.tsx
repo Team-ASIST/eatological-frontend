@@ -82,7 +82,7 @@ const SwapMealsPage = ({ navigation }: SwapMealsPageProps) => {
 
   // Fetch Initial Plan on First Mounting
   useEffect(() => {
-    createPlan(mealAmount.map((m: IMealAmount) => m.amount), leftovers.map((l: ILeftOver) => ({ id: l.id, smallestAmountNumber: (l.amount / l.smallestAmount) })), preferences).then(
+    createPlan(mealAmount.map((m: IMealAmount) => m.amount), leftovers.map((l: ILeftOver) => ({ id: l.id, quantity: (l.amount / l.smallestAmount) })), preferences).then(
       (initialPlan: FrontendPlan) => {
         setRecipeList(initialPlan.recipeSwipeObjects)
         setSwipeTracker(Array(initialPlan.recipeSwipeObjects.length).fill(0))
@@ -188,8 +188,7 @@ const SwapMealsPage = ({ navigation }: SwapMealsPageProps) => {
                     imageSource={data.item.recipe.imageUrl}
                     cookingTime={data.item.recipe.prepTime}
                     recipeName={data.item.recipe.name}
-                    persons={data.item.portions}
-                    ready={false} />
+                    persons={data.item.portions} />
                 </Box>
               </TouchableOpacity>
             )}
