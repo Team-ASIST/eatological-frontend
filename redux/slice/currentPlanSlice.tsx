@@ -22,6 +22,10 @@ const currentPlanSlice = createSlice({
     name: 'currentPlan',
     initialState,
     reducers: {
+        resetCurrentPlan(state) {
+            state.recipes = [] as Meal[]
+            state.groceries = [] as LargeGrocery[]
+        },
         resetGroceries(state) {
             state.groceries = [] as LargeGrocery[]
         },
@@ -136,6 +140,7 @@ const currentPlanSlice = createSlice({
     }
 })
 
+export const { resetCurrentPlan } = currentPlanSlice.actions
 export const { resetGroceries } = currentPlanSlice.actions
 
 export const updateGroceries = createAsyncThunk<

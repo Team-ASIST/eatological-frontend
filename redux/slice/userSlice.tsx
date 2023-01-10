@@ -2,6 +2,8 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { backend } from '../../utils/axios/config'
 import { AppDispatch, RootState } from '../store'
 import axios, { AxiosRequestConfig } from 'axios'
+import { resetPlanConfiguration } from './newPlanSlice'
+import { resetCurrentPlan, resetGroceries } from './currentPlanSlice'
 
 interface IUserState {
     name: string,
@@ -66,8 +68,8 @@ const userSlice = createSlice({
             .addCase(deleteUser.fulfilled, (state, action) => {
                 const success = action.payload as boolean
                 if (success) {
-                    state.name = ""
-                    state.token = ""
+                    state.name = "Guest"
+                    state.token = "T_Guest196144"
                 }
             })
     }
@@ -188,9 +190,12 @@ export const renameUser = createAsyncThunk<
 
                 if (!('errorCode' in message)) {
                     thunkApi.dispatch(getToken(name))
+                    // Reset user values
+                    thunkApi.dispatch(resetCurrentPlan())
                     return name
                 } else {
                     // Should we fetch token for possibly taken user?
+                    thunkApi.dispatch(resetCurrentPlan())
                     thunkApi.dispatch(getToken(name))
                     return name
                 }
@@ -209,10 +214,14 @@ export const renameUser = createAsyncThunk<
 
 export const deleteUser = createAsyncThunk<
     boolean,
-    string
+    string,
+    {
+        dispatch: AppDispatch,
+        state: RootState
+    }
 >(
     'user/delete',
-    async (name) => {
+    async (name, thunkApi) => {
         try {
             // Delete User
             const response = await backend().delete(
@@ -228,8 +237,10 @@ export const deleteUser = createAsyncThunk<
                 const message = response.data
 
                 if (!('errorCode' in message)) {
+                    thunkApi.dispatch(resetCurrentPlan())
                     return true
                 } else {
+                    thunkApi.dispatch(resetCurrentPlan())
                     return false
                 }
 
