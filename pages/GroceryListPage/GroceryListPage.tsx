@@ -18,7 +18,6 @@ const GroceryListPage = () => {
 
   // Synchronize deviated states for both local and backend deviations
   useEffect(() => {
-    //console.log(groceries)
     dispatch(getGroceries())
   }, [])
 
