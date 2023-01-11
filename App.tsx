@@ -33,7 +33,6 @@ const App = () => {
   const dispatch = useDispatch<AppDispatch>()
 
   const onBeforeLift = () => {
-    console.log(store.getState().user)
     const name = store.getState().user.name
 
     if (name == "") {
@@ -44,7 +43,7 @@ const App = () => {
       )
     } else {
       dispatch(getToken(name)).then(
-        () => dispatch(getIngredients)
+        () => dispatch(getIngredients())
       )
     }
   }
