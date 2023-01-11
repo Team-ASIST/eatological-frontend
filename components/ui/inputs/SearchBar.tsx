@@ -3,7 +3,10 @@ import { createBox, createText } from '@shopify/restyle'
 import { TextInput, Keyboard, FlatList, ListRenderItemInfo, View } from 'react-native'
 import theme, { Theme } from '../../../utils/theme'
 import IconButton from './IconButton'
-import { leftoverAdded, preferenceAdded, selectAllLeftovers } from '../../../redux/slice/newPlanSlice'
+import {
+    leftoverAdded,
+    preferenceAdded,
+} from '../../../redux/slice/newPlanSlice'
 import { useDispatch, useSelector } from 'react-redux'
 import { selectAllIngredients } from '../../../redux/slice/currentPlanSlice'
 import { AppDispatch } from '../../../redux/store'
@@ -37,7 +40,7 @@ const SearchBarDisplay = ({
             {/* Input field */}
             <TextInput
                 style={{ width: 235 }}
-                placeholder="Search..."
+                placeholder="Suche..."
                 value={searchPhrase}
                 onChangeText={setSearchPhrase}
                 onFocus={() => {
@@ -69,18 +72,31 @@ type ItemProps = {
     smallestAmount: number
     amount: number
     unit: string
+    setClicked: (click: boolean) => void
+    setSearchPhrase: (input: string) => void
 }
 
 //Items for search bar proposals with important ingredient properties for leftovers, preferences
-const Item = ({ id, name, smallestAmount, amount, unit, typeOfItem }: ItemProps) => {
+const Item = ({
+    id,
+    name,
+    smallestAmount,
+    amount,
+    unit,
+    typeOfItem,
+    setClicked,
+    setSearchPhrase,
+}: ItemProps) => {
     const dispatch = useDispatch<AppDispatch>()
     return (
         <Box
             padding="xs"
             backgroundColor="mainBackground"
-            borderRadius={10}
             flexDirection="row"
-            justifyContent="space-between">
+            justifyContent="space-between"
+            borderBottomWidth={1}
+            borderColor="black"
+            opacity={0.93}>
             <Text variant="subsubheader">{name}</Text>
             {/* icon button for adding food items to respective redux store*/}
             <IconButton
@@ -92,6 +108,8 @@ const Item = ({ id, name, smallestAmount, amount, unit, typeOfItem }: ItemProps)
                     } else {
                         console.log('Unknown Type of item.')
                     }
+                    setClicked(false)
+                    setSearchPhrase('')
                 }}
                 icon={'ios-add-circle-outline'}
                 size={25}
@@ -102,41 +120,49 @@ const Item = ({ id, name, smallestAmount, amount, unit, typeOfItem }: ItemProps)
 }
 
 type ListProps = {
+    setClicked: (click: boolean) => void
+    setSearchPhrase: (input: string) => void
     typeOfItems: string
     searchPhrase: string
     data: any
 }
 
 //List of displayed items, no case sensitivity
-const List = ({ searchPhrase, data, typeOfItems }: ListProps) => {
+const List = ({ searchPhrase, data, typeOfItems, setClicked, setSearchPhrase }: ListProps) => {
     return (
-        <FlatList
-            data={data}
-            renderItem={({ item }: ListRenderItemInfo<ItemProps>) => {
-                if (searchPhrase === '') {
-                    return <View />
-                }
-                if (
-                    item.name
-                        .toUpperCase()
-                        .includes(searchPhrase.toUpperCase().trim().replace(/\s/g, ''))
-                ) {
-                    return (
-                        <Item
-                            typeOfItem={typeOfItems}
-                            name={item.name}
-                            id={item.id}
-                            smallestAmount={item.smallestAmount}
-                            amount={item.smallestAmount}
-                            unit={item.unit}
-                        />
-                    )
-                } else {
-                    return <View />
-                }
-            }}
-            keyExtractor={(item: ItemProps) => item.id.toString()}
-        />
+        <Box maxHeight={200}>
+            <FlatList
+                alwaysBounceVertical={false}
+                showsVerticalScrollIndicator={false}
+                data={data}
+                renderItem={({ item }: ListRenderItemInfo<ItemProps>) => {
+                    if (searchPhrase === '') {
+                        return <View />
+                    }
+                    if (
+                        item.name
+                            .toUpperCase()
+                            .includes(searchPhrase.toUpperCase().trim().replace(/\s/g, ''))
+                    ) {
+                        return (
+                            <Item
+                                typeOfItem={typeOfItems}
+                                name={item.name}
+                                id={item.id}
+                                smallestAmount={item.smallestAmount}
+                                amount={item.smallestAmount}
+                                unit={item.unit}
+                                setClicked={setClicked}
+                                setSearchPhrase={setSearchPhrase}
+                            />
+                        )
+                    } else {
+                        return <View />
+                    }
+                }}
+                keyExtractor={(item: ItemProps) => item.id.toString()}
+            />
+        </Box>
     )
 }
 
@@ -159,7 +185,13 @@ const SearchBar = ({ typeOfItems }: SearchBarProps) => {
                 setClicked={setClicked}
             />
             {clicked && (
-                <List typeOfItems={typeOfItems} searchPhrase={searchPhrase} data={allIngredients} />
+                <List
+                    typeOfItems={typeOfItems}
+                    searchPhrase={searchPhrase}
+                    data={allIngredients}
+                    setClicked={setClicked}
+                    setSearchPhrase={setSearchPhrase}
+                />
             )}
         </Box>
     )
