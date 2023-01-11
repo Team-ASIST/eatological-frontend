@@ -30,8 +30,6 @@ const MealCard = (props: MealPageProps) => {
 
     const recipe = props.recipe.recipe
 
-    console.log(ingredients)
-
     return (
         <Box flex={1} width="100%">
             <ScrollView bounces={false}>
@@ -116,8 +114,6 @@ const MealCard = (props: MealPageProps) => {
                                 const ingredient = ingredients.find((ingr: Ingredient) => ingr.id === item.id)
 
                                 const leftover = leftovers.find((lo: LeftOver) => lo.id === item.id)
-
-                                console.log(leftover)
 
                                 if (ingredient) {
                                     return <IngredientItem
