@@ -27,8 +27,8 @@ export const HiddenCard = (props: HiddenCardProps) => {
       <Box flex={1}>
         <Box
           height={theme.heights.m}
-          borderBottomLeftRadius={50}
-          borderTopLeftRadius={50}
+          borderBottomLeftRadius={20}
+          borderTopLeftRadius={20}
           alignItems={"flex-start"}
           justifyContent={"center"}
           backgroundColor="accent"
@@ -42,8 +42,8 @@ export const HiddenCard = (props: HiddenCardProps) => {
       <Box flex={1}>
         <Box
           height={theme.heights.m}
-          borderBottomRightRadius={50}
-          borderTopRightRadius={50}
+          borderBottomRightRadius={20}
+          borderTopRightRadius={20}
           alignItems={"flex-end"}
           justifyContent={"center"}
           backgroundColor="accent"

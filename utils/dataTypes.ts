@@ -87,3 +87,17 @@ export type Restriction = {
     name: string,
     active: boolean
 }
+
+
+export interface LeftOver {
+    id: number
+    name: string
+    smallestAmount: number
+    amount: number
+    unit: string
+}
+
+export interface FoodPreference {
+    id: number
+    name: string
+}

@@ -34,6 +34,9 @@ const theme = createTheme({
         s: 8,
         m: 16,
         l: 32, 
+        xl: 64, 
+        xxl: 128,
+        xxxl: 256,
     },
     heights: {
         xs: 100,

@@ -2,19 +2,21 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { createBox, createText } from '@shopify/restyle';
 import { Theme } from '../../utils/theme';
-import { TouchableOpacity, Image, Dimensions } from "react-native";
+import { TouchableOpacity, Image, Dimensions, Modal, Alert, Button, Pressable } from "react-native";
 import { NavigationScreenProp } from "react-navigation";
 import { SwipeListView } from 'react-native-swipe-list-view';
 import RecipeCard from "../../components/ui/recipe/recipeCard";
 import { HiddenCard } from "../../components/ui/recipe/hiddenCard";
-import { IFoodPreference, ILeftOver, IMealAmount, resetPlanConfiguration, selectNewPlanConfiguration } from "../../redux/slice/newPlanSlice";
+import { IMealAmount, resetPlanConfiguration, selectNewPlanConfiguration } from "../../redux/slice/newPlanSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { Meal, RecipeSwipeObject, FrontendPlan } from "../../utils/dataTypes";
+import { Meal, RecipeSwipeObject, FrontendPlan, FoodPreference, LeftOver } from "../../utils/dataTypes";
 import NewPlanNavigationBar from '../NewPlanPage/NavigationNewPlanBar'
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { createPlan, swipeleft, swiperight } from "../../utils/axios/planGenerationCalls";
 import { AppDispatch } from "../../redux/store";
 import { acceptPlan } from "../../redux/slice/currentPlanSlice";
+import RecipePage from "../RecipePage/RecipePage";
+import MealCard from "../../components/ui/recipe/mealCard";
 
 const Text = createText<Theme>()
 const Box = createBox<Theme>()
@@ -78,11 +80,15 @@ const SwapMealsPage = ({ navigation }: SwapMealsPageProps) => {
   // Sustainability Score for future animations
   const [sustainabilityScore, setSustainabilityScore] = useState(0)
 
+  const [modalVisible, setModalVisible] = useState(false);
+
+  const [selectedRecipe, setSelectedRecipe] = useState<RecipeSwipeObject | undefined>(undefined)
+
   const dispatch = useDispatch<AppDispatch>()
 
   // Fetch Initial Plan on First Mounting
   useEffect(() => {
-    createPlan(mealAmount.map((m: IMealAmount) => m.amount), leftovers.map((l: ILeftOver) => ({ id: l.id, quantity: (l.amount / l.smallestAmount) })), preferences.map((f: IFoodPreference) => f.id)).then(
+    createPlan(mealAmount.map((m: IMealAmount) => m.amount), leftovers.map((l: LeftOver) => ({ id: l.id, quantity: (l.amount / l.smallestAmount) })), preferences.map((f: FoodPreference) => f.id)).then(
       (initialPlan: FrontendPlan) => {
         setRecipeList(initialPlan.recipeSwipeObjects)
         setSwipeTracker(Array(initialPlan.recipeSwipeObjects.length).fill(0))
@@ -183,12 +189,17 @@ const SwapMealsPage = ({ navigation }: SwapMealsPageProps) => {
 
             renderItem={(data, rowMap) => (
               <TouchableOpacity activeOpacity={1}>
-                <Box paddingTop={"m"}>
+                <Box marginTop={"m"} borderRadius={20} overflow="hidden">
                   <RecipeCard
                     imageSource={data.item.recipe.imageUrl}
                     cookingTime={data.item.recipe.prepTime}
                     recipeName={data.item.recipe.name}
-                    persons={data.item.portions} />
+                    persons={data.item.portions}
+                    onClick={() => {
+                      setSelectedRecipe(data.item)
+                      setModalVisible(true)
+                    }
+                    } />
                 </Box>
               </TouchableOpacity>
             )}
@@ -200,6 +211,37 @@ const SwapMealsPage = ({ navigation }: SwapMealsPageProps) => {
           />
         </Box>
       </ NewPlanNavigationBar>
+      {
+        selectedRecipe ?
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={modalVisible}
+
+            onRequestClose={() => {
+              Alert.alert("Modal has been closed.");
+              setModalVisible(!modalVisible);
+            }}
+          >
+            <Box
+              flex={1}
+              shadowColor="black"
+              shadowOpacity={0.86}
+              shadowRadius={100}
+              shadowOffset={{ width: 0, height: 10 }}>
+              <Box justifyContent="center"
+                flex={1}
+                alignItems="center"
+                marginTop="xxl"
+                backgroundColor="secondaryCardBackground"
+                marginStart="s" marginHorizontal="s" borderTopRightRadius={40} borderTopLeftRadius={40} overflow="hidden">
+                <MealCard recipe={selectedRecipe} onClick={() => setModalVisible(!modalVisible)} />
+              </Box>
+            </Box>
+          </Modal>
+          :
+          <></>
+      }
     </Box >
   );
 }

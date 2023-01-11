@@ -43,7 +43,7 @@ const App = () => {
       )
     } else {
       dispatch(getToken(name)).then(
-        () => dispatch(getIngredients)
+        () => dispatch(getIngredients())
       )
     }
   }

@@ -1,4 +1,5 @@
 import { createSlice, nanoid } from '@reduxjs/toolkit'
+import { FoodPreference, LeftOver } from '../../utils/dataTypes'
 import { RootState } from '../store'
 
 export interface IMealAmount {
@@ -6,23 +7,10 @@ export interface IMealAmount {
     amount: number
 }
 
-export interface ILeftOver {
-    id: number
-    name: string
-    smallestAmount: number
-    amount: number
-    unit: string
-}
-
-export interface IFoodPreference {
-    id: number
-    name: string
-}
-
 interface IState {
     mealAmount: IMealAmount[]
-    leftovers: ILeftOver[]
-    preferences: IFoodPreference[]
+    leftovers: LeftOver[]
+    preferences: FoodPreference[]
 }
 
 const initialState: IState = {
@@ -88,7 +76,7 @@ const newPlanSlice = createSlice({
             const { id } = action.payload
             const existingLeftover = state.leftovers.find((leftover) => leftover.id === id)
             if (existingLeftover) {
-                existingLeftover.amount += existingLeftover.smallestAmount
+                existingLeftover.amount += 1
             }
         },
         leftoverDecrement(state, action) {
@@ -96,7 +84,7 @@ const newPlanSlice = createSlice({
             const existingLeftover = state.leftovers.find((leftover) => leftover.id === id)
             if (existingLeftover) {
                 if (existingLeftover.amount > existingLeftover.smallestAmount) {
-                    existingLeftover.amount -= existingLeftover.smallestAmount
+                    existingLeftover.amount -= 1
                 } else {
                     state.leftovers = state.leftovers.filter((leftover) => leftover.id !== id)
                 }
