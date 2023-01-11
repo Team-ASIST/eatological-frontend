@@ -33,6 +33,7 @@ const App = () => {
   const dispatch = useDispatch<AppDispatch>()
 
   const onBeforeLift = () => {
+    console.log(store.getState().user)
     const name = store.getState().user.name
 
     if (name == "") {
@@ -62,7 +63,7 @@ const App = () => {
   }
   return (
     <Provider store={store}>
-      <PersistGate onBeforeLift={onBeforeLift} loading={<SplashScreen />} persistor={persistor}>
+      <PersistGate loading={<SplashScreen />} persistor={persistor} onBeforeLift={onBeforeLift}>
         <ThemeProvider theme={colorTheme === 'dark' ? darkTheme : theme}>
           <NavigationContainer>
             <SafeAreaView style={{ flex: 1, paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0 }}>

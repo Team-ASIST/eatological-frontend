@@ -1,4 +1,4 @@
-import { configureStore } from '@reduxjs/toolkit'
+import { combineReducers, configureStore } from '@reduxjs/toolkit'
 import {
   persistReducer,
   FLUSH,
@@ -27,7 +27,7 @@ const persistedUserReducer = persistReducer(persistConfig, userReducer)
 export const store = configureStore({
   reducer: {
     newPlan: newPlanReducer,
-    currentPlan: persistedReducer,
+    currentPlan: currentPlanReducer,
     user: persistedUserReducer
   },
   middleware: (getDefaultMiddleware) =>
