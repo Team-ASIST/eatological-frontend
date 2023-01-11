@@ -140,7 +140,7 @@ export const addUser = createAsyncThunk<
                 const message = response.data
 
                 if (!('errorCode' in message)) {
-                    //thunkApi.dispatch(getToken(message.username))
+                    thunkApi.dispatch(getToken(message.username))
                     return message.username
                 } else {
                     return ""
