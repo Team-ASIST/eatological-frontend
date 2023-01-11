@@ -30,6 +30,7 @@ const SettingsPage = ({ navigation }: SettingsPageProps) => {
   const [currentUsername, setCurrentUsername] = useState("")
   const [clicked, setClicked] = useState(false)
   const [switchMode, setSwitchMode] = useState(false)
+  const [modalVisible, setModalVisible] = useState(false)
 
   const dispatch = useDispatch<AppDispatch>()
 
@@ -95,6 +96,8 @@ const SettingsPage = ({ navigation }: SettingsPageProps) => {
 
       <Box marginTop={"m"}>
         <UsernameInput
+          modalVisible={modalVisible}
+          setModalVisible={setModalVisible}
           clicked={clicked}
           setClicked={setClicked}
           placeholder={switchMode ? "Enter other Account Name..." : "Enter new Username..."}
@@ -105,8 +108,13 @@ const SettingsPage = ({ navigation }: SettingsPageProps) => {
       </Box>
 
       <Box marginTop={"s"}>
+        
         <TextButton
-          onPress={setSwitchUser}
+          onPress={() => {
+            setSwitchMode(true)
+            setModalVisible(true)
+          }
+            }
           icon={"people-circle-outline"}
           size={35}
           label={"Switch to Account"}
@@ -117,7 +125,8 @@ const SettingsPage = ({ navigation }: SettingsPageProps) => {
 
       <Box marginTop={"s"} marginBottom={"m"}>
         <TextButton
-          onPress={deleteUsername}
+          onPress={
+            deleteUsername}
           icon={"close-circle-outline"}
           size={35}
           label={"Delete Active Account"}
