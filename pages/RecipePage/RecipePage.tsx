@@ -1,26 +1,23 @@
 import React, { useState } from "react";
 import { createBox, createText } from '@shopify/restyle';
-import theme, { Theme } from '../../utils/theme';
-import { Ingredient, largeGrocery, smallIngredient } from "../../utils/dataTypes";
+import { Theme } from '../../utils/theme';
+import { Ingredient, LargeGrocery, Meal, smallIngredient } from "../../utils/dataTypes";
 import { RootTabParamList } from "../../navigation/types";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { Animated, ScrollView, View } from "react-native";
-import Ionicons from "react-native-vector-icons/Ionicons";
 import { IngredientItem } from "./components/IngredientItem";
-import DirectionList from "./components/DirectionList";
 import InstructionItem from "./components/DirectionList";
 import { useDispatch, useSelector } from "react-redux";
-import { selectAllIngredients } from "../../redux/slice/ingredientSlice";
-import { selectSortedGroceries } from "../../redux/slice/currentPlanSlice";
-import IconButton from "../../components/ui/inputs/IconButton";
+import { planCook, selectAllIngredients, selectAllRecipes, selectSortedGroceries } from "../../redux/slice/currentPlanSlice";
 import TextButton from "../../components/ui/inputs/TextButton";
+import { AppDispatch } from "../../redux/store";
+import { BackFloatingButton } from "../../components/ui/inputs/BackFloatingButton";
 
+const IMAGE_SCALE_MAX = 10;
+const LABEL_HEADER_MARGIN = 30;
 
 const Text = createText<Theme>();
 const Box = createBox<Theme>();
-
-const IMAGE_SCALE_MAX = 10;
-const LABEL_HEADER_MARGIN = 48;
 
 enum RecipeAction {
     Directions,
@@ -31,10 +28,18 @@ type RecipePageProps = NativeStackScreenProps<RootTabParamList, 'Recipe'>;
 
 const RecipePage = (props: RecipePageProps) => {
     const [currentAction, setCurrentAction] = useState<RecipeAction>(RecipeAction.Ingredients)
-    const dispatch = useDispatch()
+    const dispatch = useDispatch<AppDispatch>()
     const groceries = useSelector(selectSortedGroceries)
+    const ingredients = useSelector(selectAllIngredients)
+    const { mealId } = props.route.params;
+    const meal = useSelector(selectAllRecipes).find((meal: Meal) => meal.id === mealId)
 
-    const { recipe } = props.route.params;
+    if (!meal) {
+        props.navigation.navigate('CurrentPlan')
+        return
+    }
+
+    const recipe = meal!.recipe
 
     const pan = React.useRef(new Animated.ValueXY()).current;
 
@@ -107,34 +112,92 @@ const RecipePage = (props: RecipePageProps) => {
                                 </Box>
                             </Box>
                         </Box>
-                        <Box justifyContent={"space-evenly"} flexDirection="row" borderTopWidth={0.75}>
-                            <Box padding={"m"} backgroundColor={currentAction == RecipeAction.Ingredients ? "primaryButtonColor" : "secondaryButtonColor"} flexDirection="row" flex={1} onTouchEnd={() => { setCurrentAction(RecipeAction.Ingredients) }}>
+                        <Box justifyContent={"space-evenly"} flexDirection="row">
+                            <Box
+                                padding={"m"}
+                                backgroundColor={
+                                    currentAction == RecipeAction.Ingredients ?
+                                        "secondaryButtonColor" :
+                                        "primaryButtonColor"
+                                }
+                                borderBottomColor={
+                                    currentAction == RecipeAction.Ingredients ?
+                                        "white" :
+                                        "secondaryButtonColor"
+                                }
+                                borderBottomWidth={
+                                    currentAction == RecipeAction.Ingredients ?
+                                        5 :
+                                        0
+                                }
+                                flexDirection="row"
+                                flex={1}
+                                onTouchEnd={() => { setCurrentAction(RecipeAction.Ingredients) }}
+                            >
                                 <Text variant={"subsubheader"}>Ingredients</Text>
                             </Box>
-                            <Box padding={"m"} backgroundColor={currentAction == RecipeAction.Directions ? "primaryButtonColor" : "secondaryButtonColor"} flexDirection="row" flex={1} onTouchEnd={() => { setCurrentAction(RecipeAction.Directions) }}>
+                            <Box
+                                padding={"m"}
+                                backgroundColor={
+                                    currentAction == RecipeAction.Directions ?
+                                        "secondaryButtonColor" :
+                                        "primaryButtonColor"
+                                }
+                                borderBottomColor={
+                                    currentAction == RecipeAction.Directions ?
+                                        "white" :
+                                        "secondaryButtonColor"
+                                }
+                                borderBottomWidth={
+                                    currentAction == RecipeAction.Directions ?
+                                        5 :
+                                        0
+                                }
+                                flexDirection="row"
+                                flex={1}
+                                onTouchEnd={() => { setCurrentAction(RecipeAction.Directions) }}
+                            >
                                 <Text variant={"subsubheader"}>Directions</Text>
                             </Box>
                         </Box>
                         {
                             currentAction == RecipeAction.Ingredients ?
-                                recipe.items.map(
-                                    (ingredient: smallIngredient, idx: number) => {
+                                (
+                                    !meal.cooked ?
+                                        recipe.items.map(
+                                            (item: smallIngredient) => {
+                                                const grocery = groceries.find((groc: LargeGrocery) => groc.ingredientId === item.id)
 
-                                        const grocery = groceries.find((groc: largeGrocery) => groc.ingredientId === ingredient.id)
+                                                if (grocery) {
+                                                    return <IngredientItem
+                                                        key={item.id}
+                                                        ingredientName={grocery.ingredient.name}
+                                                        unit={grocery.ingredient.unit}
+                                                        season={grocery.ingredient.season}
+                                                        local={grocery.ingredient.local}
+                                                        alternative={grocery.ingredient.alternative}
+                                                        bought={grocery.grocery.bought}
+                                                        required={item.quantity} />
+                                                }
+                                            }
+                                        ) :
+                                        recipe.items.map(
+                                            (item: smallIngredient) => {
+                                                const ingredient = ingredients.find((ingr: Ingredient) => ingr.id === item.id)
 
-                                        if (grocery) {
-                                            return <IngredientItem
-                                                key={ingredient.id}
-                                                ingredientName={grocery.ingredient.name}
-                                                unit={grocery.ingredient.unit}
-                                                season={grocery.ingredient.season}
-                                                local={grocery.ingredient.local}
-                                                alternative={grocery.ingredient.alternative}
-                                                bought={grocery.grocery.bought}
-                                                required={ingredient.smallestAmountNumber} />
-                                        }
-                                    }
-
+                                                if (ingredient) {
+                                                    return <IngredientItem
+                                                        key={ingredient.id}
+                                                        ingredientName={ingredient.name}
+                                                        unit={ingredient.unit}
+                                                        season={ingredient.season}
+                                                        local={ingredient.local}
+                                                        alternative={ingredient.alternative}
+                                                        bought={item.quantity}
+                                                        required={item.quantity} />
+                                                }
+                                            }
+                                        )
                                 )
                                 :
                                 <Box padding={"m"}>
@@ -146,13 +209,14 @@ const RecipePage = (props: RecipePageProps) => {
                                         )
                                     }
                                     <Box>
-                                        <TextButton icon={'checkmark'} size={30} label="Mark as cooked" />
+                                        <TextButton disabled={meal.cooked} icon={'checkmark'} size={30} label={meal.cooked ? "Marked as cooked" : "Mark as cooked"} onPress={() => dispatch(planCook(meal.recipe.id))} />
                                     </Box>
                                 </Box>
                         }
                     </Box>
                 </Animated.View>
             </ScrollView>
+            <BackFloatingButton route="CurrentPlan" navigation={props.navigation} />
         </Box >
     );
 }

@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { backend } from '../../utils/axios/config'
-import { Meal, LargeGrocery, Grocery, Ingredient, BackendPlan } from '../../utils/dataTypes'
+import { Meal, LargeGrocery, Grocery, Ingredient, BackendPlan, smallIngredient } from '../../utils/dataTypes'
 import { AppDispatch, RootState } from '../store'
 
 
@@ -24,10 +24,19 @@ const currentPlanSlice = createSlice({
     reducers: {
         resetGroceries(state) {
             state.groceries = [] as LargeGrocery[]
-        },
+        }
     },
     extraReducers(builder) {
         builder
+            .addCase(planCook.pending, (state, { meta }) => {
+                const mealId = meta.arg
+
+                let meal = state.recipes.find((meal: Meal) => meal.recipe.id === mealId)
+
+                if (meal) {
+                    meal.cooked = !meal.cooked
+                }
+            })
             .addCase(acceptPlan.pending, (state, { meta }) => {
                 const meals = meta.arg as Meal[]
                 state.recipes = meals
@@ -219,16 +228,17 @@ export const getPlan = createAsyncThunk<
                 let plan: BackendPlan = response.data
                 const meals: Meal[] = []
                 let i: number = 0
-                while (i < plan.meals.length) {
+
+                plan.meals.forEach((meal: any, idx: number) => {
                     meals.push(
                         {
-                            id: i,
-                            recipe: plan.meals[i].recipe,
-                            portions: plan.meals[i].portion
+                            id: idx,
+                            recipe: meal.recipe,
+                            portions: meal.portion,
+                            cooked: meal.cooked
                         } as Meal
                     )
-                    i += 1
-                }
+                })
 
                 return meals
             } else {
@@ -267,6 +277,27 @@ export const getIngredients = createAsyncThunk<
     }
 )
 
+export const planCook = createAsyncThunk(
+    'currentPlan/planCook',
+    async (mealId: number) => {
+        try {
+            const response = await backend.put(
+                '/plan/cook',
+                {},
+                {
+                    headers: {
+                        'RecipeId': mealId
+                    }
+                }
+            )
+        } catch (error) {
+            // Call erroneous
+            console.error(error)
+            throw error
+        }
+    }
+)
+
 export const getGroceries = createAsyncThunk<
     Grocery[]
 >(
@@ -295,6 +326,7 @@ export const getGroceries = createAsyncThunk<
 
 export const selectUpdatingPlan = (state: RootState) => state.currentPlan.updating
 export const selectAllRecipes = (state: RootState) => state.currentPlan.recipes
+export const selectAllGroceries = (state: RootState) => state.currentPlan.groceries
 export const selectAllIngredients = (state: RootState) => state.currentPlan.ingredients
 export const selectNewPlanConfiguration = (state: RootState) => state.newPlan
 export const selectSortedGroceries = (state: RootState) => {

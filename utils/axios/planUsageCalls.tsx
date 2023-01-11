@@ -30,17 +30,18 @@ export const plan = async (): Promise<Meal[]> => {
             // Extract data and parse results into Meal Array
             let plan: BackendPlan = response.data
             const meals: Meal[] = []
-            let i: number = 0
-            while (i < plan.meals.length) {
+
+            plan.meals.forEach((meal: any, idx: number) => {
                 meals.push(
                     {
-                        id: i,
-                        recipe: plan.meals[i].recipe,
-                        portions: plan.meals[i].portion
+                        id: idx,
+                        recipe: meal.recipe,
+                        portions: meal.portion,
+                        cooked: meal.cooked
                     } as Meal
                 )
-                i += 1
-            }
+            })
+            
             return meals
         }
         console.error("Call Recipes aborted!")
@@ -68,17 +69,18 @@ export const planCook = async (recipeID: number): Promise<Meal[]> => {
             // Extract data and parse results into Meal Array
             let plan: BackendPlan = response.data
             const meals: Meal[] = []
-            let i: number = 0
-            while (i < plan.meals.length) {
+
+            plan.meals.forEach((meal: any, idx: number) => {
                 meals.push(
                     {
-                        id: i,
-                        recipe: plan.meals[i].recipe,
-                        portions: plan.meals[i].portion
+                        id: idx,
+                        recipe: meal.recipe,
+                        portions: meal.portion,
+                        cooked: meal.cooked
                     } as Meal
                 )
-                i += 1
-            }
+            })
+
             return meals
         }
         console.error("Call planCook aborted!")
