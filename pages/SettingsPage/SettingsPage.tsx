@@ -13,6 +13,7 @@ import { Restriction } from "../../utils/dataTypes";
 import { getRestrictions, setRestrictions } from "../../utils/axios/userManagementCalls";
 import { ScrollView } from "react-native";
 import { RestrictionButton } from "../../components/ui/inputs/RestrictionButton";
+import { resetPlanConfiguration } from "../../redux/slice/newPlanSlice";
 
 
 const Text = createText<Theme>();
@@ -111,6 +112,7 @@ const SettingsPage = ({ navigation }: SettingsPageProps) => {
           size={35}
           label={"Switch to Account"}
           color={switchMode ? theme.colors.accent : theme.colors.black}
+          disabled={false}
         />
       </Box>
 
@@ -121,6 +123,7 @@ const SettingsPage = ({ navigation }: SettingsPageProps) => {
           size={35}
           label={"Delete Active Account"}
           color={theme.colors.black}
+          disabled={false}
         />
       </Box>
 

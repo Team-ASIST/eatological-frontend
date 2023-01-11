@@ -286,7 +286,7 @@ export const planCook = createAsyncThunk(
     'currentPlan/planCook',
     async (mealId: number) => {
         try {
-            const response = await backend.put(
+            const response = await backend().put(
                 '/plan/cook',
                 {},
                 {
