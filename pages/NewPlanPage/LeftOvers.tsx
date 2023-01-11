@@ -18,7 +18,6 @@ import { useRoute } from '@react-navigation/native'
 import { resetPlanConfiguration } from '../../redux/slice/newPlanSlice'
 import { AppDispatch } from '../../redux/store'
 
-
 const Text = createText<Theme>()
 const Box = createBox<Theme>()
 
@@ -42,27 +41,34 @@ const LeftoversScreen = ({ navigation }: Props) => {
             unit={leftover.unit}
         />
     ))
-    
 
     return (
         <Box padding="l" backgroundColor="mainBackground" flex={1}>
             <NewPlanNavigationBar
-                onClickBack={
-                    () => navigation.navigate('MealQuantity')}
-                onClickNext={
-                    () => navigation.navigate('FoodPreferences')}
-                onClickAbort={
-                    () => {
-                        dispatch(resetPlanConfiguration())
-                        navigation.navigate('CurrentPlan')
-                    }
-                }>
-                <Box marginVertical="l" marginHorizontal="xs" padding="m" height={"75%"}>
+                onClickBack={() => navigation.navigate('MealQuantity')}
+                onClickNext={() => navigation.navigate('FoodPreferences')}
+                onClickAbort={() => {
+                    dispatch(resetPlanConfiguration())
+                    navigation.navigate('CurrentPlan')
+                }}>
+                <Box marginVertical="l" marginHorizontal="xs" padding="m" height={'75%'}>
                     <Text variant="subheader">Do you have any leftovers?</Text>
-                    <SearchBar typeOfItems='leftover'></SearchBar>
-                    <ScrollView alwaysBounceVertical={false} showsVerticalScrollIndicator={false}>
-                    {leftoverInputs}
-                </ScrollView>
+                    <Box position="relative" zIndex={1}>
+                        <SearchBar typeOfItems="leftover"></SearchBar>
+                    </Box>
+                    <Box
+                        position="absolute"
+                        top={190}
+                        width={'111.2%'}
+                        height={'74%'}
+                        padding="m"
+                        zIndex={0}>
+                        <ScrollView
+                            alwaysBounceVertical={false}
+                            showsVerticalScrollIndicator={false}>
+                            {leftoverInputs}
+                        </ScrollView>
+                    </Box>
                 </Box>
             </NewPlanNavigationBar>
         </Box>
