@@ -3,7 +3,7 @@ import { createBox, createText } from '@shopify/restyle';
 import theme, { Theme } from '../../utils/theme';
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../redux/store";
-import { selectUsername, selectToken, addUser, renameUser, deleteUser } from "../../redux/slice/userSlice";
+import { selectUsername, selectToken, getToken, renameUser, deleteUser, changeUsername } from "../../redux/slice/userSlice";
 import { useSelector } from "react-redux";
 import TextButton from "../../components/ui/inputs/TextButton";
 import { NavigationScreenProp } from "react-navigation";
@@ -28,19 +28,28 @@ const SettingsPage = ({ navigation }: SettingsPageProps) => {
   const token = useSelector(selectToken)
   const [currentUsername, setCurrentUsername] = useState("")
   const [clicked, setClicked] = useState(false)
+  const [switchMode, setSwitchMode] = useState(false)
 
   const dispatch = useDispatch<AppDispatch>()
 
   const changeUser = (newUsername: string) => {
-    dispatch(renameUser(newUsername))
+    if (!switchMode) {
+      dispatch(renameUser(newUsername))
+    } else{
+      dispatch(changeUsername(newUsername))
+      dispatch(getToken(newUsername))
+      setSwitchMode(false)
+    }
+  }
+
+  const setSwitchUser = () => {
+    setSwitchMode(!switchMode)
   }
 
   const deleteUsername = () => {
-    /*
-    if (username != "dev" && username != "Guest" && token.startsWith('T')) {
+    if (username != "" && token.startsWith('T')) {
       dispatch(deleteUser(username))
     }
-    */
   }
 
   // Restriction Management
@@ -88,14 +97,24 @@ const SettingsPage = ({ navigation }: SettingsPageProps) => {
         <UsernameInput
           clicked={clicked}
           setClicked={setClicked}
-          username={username}
+          placeholder={switchMode ? "Enter other Account Name..." : "Enter new Username..."}
           currentUsername={currentUsername}
           setCurrentUsername={setCurrentUsername}
           changeUser={changeUser}
         />
       </Box>
 
-      <Box marginTop={"m"} marginBottom={"m"}>
+      <Box marginTop={"s"}>
+        <TextButton
+          onPress={setSwitchUser}
+          icon={"people-circle-outline"}
+          size={35}
+          label={"Switch to Account"}
+          color={switchMode ? theme.colors.accent : theme.colors.black}
+        />
+      </Box>
+
+      <Box marginTop={"s"} marginBottom={"m"}>
         <TextButton
           onPress={deleteUsername}
           icon={"close-circle-outline"}

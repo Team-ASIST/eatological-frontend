@@ -10,13 +10,13 @@ const Box = createBox<Theme>();
 export type UsernameInputProps = {
   clicked: boolean,
   setClicked: (arg0: boolean) => void,
-  username: string,
+  placeholder: string,
   currentUsername: string,
   setCurrentUsername: (arg0: string) => void,
   changeUser: (arg0: string) => void
 }
 
-export const UsernameInput = ({ clicked, setClicked, username, currentUsername, setCurrentUsername, changeUser }: UsernameInputProps) => {
+export const UsernameInput = ({ clicked, setClicked, placeholder, currentUsername, setCurrentUsername, changeUser }: UsernameInputProps) => {
   return (
     <Box
       flexDirection="row"
@@ -30,7 +30,7 @@ export const UsernameInput = ({ clicked, setClicked, username, currentUsername, 
       {/* Input field */}
       <TextInput
         style={{ width: 235 }}
-        placeholder={"Enter new Username..."}
+        placeholder={placeholder}
         value={currentUsername}
         onChangeText={setCurrentUsername}
         onFocus={() => {

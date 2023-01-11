@@ -12,8 +12,8 @@ interface IUserState {
 }
 
 const initialState: IUserState = {
-    name: "Guest",
-    token: "T_Guest196144",
+    name: "",
+    token: "",
     updating: false,
 }
 
@@ -24,6 +24,9 @@ const userSlice = createSlice({
         resetUser(state) {
             state.name = ""
             state.token = ""
+        },
+        changeUsername(state, action) {
+            state.name = action.payload
         }
     },
     extraReducers(builder) {
@@ -47,7 +50,6 @@ const userSlice = createSlice({
             .addCase(getToken.fulfilled, (state, action) => {
                 const token = action.payload as string
                 state.token = token
-                console.log("updated")
             })
             .addCase(renameUser.pending, (state) => {
                 state.updating = true
@@ -68,8 +70,8 @@ const userSlice = createSlice({
             .addCase(deleteUser.fulfilled, (state, action) => {
                 const success = action.payload as boolean
                 if (success) {
-                    state.name = "Guest"
-                    state.token = "T_Guest196144"
+                    state.name = ""
+                    state.token = ""
                 }
             })
     }
@@ -86,7 +88,7 @@ export const getToken = createAsyncThunk<
     'token',
     async (name, thunkApi) => {
         try {
-            // Add new user to the database
+            // Add new random user to the database
             const response = await backend().get(
                 '/token',
                 {
@@ -99,7 +101,7 @@ export const getToken = createAsyncThunk<
             if (response.status = 200) {
                 const message = response.data
 
-                if ('token' in message) {
+                if (!('errorCode' in message)) {
                     return message.token
                 } else {
                     return thunkApi.getState().user.token
@@ -131,24 +133,17 @@ export const addUser = createAsyncThunk<
             // Add new user to the database
             const response = await backend().post(
                 '/user/add',
-                {},
-                {
-                    headers: {
-                        'username': name
-                    }
-                }
+                {}
             )
 
             if (response.status = 200) {
                 const message = response.data
 
                 if (!('errorCode' in message)) {
-                    thunkApi.dispatch(getToken(name))
-                    return name
+                    thunkApi.dispatch(getToken(message.username))
+                    return message.username
                 } else {
-                    // Should we fetch token for possibly taken user?
-                    thunkApi.dispatch(getToken(name))
-                    return name
+                    return ""
                 }
 
             } else {
@@ -190,14 +185,10 @@ export const renameUser = createAsyncThunk<
 
                 if (!('errorCode' in message)) {
                     thunkApi.dispatch(getToken(name))
-                    // Reset user values
-                    thunkApi.dispatch(resetCurrentPlan())
                     return name
                 } else {
-                    // Should we fetch token for possibly taken user?
-                    thunkApi.dispatch(resetCurrentPlan())
-                    thunkApi.dispatch(getToken(name))
-                    return name
+                    // Return old name
+                    return thunkApi.getState().user.name
                 }
 
             } else {
@@ -225,12 +216,7 @@ export const deleteUser = createAsyncThunk<
         try {
             // Delete User
             const response = await backend().delete(
-                '/user/delete',
-                {
-                    headers: {
-                        'username': name
-                    }
-                }
+                '/user/delete'
             )
 
             if (response.status = 200) {
@@ -238,9 +224,9 @@ export const deleteUser = createAsyncThunk<
 
                 if (!('errorCode' in message)) {
                     thunkApi.dispatch(resetCurrentPlan())
+                    thunkApi.dispatch(addUser(""))
                     return true
                 } else {
-                    thunkApi.dispatch(resetCurrentPlan())
                     return false
                 }
 
@@ -262,5 +248,6 @@ export const selectUsername = (state: RootState) => state.user.name
 export const selectToken = (state: RootState) => state.user.token
 
 export const { resetUser } = userSlice.actions
+export const { changeUsername } = userSlice.actions
 
 export default userSlice.reducer

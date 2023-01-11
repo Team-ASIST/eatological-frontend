@@ -20,7 +20,7 @@ export const backend = () => {
     if (token.startsWith("T")) {
       (config as any).headers['EatologicalToken'] = token;
     }
-    if (token.startsWith("T_dev")) {
+    if (token == "") {
       (config as any).headers['EatologicalToken'] = 'dev@eatological.de';
     }
     return config;
