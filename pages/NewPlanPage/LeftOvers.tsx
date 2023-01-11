@@ -36,7 +36,7 @@ const LeftoversScreen = ({ navigation }: Props) => {
             increment={() => dispatch(leftoverIncrement({ id: leftover.id }))}
             decrement={() => dispatch(leftoverDecrement({ id: leftover.id }))}
             remove={() => dispatch(leftoverRemoved({ id: leftover.id }))}
-            value={leftover.amount}
+            value={leftover.quantity * leftover.smallestAmount}
             title={leftover.name}
             unit={leftover.unit}
         />
