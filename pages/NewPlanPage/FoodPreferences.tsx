@@ -44,11 +44,23 @@ const FoodPreferencesScreen = ({ navigation }: Props) => {
                     }
                 }>
                 <Box marginVertical="l" marginHorizontal="xs" padding="m" height={"75%"}>
-                    <Text variant="subheader">Do you have any preferences?</Text>
-                    <SearchBar typeOfItems='foodpreference'></SearchBar>
-                    <ScrollView alwaysBounceVertical={false} showsVerticalScrollIndicator={false}>
-                    {preferenceInputs}
-                </ScrollView>
+                    <Text variant="subheader">Möchtest Du etwas bestimmtes essen?</Text>
+                    <Box position="relative" zIndex={1}>
+                        <SearchBar typeOfItems="foodpreference"></SearchBar>
+                    </Box>
+                    <Box
+                        position="absolute"
+                        top={185}
+                        width={'111.2%'}
+                        height={'75%'}
+                        padding="m"
+                        zIndex={0}>
+                        <ScrollView
+                            alwaysBounceVertical={false}
+                            showsVerticalScrollIndicator={false}>
+                            {preferenceInputs}
+                        </ScrollView>
+                    </Box>
                 </Box>
             </NewPlanNavigationBar>
         </Box>

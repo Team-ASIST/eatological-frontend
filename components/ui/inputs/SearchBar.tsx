@@ -1,12 +1,11 @@
 import React, { useState } from 'react'
 import { createBox, createText } from '@shopify/restyle'
-import { TextInput, Keyboard, FlatList, ListRenderItemInfo, View, ScrollView } from 'react-native'
+import { TextInput, Keyboard, FlatList, ListRenderItemInfo, View } from 'react-native'
 import theme, { Theme } from '../../../utils/theme'
 import IconButton from './IconButton'
 import {
     leftoverAdded,
     preferenceAdded,
-    selectAllLeftovers,
 } from '../../../redux/slice/newPlanSlice'
 import { useDispatch, useSelector } from 'react-redux'
 import { selectAllIngredients } from '../../../redux/slice/currentPlanSlice'
@@ -41,7 +40,7 @@ const SearchBarDisplay = ({
             {/* Input field */}
             <TextInput
                 style={{ width: 235 }}
-                placeholder="Search..."
+                placeholder="Suche..."
                 value={searchPhrase}
                 onChangeText={setSearchPhrase}
                 onFocus={() => {

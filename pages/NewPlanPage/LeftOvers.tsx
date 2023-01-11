@@ -52,15 +52,15 @@ const LeftoversScreen = ({ navigation }: Props) => {
                     navigation.navigate('CurrentPlan')
                 }}>
                 <Box marginVertical="l" marginHorizontal="xs" padding="m" height={'75%'}>
-                    <Text variant="subheader">Do you have any leftovers?</Text>
+                    <Text variant="subheader">Hast Du Reste im Kühlschrank?</Text>
                     <Box position="relative" zIndex={1}>
                         <SearchBar typeOfItems="leftover"></SearchBar>
                     </Box>
                     <Box
                         position="absolute"
-                        top={190}
+                        top={185}
                         width={'111.2%'}
-                        height={'74%'}
+                        height={'75%'}
                         padding="m"
                         zIndex={0}>
                         <ScrollView
