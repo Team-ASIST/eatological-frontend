@@ -6,9 +6,9 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import theme, { fonts } from '../utils/theme';
 import GroceryListPage from '../pages/GroceryListPage/GroceryListPage';
 import CurrentPlan from '../pages/CurrentPlanPage/CurrentPlanPage';
-import SettingsPage from '../pages/SettingsPage/SettingsPage';
 import { PlanStackScreen } from './newPlanNavigator';
 import RecipePage from '../pages/RecipePage/RecipePage';
+import SettingsPage from '../pages/SettingsPage/SettingsPage';
 
 
 const Tab = createBottomTabNavigator<RootTabParamList>();
@@ -63,7 +63,7 @@ export const TabNavigator = () => {
             <Tab.Screen name="GroceryList" options={{ headerShown: false, title: "Grocery List", unmountOnBlur: true }} component={GroceryListPage} />
             <Tab.Screen name="CurrentPlan" options={{ headerShown: false, title: "Current Plan" }} component={CurrentPlan} />
             <Tab.Screen name="Recipe" options={{ headerShown: false, title: "Recipe" }} component={RecipePage} />
-            <Tab.Screen name="Settings" options={{ headerShown: false }} component={SettingsPage} />
+            <Tab.Screen name="Settings" options={{ headerShown: false, unmountOnBlur: true }} component={SettingsPage} />
         </Tab.Navigator>
     )
 }

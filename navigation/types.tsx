@@ -7,6 +7,11 @@ export type RootStackParamList = {
     SwapMeals: undefined;
 };
 
+export type SettingsStackParamList = {
+    User: undefined;
+    Restrictions: undefined;
+}
+
 export type RootTabParamList = {
     NewPlan: undefined;
     CurrentPlan: undefined;

@@ -22,6 +22,10 @@ const currentPlanSlice = createSlice({
     name: 'currentPlan',
     initialState,
     reducers: {
+        resetCurrentPlan(state) {
+            state.recipes = [] as Meal[]
+            state.groceries = [] as LargeGrocery[]
+        },
         resetGroceries(state) {
             state.groceries = [] as LargeGrocery[]
         }
@@ -145,6 +149,7 @@ const currentPlanSlice = createSlice({
     }
 })
 
+export const { resetCurrentPlan } = currentPlanSlice.actions
 export const { resetGroceries } = currentPlanSlice.actions
 
 export const updateGroceries = createAsyncThunk<
@@ -164,7 +169,7 @@ export const updateGroceries = createAsyncThunk<
         let groceriesArg = JSON.stringify(updatedGroceries)
         try {
             // Get Groceries for the User
-            const response = await backend.put(
+            const response = await backend().put(
                 '/groceries/buy',
                 {},
                 {
@@ -196,7 +201,7 @@ export const acceptPlan = createAsyncThunk<
     'currentPlan/acceptPlan',
     async (meals, thunkApi) => {
         try {
-            const response = await backend.post(
+            const response = await backend().post(
                 '/plan/accept',
                 {},
                 { headers: {} }
@@ -219,7 +224,7 @@ export const getPlan = createAsyncThunk<
     'currentPlan/getPlan',
     async () => {
         try {
-            const response = await backend.get(
+            const response = await backend().get(
                 '/plan'
             )
 
@@ -258,7 +263,7 @@ export const getIngredients = createAsyncThunk<
     'currentPlan/getIngredients',
     async () => {
         try {
-            const response = await backend.get(
+            const response = await backend().get(
                 '/ingredients'
             )
 
@@ -281,7 +286,7 @@ export const planCook = createAsyncThunk(
     'currentPlan/planCook',
     async (mealId: number) => {
         try {
-            const response = await backend.put(
+            const response = await backend().put(
                 '/plan/cook',
                 {},
                 {
@@ -305,7 +310,7 @@ export const getGroceries = createAsyncThunk<
     async () => {
         try {
             // Get Groceries for the User
-            const response = await backend.get(
+            const response = await backend().get(
                 '/groceries'
             )
 

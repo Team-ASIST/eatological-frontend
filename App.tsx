@@ -18,6 +18,7 @@ import {
 import { TabNavigator } from './navigation/tabNavigator'
 import { getIngredients } from './redux/slice/currentPlanSlice'
 import SplashScreen from './pages/SplashScreen/SplashScreen'
+import { addUser, getToken } from './redux/slice/userSlice'
 //Wrapper component which enables the usage of useDispatch in App component
 const AppWrapper = () => {
   return (
@@ -31,10 +32,22 @@ const App = () => {
   //load ingredients and store them in redux store (ingredientSlice)
   const dispatch = useDispatch<AppDispatch>()
 
-  useEffect(() => {
-    dispatch(getIngredients())
-  }, []
-  )
+  const onBeforeLift = () => {
+    console.log(store.getState().user)
+    const name = store.getState().user.name
+
+    if (name == "") {
+      dispatch(addUser("")).then(
+        () => dispatch(getToken(store.getState().user.name)).then(
+          () => dispatch(getIngredients())
+        )
+      )
+    } else {
+      dispatch(getToken(name)).then(
+        () => dispatch(getIngredients)
+      )
+    }
+  }
 
   const colorTheme = useColorScheme();
   let [fontsLoaded] = useFonts({
@@ -50,7 +63,7 @@ const App = () => {
   }
   return (
     <Provider store={store}>
-      <PersistGate loading={<SplashScreen/>} persistor={persistor}>
+      <PersistGate loading={<SplashScreen />} persistor={persistor} onBeforeLift={onBeforeLift}>
         <ThemeProvider theme={colorTheme === 'dark' ? darkTheme : theme}>
           <NavigationContainer>
             <SafeAreaView style={{ flex: 1, paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0 }}>
