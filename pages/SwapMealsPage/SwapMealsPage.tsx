@@ -17,6 +17,7 @@ import { AppDispatch } from "../../redux/store";
 import { acceptPlan } from "../../redux/slice/currentPlanSlice";
 import RecipePage from "../RecipePage/RecipePage";
 import MealCard from "../../components/ui/recipe/mealCard";
+import { ScoreBar } from "../../components/ui/common/scoreBar";
 
 const Text = createText<Theme>()
 const Box = createBox<Theme>()
@@ -25,15 +26,28 @@ export type SwapMealsPageProps = {
   navigation: NavigationScreenProp<any, any>
 };
 
-const TopBar = () => {
+export type TopBarProps = {
+  score: number
+}
+
+const TopBar = ({ score }: TopBarProps) => {
   return (
     <Box marginTop="l" marginHorizontal="xs" padding="m">
       <Text variant="subheader">Choose your Recipes...</Text>
+      <ScoreBar
+        score={score}
+        maxScore={1}
+      />
       <Box flexDirection={"row"} flexGrow={1}>
         <Box flex={1} justifyContent={"flex-start"} alignItems={"center"} flexDirection={"row"}>
           <Ionicons name="arrow-back-circle-outline" size={20} color="black" />
           <Text paddingLeft={"xs"} variant={"body"} color={"secondaryCardText"}>
             Prev
+          </Text>
+        </Box>
+        <Box>
+          <Text variant={"body"} >
+            Sustainability
           </Text>
         </Box>
         <Box flex={1} justifyContent={"flex-end"} alignItems={"center"} flexDirection={"row"}>
@@ -160,7 +174,7 @@ const SwapMealsPage = ({ navigation }: SwapMealsPageProps) => {
           }
         }>
         <Box flexGrow={1} height="50%">
-          <TopBar />
+          <TopBar score={sustainabilityScore} />
           <Animation setupPhase={setupPhase} />
           <SwipeListView
             data={recipeList}
