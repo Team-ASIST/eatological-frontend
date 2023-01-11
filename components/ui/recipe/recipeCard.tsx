@@ -12,8 +12,9 @@ export type RecipeCardProps = {
     imageSource: string,
     cookingTime: number,
     recipeName: string,
-    ready: boolean,
     persons: number,
+    ready?: boolean,
+    cooked?: boolean,
     onClick?: Function
 }
 
@@ -22,7 +23,7 @@ const recipeCard = (props: RecipeCardProps) => {
         <TouchableOpacity disabled={props.onClick ? false : true} onPress={() => props.onClick ? props.onClick() : undefined}>
             <Box backgroundColor="secondaryCardBackground" height={theme.heights.m}>
                 <ImageBackground
-
+                    imageStyle= {props.cooked ? {opacity: 0.5} : {}}
                     resizeMode="cover"
                     style={{ height: '100%', width: '100%', justifyContent: 'flex-end' }}
                     source={{

@@ -14,10 +14,15 @@ export interface ILeftOver {
     unit: string
 }
 
+export interface IFoodPreference {
+    id: number
+    name: string
+}
+
 interface IState {
     mealAmount: IMealAmount[]
     leftovers: ILeftOver[]
-    preferences: string[]
+    preferences: IFoodPreference[]
 }
 
 const initialState: IState = {
@@ -97,6 +102,23 @@ const newPlanSlice = createSlice({
                 }
             }
         },
+        preferenceAdded(state, action) {
+            const { id, name} = action.payload
+            const existingPreference = state.preferences.find((preference) => preference.id === id)
+            if (!existingPreference) {
+                state.preferences.push({
+                    id: id,
+                    name: name,
+                })
+            }
+        },
+        preferenceRemoved(state, action) {
+            const { id } = action.payload
+            const existingPreference = state.preferences.find((preference) => preference.id === id)
+            if (existingPreference) {
+                state.preferences = state.preferences.filter((preference) => preference.id !== id)
+            }
+        },
         resetPlanConfiguration: () => initialState,
     }
 })
@@ -110,11 +132,14 @@ export const {
     leftoverAdded,
     leftoverIncrement,
     leftoverDecrement,
-    leftoverRemoved
+    leftoverRemoved,
+    preferenceAdded,
+    preferenceRemoved
 } = newPlanSlice.actions
 
 export const selectAllMeals = (state: RootState) => state.newPlan.mealAmount
 export const selectNewPlanConfiguration = (state: RootState) => state.newPlan
 export const selectAllLeftovers = (state: RootState) => state.newPlan.leftovers
+export const selectAllPreferences = (state: RootState) => state.newPlan.preferences
 
 export default newPlanSlice.reducer

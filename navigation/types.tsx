@@ -1,4 +1,4 @@
-import { Recipe } from "../utils/dataTypes";
+import { Meal } from "../utils/dataTypes";
 
 export type RootStackParamList = {
     MealQuantity: undefined;
@@ -16,6 +16,6 @@ export type RootTabParamList = {
     NewPlan: undefined;
     CurrentPlan: undefined;
     GroceryList: undefined;
-    Recipe: {recipe: Recipe};
+    Recipe: {mealId: number};
     Settings: undefined;
 };

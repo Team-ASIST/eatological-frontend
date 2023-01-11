@@ -1,7 +1,7 @@
 import { backend } from "./config";
 import { FrontendPlan, BackendPlan, RecipeSwipeObject, smallIngredient } from "../dataTypes";
 
-export const createPlan = async (portions: number[], leftovers: smallIngredient[], preferences: string[]): Promise<FrontendPlan> => {
+export const createPlan = async (portions: number[], leftovers: smallIngredient[], preferences: number[]): Promise<FrontendPlan> => {
     // Input parsing to JSON strings
     let portionsArg: string = JSON.stringify(portions)
     let leftoverArg: string = JSON.stringify(leftovers)
@@ -25,17 +25,17 @@ export const createPlan = async (portions: number[], leftovers: smallIngredient[
             let initialPlan: BackendPlan = response.data
 
             const recipeSwipeObjects: RecipeSwipeObject[] = []
-            let i: number = 0
-            while (i < initialPlan.meals.length) {
+
+            initialPlan.meals.forEach((meal: any, idx: number) => {
                 recipeSwipeObjects.push(
                     new RecipeSwipeObject(
-                        i,
-                        initialPlan.meals[i].recipe,
-                        initialPlan.meals[i].portion
+                        idx,
+                        meal.recipe,
+                        meal.portion
                     )
                 )
-                i += 1
-            }
+            })
+
             return { recipeSwipeObjects: recipeSwipeObjects, sustainabilityScore: initialPlan.sustainabilityScore }
         }
         console.error("Call CreatePlan aborted!")
@@ -59,11 +59,11 @@ export const swipeleft = async (currentList: RecipeSwipeObject[], mealID: number
                 }
             }
         )
-        if (response.status = 200){
-        // Extract data and parse new recipe by swapping into previous plan
-        let newPlan: BackendPlan = response.data
-        result[mealID].swapRecipe(newPlan.meals[mealID].recipe)
-        return { recipeSwipeObjects: result, sustainabilityScore: newPlan.sustainabilityScore } as FrontendPlan
+        if (response.status = 200) {
+            // Extract data and parse new recipe by swapping into previous plan
+            let newPlan: BackendPlan = response.data
+            result[mealID].swapRecipe(newPlan.meals[mealID].recipe)
+            return { recipeSwipeObjects: result, sustainabilityScore: newPlan.sustainabilityScore } as FrontendPlan
         }
 
         console.error("Call SwipeLeft aborted!")
@@ -88,11 +88,11 @@ export const swiperight = async (currentList: RecipeSwipeObject[], mealID: numbe
             }
         )
 
-        if (response.status = 200){
-        // Extract data and parse new recipe by swapping into previous plan
-        let newPlan: BackendPlan = response.data
-        result[mealID].swapRecipe(newPlan.meals[mealID].recipe)
-        return { recipeSwipeObjects: result, sustainabilityScore: newPlan.sustainabilityScore } as FrontendPlan
+        if (response.status = 200) {
+            // Extract data and parse new recipe by swapping into previous plan
+            let newPlan: BackendPlan = response.data
+            result[mealID].swapRecipe(newPlan.meals[mealID].recipe)
+            return { recipeSwipeObjects: result, sustainabilityScore: newPlan.sustainabilityScore } as FrontendPlan
         }
         console.error("Call SwipeRight aborted!")
     } catch (error) {

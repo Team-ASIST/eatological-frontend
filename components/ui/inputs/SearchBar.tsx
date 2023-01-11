@@ -3,7 +3,7 @@ import { createBox, createText } from '@shopify/restyle'
 import { TextInput, Keyboard, FlatList, ListRenderItemInfo, View } from 'react-native'
 import theme, { Theme } from '../../../utils/theme'
 import IconButton from './IconButton'
-import { leftoverAdded, selectAllLeftovers } from '../../../redux/slice/newPlanSlice'
+import { leftoverAdded, preferenceAdded, selectAllLeftovers } from '../../../redux/slice/newPlanSlice'
 import { useDispatch, useSelector } from 'react-redux'
 import { selectAllIngredients } from '../../../redux/slice/currentPlanSlice'
 import { AppDispatch } from '../../../redux/store'
@@ -54,13 +54,16 @@ const SearchBarDisplay = ({
                     }}
                     icon={'close'}
                     size={15}
-                    color={theme.colors.black}/>
+                    color={theme.colors.black}
+                />
             )}
         </Box>
     )
 }
 
+//typeOfItem specifies if when pressing the plus button the item is supposed to be a leftover, a foodpreference, etc.
 type ItemProps = {
+    typeOfItem: string
     id: number
     name: string
     smallestAmount: number
@@ -68,8 +71,8 @@ type ItemProps = {
     unit: string
 }
 
-//Items for search bar proposals with important ingredient properties for leftovers
-const Item = ({ id, name, smallestAmount, amount, unit }: ItemProps) => {
+//Items for search bar proposals with important ingredient properties for leftovers, preferences
+const Item = ({ id, name, smallestAmount, amount, unit, typeOfItem }: ItemProps) => {
     const dispatch = useDispatch<AppDispatch>()
     return (
         <Box
@@ -79,23 +82,33 @@ const Item = ({ id, name, smallestAmount, amount, unit }: ItemProps) => {
             flexDirection="row"
             justifyContent="space-between">
             <Text variant="subsubheader">{name}</Text>
-            {/* icon button for adding food items to leftovers */}
+            {/* icon button for adding food items to respective redux store*/}
             <IconButton
-                onPress={() => dispatch(leftoverAdded({ id, name, smallestAmount, amount, unit }))}
+                onPress={() => {
+                    if (typeOfItem === 'leftover') {
+                        dispatch(leftoverAdded({ id, name, smallestAmount, amount, unit }))
+                    } else if (typeOfItem === 'foodpreference') {
+                        dispatch(preferenceAdded({ id, name }))
+                    } else {
+                        console.log('Unknown Type of item.')
+                    }
+                }}
                 icon={'ios-add-circle-outline'}
                 size={25}
-                color={theme.colors.black}/>
+                color={theme.colors.black}
+            />
         </Box>
     )
 }
 
 type ListProps = {
+    typeOfItems: string
     searchPhrase: string
     data: any
 }
 
 //List of displayed items, no case sensitivity
-const List = ({ searchPhrase, data }: ListProps) => {
+const List = ({ searchPhrase, data, typeOfItems }: ListProps) => {
     return (
         <FlatList
             data={data}
@@ -110,6 +123,7 @@ const List = ({ searchPhrase, data }: ListProps) => {
                 ) {
                     return (
                         <Item
+                            typeOfItem={typeOfItems}
                             name={item.name}
                             id={item.id}
                             smallestAmount={item.smallestAmount}
@@ -126,11 +140,15 @@ const List = ({ searchPhrase, data }: ListProps) => {
     )
 }
 
-const SearchBar = () => {
+type SearchBarProps = {
+    typeOfItems: string
+}
+
+const SearchBar = ({ typeOfItems }: SearchBarProps) => {
     const [searchPhrase, setSearchPhrase] = useState('')
     const [clicked, setClicked] = useState(false)
 
-    const leftovers = useSelector(selectAllIngredients)
+    const allIngredients = useSelector(selectAllIngredients)
 
     return (
         <Box marginVertical="m" paddingVertical="m">
@@ -140,7 +158,9 @@ const SearchBar = () => {
                 clicked={clicked}
                 setClicked={setClicked}
             />
-            {clicked && <List searchPhrase={searchPhrase} data={leftovers} />}
+            {clicked && (
+                <List typeOfItems={typeOfItems} searchPhrase={searchPhrase} data={allIngredients} />
+            )}
         </Box>
     )
 }
