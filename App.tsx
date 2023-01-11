@@ -32,12 +32,9 @@ const App = () => {
   //load ingredients and store them in redux store (ingredientSlice)
   const dispatch = useDispatch<AppDispatch>()
 
-  useEffect(() => {
-    dispatch(getToken("")).then(
-      () => dispatch(getIngredients)
-    )
-    /*
+  const onBeforeLift = () => {
     const name = store.getState().user.name
+
     if (name == "") {
       dispatch(addUser("")).then(
         () => dispatch(getToken(store.getState().user.name)).then(
@@ -48,9 +45,8 @@ const App = () => {
       dispatch(getToken(name)).then(
         () => dispatch(getIngredients)
       )
-    }*/
-  }, []
-  )
+    }
+  }
 
   const colorTheme = useColorScheme();
   let [fontsLoaded] = useFonts({
@@ -66,7 +62,7 @@ const App = () => {
   }
   return (
     <Provider store={store}>
-      <PersistGate loading={<SplashScreen />} persistor={persistor}>
+      <PersistGate onBeforeLift={onBeforeLift} loading={<SplashScreen />} persistor={persistor}>
         <ThemeProvider theme={colorTheme === 'dark' ? darkTheme : theme}>
           <NavigationContainer>
             <SafeAreaView style={{ flex: 1, paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0 }}>
