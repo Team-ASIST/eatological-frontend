@@ -8,8 +8,16 @@ export const palette = {
     congoPink: '#FF7070',
 
     //Accent
+    veryLightGreen: '#EBFBDA',
     navyGreen:'#304C09',
-    avocado: '#53810E',
+    sapGreen: '#4E790D',
+
+    mistyRose: '#FFEBEB',
+    spanishPink: '#FFC2C2',
+
+    darkOrchid: '#AA0AD6',
+    purpleMunseli: '#9B09C3',
+    violetRYB: '#8008A1',
 
     //Various
     green: '#42ba96',
@@ -42,21 +50,22 @@ const theme = createTheme({
         l: 250, 
     },
     colors: {
-        mainBackground: palette.pastelPink,
+        mainBackground: palette.veryLightGreen,
         mainForeground: palette.congoPink,
-        primaryCardBackground: palette.congoPink,
+        primaryCardBackground: palette.navyGreen,
         secondaryCardBackground: palette.lightPink,
-        primaryCardText: palette.black,
+        primaryCardText: palette.white,
         secondaryCardText: palette.black,
         primaryButtonColor: palette.salmonPink,
         secondaryButtonColor: palette.congoPink,
         inactiveButtonColor: palette.grey,
         navigationButtonColor: palette.sonicSilver,
+        lightPrimary: palette.darkOrchid,
+        darkPrimary: palette.violetRYB,
         alert: palette.red,
         warn: palette.yellow,
         success: palette.green,
         accent: palette.navyGreen,
-        lightAccent: palette.avocado,
         black: palette.black,
         white: palette.white
     },

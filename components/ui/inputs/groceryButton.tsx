@@ -17,7 +17,7 @@ export type GroceryButtonProps = {
 const GroceryButton = ({ ingredientId, grocery, ingredient, onClick }: GroceryButtonProps) => {
     return (
         <Box
-            backgroundColor={grocery.bought >= grocery.required ? 'inactiveButtonColor' : 'accent'}
+            backgroundColor={grocery.bought >= grocery.required ? 'inactiveButtonColor' : 'primaryCardBackground'}
             borderRadius={50}
             flexDirection={"row"}
             justifyContent={"space-between"}

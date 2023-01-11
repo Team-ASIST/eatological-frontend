@@ -110,7 +110,7 @@ const SettingsPage = ({ navigation }: SettingsPageProps) => {
           icon={"people-circle-outline"}
           size={35}
           label={"Switch to Account"}
-          color={switchMode ? theme.colors.accent : theme.colors.black}
+          color={switchMode ? theme.colors.primaryCardBackground : theme.colors.black}
           disabled={false}
         />
       </Box>

@@ -44,7 +44,7 @@ const TopBar = ({ score }: TopBarProps) => {
           </Text>
         </Box>
         <Box>
-          <Text variant={"body"} >
+          <Text variant={"body"} color={"secondaryCardText"}>
             Sustainability
           </Text>
         </Box>
