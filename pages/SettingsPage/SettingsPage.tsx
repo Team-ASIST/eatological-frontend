@@ -37,7 +37,6 @@ const SettingsPage = ({ navigation }: SettingsPageProps) => {
     if (!switchMode) {
       dispatch(renameUser(newUsername))
     } else{
-      dispatch(changeUsername(newUsername))
       dispatch(getToken(newUsername))
       setSwitchMode(false)
     }

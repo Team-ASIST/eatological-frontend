@@ -102,6 +102,9 @@ export const getToken = createAsyncThunk<
                 const message = response.data
 
                 if (!('errorCode' in message)) {
+                    if(thunkApi.getState().user.name != name){
+                        thunkApi.dispatch(changeUsername(name))
+                    }
                     return message.token
                 } else {
                     return thunkApi.getState().user.token

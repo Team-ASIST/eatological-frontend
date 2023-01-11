@@ -40,7 +40,6 @@ export const setRestrictions = async (restriction: string) : Promise<boolean> =>
             }
         )
 
-        console.log(response.config.headers)
         if (response.status = 200) {
             return true
         }
