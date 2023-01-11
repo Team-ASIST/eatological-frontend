@@ -13,12 +13,13 @@ export type Ingredient = {
 
 export type smallIngredient = {
     id: number, 
-    smallestAmountNumber: number // smallestAmountNumber (what's meant with that? the amount of the unit?)
+    quantity: number 
 }
 
 export type Recipe = {
+    id: number, 
     name: string,
-    ingredients: smallIngredient[],
+    items: smallIngredient[],
     steps: string[],
     imageUrl: string,
     prepTime: number,
@@ -48,7 +49,7 @@ export type Meal = {
     id: number,
     recipe: Recipe,
     portions: number,
-    cooked: boolean
+    cooked: boolean,
 }
 
 export class RecipeSwipeObject {
@@ -80,4 +81,9 @@ export type LargeGrocery = {
     ingredientId: number,
     grocery: Grocery,
     ingredient: Ingredient
+}
+
+export type Restriction = {
+    name: string,
+    active: boolean
 }

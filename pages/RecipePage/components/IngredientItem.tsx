@@ -50,7 +50,7 @@ export const IngredientItem = ({ ingredientName, unit, season, local, alternativ
             justifyContent={"space-between"}
             alignItems={"center"}
             borderColor={'black'}
-            borderTopWidth={0.75}
+            borderBottomWidth={0.75}
             height={75}
             paddingLeft={"s"}
             paddingRight={"xs"}
@@ -59,7 +59,7 @@ export const IngredientItem = ({ ingredientName, unit, season, local, alternativ
                 <CheckIcon bought={(bought >= required)} />
             </Box>
 
-            <Box flex={6}>
+            <Box flex={5}>
                 <Text variant={"body"} color="primaryCardText">
                     {ingredientName}
                     {alternative === null ? "" : "\nAlt: [ " + alternative + " ]"}
@@ -68,7 +68,7 @@ export const IngredientItem = ({ ingredientName, unit, season, local, alternativ
 
 
             {/* Season, Amounts, Local */}
-            <Box flexDirection={"column"} alignItems="flex-start" flex={4}>
+            <Box flexDirection={"column"} alignItems="flex-start" flex={5}>
                 <Box flexDirection={"row"} alignItems="center">
                     <Ionicons
                         name={season ? 'checkmark-circle-outline' : 'close-circle-outline'}

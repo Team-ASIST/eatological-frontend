@@ -17,7 +17,7 @@ export type GroceryButtonProps = {
 const GroceryButton = ({ ingredientId, grocery, ingredient, onClick }: GroceryButtonProps) => {
     return (
         <Box
-            backgroundColor={grocery.bought === grocery.required ? 'inactiveButtonColor' : 'accent'}
+            backgroundColor={grocery.bought >= grocery.required ? 'inactiveButtonColor' : 'accent'}
             borderRadius={50}
             flexDirection={"row"}
             justifyContent={"space-between"}
@@ -30,7 +30,7 @@ const GroceryButton = ({ ingredientId, grocery, ingredient, onClick }: GroceryBu
             <Box flex={2}>
                 <TouchableOpacity onPress={() => onClick(ingredientId)}>
                     {
-                        grocery.bought === grocery.required ?
+                        grocery.bought >= grocery.required ?
                             <Ionicons
                                 name={'checkmark-circle-outline'}
                                 size={50}

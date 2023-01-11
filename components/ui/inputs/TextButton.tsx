@@ -10,16 +10,17 @@ type Props = {
     size: number
     label?: string
     color?: string
+    disabled: boolean
 }
 
 const Text = createText<Theme>();
 const Box = createBox<Theme>();
 
-const TextButton = ({ onPress, icon, size, color, label }: Props) => {
+const TextButton = ({ onPress, icon, size, color, label, disabled }: Props) => {
     const theme = useTheme<Theme>();
 
     return (
-        <TouchableOpacity hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }} onPress={onPress}>
+        <TouchableOpacity hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }} onPress={onPress} disabled={disabled}>
             <Box flexDirection={"row"} alignItems="center" justifyContent="center" borderRadius={5} borderWidth={1} padding="xs">
                 <Ionicons name={icon} size={size} color={color ? color : theme.colors.primaryCardText} />
                 {label ? <Text variant="boldBody">{label}</Text> : null}

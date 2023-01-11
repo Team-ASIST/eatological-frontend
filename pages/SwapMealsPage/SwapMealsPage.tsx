@@ -15,6 +15,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import { createPlan, swipeleft, swiperight } from "../../utils/axios/planGenerationCalls";
 import { AppDispatch } from "../../redux/store";
 import { acceptPlan } from "../../redux/slice/currentPlanSlice";
+import { ScoreBar } from "../../components/ui/common/scoreBar";
 
 const Text = createText<Theme>()
 const Box = createBox<Theme>()
@@ -23,15 +24,28 @@ export type SwapMealsPageProps = {
   navigation: NavigationScreenProp<any, any>
 };
 
-const TopBar = () => {
+export type TopBarProps = {
+  score: number
+}
+
+const TopBar = ({ score }: TopBarProps) => {
   return (
     <Box marginTop="l" marginHorizontal="xs" padding="m">
       <Text variant="subheader">Choose your Recipes...</Text>
+      <ScoreBar
+        score={score}
+        maxScore={1}
+      />
       <Box flexDirection={"row"} flexGrow={1}>
         <Box flex={1} justifyContent={"flex-start"} alignItems={"center"} flexDirection={"row"}>
           <Ionicons name="arrow-back-circle-outline" size={20} color="black" />
           <Text paddingLeft={"xs"} variant={"body"} color={"secondaryCardText"}>
             Prev
+          </Text>
+        </Box>
+        <Box>
+          <Text variant={"body"} >
+            Sustainability
           </Text>
         </Box>
         <Box flex={1} justifyContent={"flex-end"} alignItems={"center"} flexDirection={"row"}>
@@ -82,7 +96,7 @@ const SwapMealsPage = ({ navigation }: SwapMealsPageProps) => {
 
   // Fetch Initial Plan on First Mounting
   useEffect(() => {
-    createPlan(mealAmount.map((m: IMealAmount) => m.amount), leftovers.map((l: ILeftOver) => ({ id: l.id, smallestAmountNumber: (l.amount / l.smallestAmount) })), preferences.map((f: IFoodPreference) => f.id)).then(
+    createPlan(mealAmount.map((m: IMealAmount) => m.amount), leftovers.map((l: ILeftOver) => ({ id: l.id, quantity: (l.amount / l.smallestAmount) })), preferences.map((f: IFoodPreference) => f.id)).then(
       (initialPlan: FrontendPlan) => {
         setRecipeList(initialPlan.recipeSwipeObjects)
         setSwipeTracker(Array(initialPlan.recipeSwipeObjects.length).fill(0))
@@ -154,7 +168,7 @@ const SwapMealsPage = ({ navigation }: SwapMealsPageProps) => {
           }
         }>
         <Box flexGrow={1} height="50%">
-          <TopBar />
+          <TopBar score={sustainabilityScore} />
           <Animation setupPhase={setupPhase} />
           <SwipeListView
             data={recipeList}
@@ -188,8 +202,7 @@ const SwapMealsPage = ({ navigation }: SwapMealsPageProps) => {
                     imageSource={data.item.recipe.imageUrl}
                     cookingTime={data.item.recipe.prepTime}
                     recipeName={data.item.recipe.name}
-                    persons={data.item.portions}
-                    ready={false} />
+                    persons={data.item.portions} />
                 </Box>
               </TouchableOpacity>
             )}

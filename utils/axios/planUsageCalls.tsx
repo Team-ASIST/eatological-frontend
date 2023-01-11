@@ -3,7 +3,7 @@ import { Recipe, BackendPlan, Meal } from "../dataTypes";
 
 export const recipes = async (): Promise<Recipe[]> => {
     try {
-        const response = await backend.get(
+        const response = await backend().get(
             '/recipes'
         )
 
@@ -22,7 +22,7 @@ export const recipes = async (): Promise<Recipe[]> => {
 
 export const plan = async (): Promise<Meal[]> => {
     try {
-        const response = await backend.get(
+        const response = await backend().get(
             '/plan'
         )
 
@@ -30,17 +30,18 @@ export const plan = async (): Promise<Meal[]> => {
             // Extract data and parse results into Meal Array
             let plan: BackendPlan = response.data
             const meals: Meal[] = []
-            let i: number = 0
-            while (i < plan.meals.length) {
+
+            plan.meals.forEach((meal: any, idx: number) => {
                 meals.push(
                     {
-                        id: i,
-                        recipe: plan.meals[i].recipe,
-                        portions: plan.meals[i].portion
+                        id: idx,
+                        recipe: meal.recipe,
+                        portions: meal.portion,
+                        cooked: meal.cooked
                     } as Meal
                 )
-                i += 1
-            }
+            })
+            
             return meals
         }
         console.error("Call Recipes aborted!")
@@ -54,7 +55,7 @@ export const plan = async (): Promise<Meal[]> => {
 export const planCook = async (recipeID: number): Promise<Meal[]> => {
     let recipeArg = JSON.stringify(recipeID)
     try {
-        const response = await backend.put(
+        const response = await backend().put(
             '/plan/cook',
             {},
             {
@@ -68,17 +69,18 @@ export const planCook = async (recipeID: number): Promise<Meal[]> => {
             // Extract data and parse results into Meal Array
             let plan: BackendPlan = response.data
             const meals: Meal[] = []
-            let i: number = 0
-            while (i < plan.meals.length) {
+
+            plan.meals.forEach((meal: any, idx: number) => {
                 meals.push(
                     {
-                        id: i,
-                        recipe: plan.meals[i].recipe,
-                        portions: plan.meals[i].portion
+                        id: idx,
+                        recipe: meal.recipe,
+                        portions: meal.portion,
+                        cooked: meal.cooked
                     } as Meal
                 )
-                i += 1
-            }
+            })
+
             return meals
         }
         console.error("Call planCook aborted!")
