@@ -8,16 +8,12 @@ export const palette = {
     congoPink: '#FF7070',
 
     //Accent
-    veryLightGreen: '#EBFBDA',
+    backgroundGreen: '#EBFBDA',
     navyGreen:'#304C09',
     sapGreen: '#4E790D',
 
     mistyRose: '#FFEBEB',
     spanishPink: '#FFC2C2',
-
-    darkOrchid: '#AA0AD6',
-    purpleMunseli: '#9B09C3',
-    violetRYB: '#8008A1',
 
     //Various
     green: '#42ba96',
@@ -50,18 +46,16 @@ const theme = createTheme({
         l: 250, 
     },
     colors: {
-        mainBackground: palette.veryLightGreen,
-        mainForeground: palette.congoPink,
+        mainBackground: palette.backgroundGreen,
+        mainForeground: palette.sapGreen,
         primaryCardBackground: palette.navyGreen,
-        secondaryCardBackground: palette.lightPink,
+        secondaryCardBackground: palette.spanishPink,
         primaryCardText: palette.white,
         secondaryCardText: palette.black,
-        primaryButtonColor: palette.salmonPink,
-        secondaryButtonColor: palette.congoPink,
+        primaryButtonColor: palette.mistyRose,
+        secondaryButtonColor: palette.sapGreen,
         inactiveButtonColor: palette.grey,
         navigationButtonColor: palette.sonicSilver,
-        lightPrimary: palette.darkOrchid,
-        darkPrimary: palette.violetRYB,
         alert: palette.red,
         warn: palette.yellow,
         success: palette.green,
@@ -141,7 +135,7 @@ export const darkTheme: Theme = {
 
         secondaryCardBackground: palette.navyGreen,
         secondaryCardText: palette.black,
-        accent: palette.salmonPink,
+        accent: palette.sapGreen,
     },
 };
 
