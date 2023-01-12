@@ -31,7 +31,7 @@ export type TopBarProps = {
 const TopBar = ({ score }: TopBarProps) => {
   return (
     <Box marginTop="l" marginHorizontal="xs" padding="m">
-      <Text variant="subheader">Choose your Recipes...</Text>
+      <Text variant="subheader">Wähle deine Rezepte...</Text>
       <ScoreBar
         score={score}
         maxScore={1}
@@ -44,8 +44,8 @@ const TopBar = ({ score }: TopBarProps) => {
           </Text>
         </Box>
         <Box>
-          <Text variant={"body"} >
-            Sustainability
+          <Text variant={"body"} color={"secondaryCardText"}>
+            Nachhaltigkeit
           </Text>
         </Box>
         <Box flex={1} justifyContent={"flex-end"} alignItems={"center"} flexDirection={"row"}>

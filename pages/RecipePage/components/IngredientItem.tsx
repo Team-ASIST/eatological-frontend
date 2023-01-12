@@ -28,7 +28,7 @@ const CheckIcon = ({ bought }: CheckIconProps) => {
             <Ionicons
                 name={'checkmark'}
                 size={50}
-                color={theme.colors.white}
+                color={theme.colors.black}
             />
         )
     } else {
@@ -36,7 +36,7 @@ const CheckIcon = ({ bought }: CheckIconProps) => {
             <Ionicons
                 name={'close'}
                 size={50}
-                color={theme.colors.white}
+                color={theme.colors.black}
             />
         )
     }
@@ -60,7 +60,7 @@ export const IngredientItem = ({ ingredientName, unit, season, local, alternativ
             </Box>
 
             <Box flex={5}>
-                <Text variant={"body"} color="primaryCardText">
+                <Text variant={"body"} color={"secondaryCardText"}>
                     {ingredientName}
                     {alternative === null ? "" : "\nAlt: [ " + alternative + " ]"}
                 </Text>
@@ -73,20 +73,20 @@ export const IngredientItem = ({ ingredientName, unit, season, local, alternativ
                     <Ionicons
                         name={season ? 'checkmark-circle-outline' : 'close-circle-outline'}
                         size={15}
-                        color={theme.colors.white}
+                        color={theme.colors.black}
                     />
-                    <Text variant={"body"}> Season </Text>
+                    <Text variant={"body"} color={"secondaryCardText"}> Season </Text>
                 </Box>
-                <Text variant={"body"} color="primaryCardText">
+                <Text variant={"body"} color={"secondaryCardText"}>
                     {bought.toFixed(2) >= required.toFixed(2) ? required.toFixed(2) : 0.0} / {required.toFixed(2)} {unit}
                 </Text>
                 <Box flexDirection={"row"} alignItems="center">
                     <Ionicons
                         name={local ? 'checkmark-circle-outline' : 'close-circle-outline'}
                         size={15}
-                        color={theme.colors.white}
+                        color={theme.colors.black}
                     />
-                    <Text variant={"body"}> Local </Text>
+                    <Text variant={"body"} color={"secondaryCardText"}> Local </Text>
                 </Box>
             </Box>
         </Box>

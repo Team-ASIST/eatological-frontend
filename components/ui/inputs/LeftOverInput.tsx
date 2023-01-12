@@ -27,7 +27,7 @@ const LeftOverInput = ({
             <Box
                 marginVertical="s"
                 padding="m"
-                backgroundColor="accent"
+                backgroundColor="primaryCardBackground"
                 borderRadius={10}
                 flexDirection="row"
                 justifyContent="space-between">

@@ -103,12 +103,12 @@ const RecipePage = (props: RecipePageProps) => {
                             }} />
                             <Box justifyContent={"space-evenly"} flexDirection="row">
                                 <Box>
-                                    <Text variant={"body"}>Prep Time</Text>
-                                    <Text variant={"boldBody"}>{recipe.prepTime}m</Text>
+                                    <Text variant={"body"} color={"secondaryCardText"}>Prep Time</Text>
+                                    <Text variant={"boldBody"} color={"secondaryCardText"}>{recipe.prepTime}m</Text>
                                 </Box>
                                 <Box>
-                                    <Text variant={"body"}>Cook Time</Text>
-                                    <Text variant={"boldBody"}>{recipe.totalTime}m</Text>
+                                    <Text variant={"body"} color={"secondaryCardText"}>Cook Time</Text>
+                                    <Text variant={"boldBody"} color={"secondaryCardText"}>{recipe.totalTime}m</Text>
                                 </Box>
                             </Box>
                         </Box>
@@ -157,7 +157,7 @@ const RecipePage = (props: RecipePageProps) => {
                                 flex={1}
                                 onTouchEnd={() => { setCurrentAction(RecipeAction.Directions) }}
                             >
-                                <Text variant={"subsubheader"}>Directions</Text>
+                                <Text variant={"subsubheader"} color={"secondaryCardText"}>Directions</Text>
                             </Box>
                         </Box>
                         {
@@ -209,7 +209,7 @@ const RecipePage = (props: RecipePageProps) => {
                                         )
                                     }
                                     <Box>
-                                        <TextButton disabled={meal.cooked} icon={'checkmark'} size={30} label={meal.cooked ? "Marked as cooked" : "Mark as cooked"} onPress={() => dispatch(planCook(meal.recipe.id))} />
+                                        <TextButton disabled={meal.cooked} icon={'checkmark'} color={"black"} size={30} label={meal.cooked ? "Marked as cooked" : "Mark as cooked"} onPress={() => dispatch(planCook(meal.recipe.id))} />
                                     </Box>
                                 </Box>
                         }
