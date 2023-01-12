@@ -100,10 +100,25 @@ const SettingsPage = ({ navigation }: SettingsPageProps) => {
           setModalVisible={setModalVisible}
           clicked={clicked}
           setClicked={setClicked}
-          placeholder={switchMode ? "Enter other Account Name..." : "Enter new Username..."}
+          switchMode={switchMode}
           currentUsername={currentUsername}
           setCurrentUsername={setCurrentUsername}
           changeUser={changeUser}
+        />
+      </Box>
+
+      <Box marginTop={"s"}>
+        
+        <TextButton
+          onPress={() => {
+            setSwitchMode(false)
+            setModalVisible(true)
+          }
+            }
+          icon={"person-circle-outline"}
+          size={35}
+          label={"Nutzernamen ändern"}
+          disabled={false}
         />
       </Box>
 
@@ -117,8 +132,7 @@ const SettingsPage = ({ navigation }: SettingsPageProps) => {
             }
           icon={"people-circle-outline"}
           size={35}
-          label={"Switch to Account"}
-          color={switchMode ? theme.colors.accent : theme.colors.black}
+          label={"Konto wechseln"}
           disabled={false}
         />
       </Box>
@@ -129,7 +143,7 @@ const SettingsPage = ({ navigation }: SettingsPageProps) => {
             deleteUsername}
           icon={"close-circle-outline"}
           size={35}
-          label={"Delete Active Account"}
+          label={"Aktiven Account löschen"}
           color={theme.colors.black}
           disabled={false}
         />

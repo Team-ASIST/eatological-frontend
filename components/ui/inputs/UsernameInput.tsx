@@ -10,9 +10,9 @@ const Box = createBox<Theme>()
 export type UsernameInputProps = {
     modalVisible: boolean
     setModalVisible: (arg0: boolean) => void
+    switchMode: boolean
     clicked: boolean
     setClicked: (arg0: boolean) => void
-    placeholder: string
     currentUsername: string
     setCurrentUsername: (arg0: string) => void
     changeUser: (arg0: string) => void
@@ -21,9 +21,9 @@ export type UsernameInputProps = {
 export const UsernameInput = ({
     modalVisible,
     setModalVisible,
+    switchMode,
     clicked,
     setClicked,
-    placeholder,
     currentUsername,
     setCurrentUsername,
     changeUser,
@@ -32,25 +32,33 @@ export const UsernameInput = ({
         <Box>
             <Modal visible={modalVisible} animationType="slide" transparent={true}>
                 <Box
-                    top={130}
+                    top={80}
                     alignItems="center"
                     backgroundColor="white"
                     padding={'l'}
-                    margin={'s'}
-                    borderRadius={20}>
+                    marginHorizontal={'s'}
+                    borderRadius={20}   
+                    height={'100%'}
+                    shadowOpacity={0.05}>
+                    <Box  top={50} padding='m' >
+                    <Text variant={'subsubheader'} margin={'m'}>{switchMode ? "Wechsel zu einem schon existierenden Konto!" : "Gib einen neuen Nutzernamen an!"} </Text>
                     <Box
+                   
                         flexDirection="row"
                         padding="m"
-                        marginBottom="s"
-                        backgroundColor="mainBackground"
-                        borderRadius={50}
+                        margin="l"
+                        backgroundColor="white"
+                        alignItems="center"
+                        borderRadius={5}
                         borderWidth={2}
-                        borderColor="accent"
+                        width={235}
+                        borderColor="black"
                         justifyContent="space-between">
                         {/* Input field */}
+                        
                         <TextInput
                             style={{ width: 235 }}
-                            placeholder={placeholder}
+                            placeholder={switchMode ? "Anderen Kontonamen eingeben..." : "Neuer Nutzername..."}
                             value={currentUsername}
                             onChangeText={setCurrentUsername}
                             onFocus={() => {
@@ -71,6 +79,7 @@ export const UsernameInput = ({
                             />
                         )}
                     </Box>
+                    <Box flexDirection="row" justifyContent="space-between" margin={'l'}> 
                     <Pressable
                         onPress={() => {
                             setClicked(false)
@@ -84,8 +93,10 @@ export const UsernameInput = ({
                       setClicked(false)
                       setCurrentUsername('')
                       setModalVisible(!modalVisible)}}>
-                        <Text variant="subsubheader">Cancel</Text>
+                        <Text variant="subsubheader">Abbrechen</Text>
                     </Pressable>
+                    </Box>
+                    </Box>
                 </Box>
             </Modal>
         </Box>
