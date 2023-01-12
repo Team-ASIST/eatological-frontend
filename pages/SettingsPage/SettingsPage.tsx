@@ -30,6 +30,7 @@ const SettingsPage = ({ navigation }: SettingsPageProps) => {
   const [currentUsername, setCurrentUsername] = useState("")
   const [clicked, setClicked] = useState(false)
   const [switchMode, setSwitchMode] = useState(false)
+  const [modalVisible, setModalVisible] = useState(false)
 
   const dispatch = useDispatch<AppDispatch>()
 
@@ -95,39 +96,63 @@ const SettingsPage = ({ navigation }: SettingsPageProps) => {
 
       <Box marginTop={"m"}>
         <UsernameInput
+          modalVisible={modalVisible}
+          setModalVisible={setModalVisible}
           clicked={clicked}
           setClicked={setClicked}
-          placeholder={switchMode ? "Enter other Account Name..." : "Enter new Username..."}
+          switchMode={switchMode}
           currentUsername={currentUsername}
           setCurrentUsername={setCurrentUsername}
           changeUser={changeUser}
         />
       </Box>
-
-      <Box marginTop={"s"}>
+      <Box marginTop={"m"}>
+      <Box marginTop={"s"} padding={'s'}>
+        
         <TextButton
-          onPress={setSwitchUser}
-          icon={"people-circle-outline"}
+          onPress={() => {
+            setSwitchMode(false)
+            setModalVisible(true)
+          }
+            }
+          icon={"person-circle-outline"}
           size={35}
-          label={"Switch to Account"}
-          color={switchMode ? theme.colors.primaryCardBackground : theme.colors.black}
+          label={"Nutzernamen ändern"}
           disabled={false}
+          color={theme.colors.black}
         />
       </Box>
 
-      <Box marginTop={"s"} marginBottom={"m"}>
+      <Box padding={'s'}>
         <TextButton
-          onPress={deleteUsername}
-          icon={"close-circle-outline"}
+          onPress={() => {
+            setSwitchMode(true)
+            setModalVisible(true)
+          }
+            }
+          icon={"people-circle-outline"}
           size={35}
-          label={"Delete Active Account"}
+          label={"Konto wechseln"}
           color={theme.colors.black}
           disabled={false}
         />
       </Box>
 
+      <Box marginBottom={"l"} padding={'s'}>
+        <TextButton
+          onPress={
+            deleteUsername}
+          icon={"close-circle-outline"}
+          size={35}
+          label={"Aktiven Account löschen"}
+          color={theme.colors.black}
+          disabled={false}
+        />
+      </Box>
+      </Box>
+
       <Box marginTop={"m"} marginBottom={"m"} alignItems="center">
-        <Text variant="subsubheader">Choose your Diet...</Text>
+        <Text variant="subsubheader">Wähle Deine Ernährungsform...</Text>
       </Box>
 
       <ScrollView showsVerticalScrollIndicator={false}>
