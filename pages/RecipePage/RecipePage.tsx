@@ -103,12 +103,12 @@ const RecipePage = (props: RecipePageProps) => {
                             }} />
                             <Box justifyContent={"space-evenly"} flexDirection="row">
                                 <Box>
-                                    <Text variant={"body"} color={"secondaryCardText"}>Prep Time</Text>
-                                    <Text variant={"boldBody"} color={"secondaryCardText"}>{recipe.prepTime}m</Text>
+                                    <Text variant={"body"} color={"secondaryCardText"}>Vorbereitungszeit</Text>
+                                    <Text variant={"boldBody"} color={"secondaryCardText"}>{recipe.prepTime} mins</Text>
                                 </Box>
                                 <Box>
-                                    <Text variant={"body"} color={"secondaryCardText"}>Cook Time</Text>
-                                    <Text variant={"boldBody"} color={"secondaryCardText"}>{recipe.totalTime}m</Text>
+                                    <Text variant={"body"} color={"secondaryCardText"}>Gesamtzeit</Text>
+                                    <Text variant={"boldBody"} color={"secondaryCardText"}>{recipe.totalTime} mins</Text>
                                 </Box>
                             </Box>
                         </Box>
@@ -134,7 +134,7 @@ const RecipePage = (props: RecipePageProps) => {
                                 flex={1}
                                 onTouchEnd={() => { setCurrentAction(RecipeAction.Ingredients) }}
                             >
-                                <Text variant={"subsubheader"}>Ingredients</Text>
+                                <Text variant={"subsubheader"}>Zutaten</Text>
                             </Box>
                             <Box
                                 padding={"m"}
@@ -157,7 +157,7 @@ const RecipePage = (props: RecipePageProps) => {
                                 flex={1}
                                 onTouchEnd={() => { setCurrentAction(RecipeAction.Directions) }}
                             >
-                                <Text variant={"subsubheader"} color={"secondaryCardText"}>Directions</Text>
+                                <Text variant={"subsubheader"} color={"secondaryCardText"}>Anweisungen</Text>
                             </Box>
                         </Box>
                         {
@@ -211,7 +211,7 @@ const RecipePage = (props: RecipePageProps) => {
                                         )
                                     }
                                     <Box>
-                                        <TextButton disabled={meal.cooked} icon={'checkmark'} color={"black"} size={30} label={meal.cooked ? "Marked as cooked" : "Mark as cooked"} onPress={() => dispatch(planCook(meal.recipe.id))} />
+                                        <TextButton disabled={meal.cooked} icon={'checkmark'} color={"black"} size={30} label={meal.cooked ? "Als gekocht markiert" : "Als gekocht markieren"} onPress={() => dispatch(planCook(meal.recipe.id))} />
                                     </Box>
                                 </Box>
                         }

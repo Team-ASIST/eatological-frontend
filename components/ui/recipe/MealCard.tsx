@@ -48,12 +48,12 @@ const MealCard = (props: MealPageProps) => {
                     }} />
                     <Box justifyContent={"space-evenly"} flexDirection="row">
                         <Box>
-                            <Text variant={"body"}>Prep Time</Text>
-                            <Text variant={"boldBody"}>{recipe.prepTime}m</Text>
+                            <Text variant={"body"}>Vorbereitungszeit</Text>
+                            <Text variant={"boldBody"}>{recipe.prepTime} mins</Text>
                         </Box>
                         <Box>
-                            <Text variant={"body"}>Cook Time</Text>
-                            <Text variant={"boldBody"}>{recipe.totalTime}m</Text>
+                            <Text variant={"body"}>Gesamtzeit</Text>
+                            <Text variant={"boldBody"}>{recipe.totalTime} mins</Text>
                         </Box>
                     </Box>
                 </Box>
@@ -79,7 +79,7 @@ const MealCard = (props: MealPageProps) => {
                         flex={1}
                         onTouchEnd={() => { setCurrentAction(RecipeAction.Ingredients) }}
                     >
-                        <Text variant={"subsubheader"}>Ingredients</Text>
+                        <Text variant={"subsubheader"}>Zutaten</Text>
                     </Box>
                     <Box
                         padding={"m"}
@@ -102,7 +102,7 @@ const MealCard = (props: MealPageProps) => {
                         flex={1}
                         onTouchEnd={() => { setCurrentAction(RecipeAction.Directions) }}
                     >
-                        <Text variant={"subsubheader"}>Directions</Text>
+                        <Text variant={"subsubheader"}>Anweisungen</Text>
                     </Box>
                 </Box>
                 {

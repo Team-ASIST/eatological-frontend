@@ -25,7 +25,7 @@ const AddItemButton = ({ onPress }: AddItemButtonProps) => {
                             color={theme.colors.primaryCardBackground}
                         />
                         <Text variant={'subsubheader'} color={'primaryCardBackground'}>
-                            Add Meal
+                            Gericht hinzufügen
                         </Text>
                     </Box>
                 </TouchableOpacity>
