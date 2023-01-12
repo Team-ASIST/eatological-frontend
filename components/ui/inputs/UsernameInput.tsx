@@ -1,7 +1,7 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { createBox, createText } from '@shopify/restyle'
 import theme, { Theme } from '../../../utils/theme'
-import { TextInput, Keyboard, Modal, Pressable } from 'react-native'
+import { TextInput, Keyboard, Modal, TouchableOpacity } from 'react-native'
 import IconButton from './IconButton'
 
 const Text = createText<Theme>()
@@ -35,67 +35,98 @@ export const UsernameInput = ({
                     top={80}
                     alignItems="center"
                     backgroundColor="white"
-                    padding={'l'}
+                    padding={'m'}
                     marginHorizontal={'s'}
-                    borderRadius={20}   
+                    borderRadius={20}
                     height={'100%'}
                     shadowOpacity={0.05}>
-                    <Box  top={50} padding='m' >
-                    <Text variant={'subsubheader'} margin={'m'}>{switchMode ? "Wechsel zu einem schon existierenden Konto!" : "Gib einen neuen Nutzernamen an!"} </Text>
-                    <Box
-                   
-                        flexDirection="row"
-                        padding="m"
-                        margin="l"
-                        backgroundColor="white"
-                        alignItems="center"
-                        borderRadius={5}
-                        borderWidth={2}
-                        width={235}
-                        borderColor="black"
-                        justifyContent="space-between">
-                        {/* Input field */}
-                        
-                        <TextInput
-                            style={{ width: 235 }}
-                            placeholder={switchMode ? "Anderen Kontonamen eingeben..." : "Neuer Nutzername..."}
-                            value={currentUsername}
-                            onChangeText={setCurrentUsername}
-                            onFocus={() => {
-                                setClicked(true)
-                            }}
-                        />
-                        {/* close button, depending on whether the Input is clicked or not */}
-                        {clicked && (
-                            <IconButton
+                    <Box top={30} padding="m">
+                        <Text variant={'subheader'} margin={'m'}>
+                            {switchMode
+                                ? 'Wechsel zu einem schon existierenden Konto!'
+                                : 'Gib einen neuen Nutzernamen an!'}{' '}
+                        </Text>
+                        <Box
+                            flexDirection="row"
+                            padding="m"
+                            margin="l"
+                            backgroundColor="white"
+                            alignItems="center"
+                            borderRadius={5}
+                            borderWidth={2}
+                            width={280}
+                            borderColor="black"
+                            justifyContent="space-between">
+                            {/* Input field */}
+
+                            <TextInput
+                                style={{ width: 235 }}
+                                placeholder={
+                                    switchMode ? 'Kontonamen eingeben...' : 'Neuer Nutzername...'
+                                }
+                                value={currentUsername}
+                                onChangeText={setCurrentUsername}
+                                onFocus={() => {
+                                    setClicked(true)
+                                }}
+                            />
+                            {/* close button, depending on whether the Input is clicked or not */}
+                            {clicked && (
+                                <IconButton
+                                    onPress={() => {
+                                        Keyboard.dismiss()
+                                        setClicked(false)
+                                        setCurrentUsername('')
+                                    }}
+                                    icon={'close'}
+                                    size={15}
+                                    color={theme.colors.black}
+                                />
+                            )}
+                        </Box>
+                        <Box
+                            flexDirection="row"
+                            justifyContent="space-between"
+                            marginHorizontal={'l'}>
+                            <TouchableOpacity
                                 onPress={() => {
-                                    Keyboard.dismiss()
+                                    setClicked(false)
+                                    changeUser(currentUsername)
+                                    setCurrentUsername('')
+                                    setModalVisible(!modalVisible)
+                                }}>
+                                <Box
+                                    borderRadius={5}
+                                    borderWidth={2}
+                                    borderColor="success"
+                                    paddingHorizontal={'m'}>
+                                    <Text
+                                        variant="boldBody"
+                                        color={'success'}
+                                        fontSize={18}
+                                        fontWeight={'bold'}>
+                                        Okay
+                                    </Text>
+                                </Box>
+                            </TouchableOpacity>
+
+                            <TouchableOpacity
+                                onPress={() => {
                                     setClicked(false)
                                     setCurrentUsername('')
-                                }}
-                                icon={'close'}
-                    size={15}
-                    color={theme.colors.black}
-                            />
-                        )}
-                    </Box>
-                    <Box flexDirection="row" justifyContent="space-between" margin={'l'}> 
-                    <Pressable
-                        onPress={() => {
-                            setClicked(false)
-                            changeUser(currentUsername)
-                            setCurrentUsername('')
-                            setModalVisible(!modalVisible)
-                        }}>
-                        <Text variant="subsubheader">Okay</Text>
-                    </Pressable>
-                    <Pressable onPress={() => {
-                      setClicked(false)
-                      setCurrentUsername('')
-                      setModalVisible(!modalVisible)}}>
-                        <Text variant="subsubheader">Abbrechen</Text>
-                    </Pressable>
-                    </Box>
+                                    setModalVisible(!modalVisible)
+                                }}>
+                                <Box
+                                    borderRadius={5}
+                                    borderWidth={1}
+                                    borderColor="black"
+                                    paddingHorizontal={'m'}>
+                                    <Text variant="body" color={'black'} fontSize={18}>
+                                        Abbrechen
+                                    </Text>
+                                </Box>
+                            </TouchableOpacity>
+                        </Box>
                     </Box>
                 </Box>
             </Modal>

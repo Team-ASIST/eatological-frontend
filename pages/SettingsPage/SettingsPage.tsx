@@ -119,11 +119,11 @@ const SettingsPage = ({ navigation }: SettingsPageProps) => {
           size={35}
           label={"Nutzernamen ändern"}
           disabled={false}
+          color={theme.colors.black}
         />
       </Box>
 
       <Box marginTop={"s"}>
-        
         <TextButton
           onPress={() => {
             setSwitchMode(true)
@@ -132,8 +132,8 @@ const SettingsPage = ({ navigation }: SettingsPageProps) => {
             }
           icon={"people-circle-outline"}
           size={35}
-          label={"Switch to Account"}
-          color={switchMode ? theme.colors.primaryCardBackground : theme.colors.black}
+          label={"Konto wechseln"}
+          color={theme.colors.black}
           disabled={false}
         />
       </Box>
