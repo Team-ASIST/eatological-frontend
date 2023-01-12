@@ -53,14 +53,14 @@ const newPlanSlice = createSlice({
             }
         },
         leftoverAdded(state, action) {
-            const { id, name, smallestAmount, amount, unit } = action.payload
+            const { id, name, smallestAmount, unit } = action.payload
             const existingLeftover = state.leftovers.find((leftover) => leftover.id === id)
             if (!existingLeftover) {
                 state.leftovers.push({
                     id: id,
                     name: name,
                     smallestAmount: smallestAmount,
-                    amount: amount,
+                    quantity: 1,
                     unit: unit,
                 })
             }
@@ -76,15 +76,15 @@ const newPlanSlice = createSlice({
             const { id } = action.payload
             const existingLeftover = state.leftovers.find((leftover) => leftover.id === id)
             if (existingLeftover) {
-                existingLeftover.amount += 1
+                existingLeftover.quantity++
             }
         },
         leftoverDecrement(state, action) {
             const { id } = action.payload
             const existingLeftover = state.leftovers.find((leftover) => leftover.id === id)
             if (existingLeftover) {
-                if (existingLeftover.amount > existingLeftover.smallestAmount) {
-                    existingLeftover.amount -= 1
+                if (existingLeftover.quantity > 1) {
+                    existingLeftover.quantity--
                 } else {
                     state.leftovers = state.leftovers.filter((leftover) => leftover.id !== id)
                 }

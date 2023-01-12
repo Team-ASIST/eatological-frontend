@@ -33,7 +33,7 @@ export type TopBarProps = {
 const TopBar = ({ score }: TopBarProps) => {
   return (
     <Box marginTop="l" marginHorizontal="xs" padding="m">
-      <Text variant="subheader">Choose your Recipes...</Text>
+      <Text variant="subheader">Wähle deine Rezepte...</Text>
       <ScoreBar
         score={score}
         maxScore={1}
@@ -46,8 +46,8 @@ const TopBar = ({ score }: TopBarProps) => {
           </Text>
         </Box>
         <Box>
-          <Text variant={"body"} >
-            Sustainability
+          <Text variant={"body"} color={"secondaryCardText"}>
+            Nachhaltigkeit
           </Text>
         </Box>
         <Box flex={1} justifyContent={"flex-end"} alignItems={"center"} flexDirection={"row"}>
@@ -102,7 +102,7 @@ const SwapMealsPage = ({ navigation }: SwapMealsPageProps) => {
 
   // Fetch Initial Plan on First Mounting
   useEffect(() => {
-    createPlan(mealAmount.map((m: IMealAmount) => m.amount), leftovers.map((l: LeftOver) => ({ id: l.id, quantity: (l.amount / l.smallestAmount) })), preferences.map((f: FoodPreference) => f.id)).then(
+    createPlan(mealAmount.map((m: IMealAmount) => m.amount), leftovers.map((l: LeftOver) => ({ id: l.id, quantity: l.quantity })), preferences.map((f: FoodPreference) => f.id)).then(
       (initialPlan: FrontendPlan) => {
         setRecipeList(initialPlan.recipeSwipeObjects)
         setSwipeTracker(Array(initialPlan.recipeSwipeObjects.length).fill(0))

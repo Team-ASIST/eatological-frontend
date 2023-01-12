@@ -13,8 +13,8 @@ const Text = createText<Theme>();
 const InstructionItem = (props: Props) => {
     return (
         <Box>
-            <Text paddingBottom={"m"} variant={"subsubheader"}>{props.stepNumber}. Schritt</Text>
-            <Text paddingBottom={"m"} variant={"body"}>{props.stepInstruction}</Text>
+            <Text paddingBottom={"m"} variant={"subsubheader"} color={"secondaryCardText"}>{props.stepNumber}. Schritt</Text>
+            <Text paddingBottom={"m"} variant={"body"} color={"secondaryCardText"}>{props.stepInstruction}</Text>
         </Box>
     )
 }

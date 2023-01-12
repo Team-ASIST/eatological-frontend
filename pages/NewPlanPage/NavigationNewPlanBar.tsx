@@ -10,13 +10,13 @@ import { Alert, View } from 'react-native';
 
 const Box = createBox<Theme>()
 
-const WorkflowLength = 3
+const WorkflowLength = 4
 
 const ScreenToPosition: { [id: string]: number; } = {
   MealQuantity: 0,
   LeftOvers: 1,
-  FoodPreferences: 1,
-  SwapMeals: 2
+  FoodPreferences: 2,
+  SwapMeals: 3
 }
 
 interface NavigationNewPlanBarProps {
@@ -68,6 +68,10 @@ const NavigationNewPlanBar = (props: NavigationNewPlanBarProps): ReactElement =>
         break;
       }
       case 2: {
+        iconConfig.name = 'heart-outline';
+        break;
+      }
+      case 3: {
         iconConfig.name = 'albums-outline';
         break;
       }
