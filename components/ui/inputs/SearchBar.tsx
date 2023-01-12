@@ -3,10 +3,7 @@ import { createBox, createText } from '@shopify/restyle'
 import { TextInput, Keyboard, FlatList, ListRenderItemInfo, View } from 'react-native'
 import theme, { Theme } from '../../../utils/theme'
 import IconButton from './IconButton'
-import {
-    leftoverAdded,
-    preferenceAdded,
-} from '../../../redux/slice/newPlanSlice'
+import { leftoverAdded, preferenceAdded } from '../../../redux/slice/newPlanSlice'
 import { useDispatch, useSelector } from 'react-redux'
 import { selectAllIngredients } from '../../../redux/slice/currentPlanSlice'
 import { AppDispatch } from '../../../redux/store'
@@ -21,6 +18,9 @@ type SearchBarDisplayProps = {
     setClicked: (click: boolean) => void
 }
 
+{
+    /* Component for the display of the searchBar only */
+}
 const SearchBarDisplay = ({
     clicked,
     searchPhrase,
@@ -64,7 +64,9 @@ const SearchBarDisplay = ({
     )
 }
 
-//typeOfItem specifies if when pressing the plus button the item is supposed to be a leftover, a foodpreference, etc.
+{
+    /* typeOfItem specifies when pressing the plus button if the item is supposed to be a leftover or a foodpreference */
+}
 type ItemProps = {
     typeOfItem: string
     id: number
@@ -76,7 +78,9 @@ type ItemProps = {
     setSearchPhrase: (input: string) => void
 }
 
-//Items for search bar proposals with important ingredient properties for leftovers, preferences
+{
+    /* Items for search bar proposals with important ingredient properties for leftovers, preferences */
+}
 const Item = ({
     id,
     name,
@@ -98,7 +102,7 @@ const Item = ({
             borderColor="black"
             opacity={0.93}>
             <Text variant="subsubheader">{name}</Text>
-            {/* icon button for adding food items to respective redux store*/}
+            {/* icon button for adding food items to respective redux store */}
             <IconButton
                 onPress={() => {
                     if (typeOfItem === 'leftover') {
@@ -127,23 +131,28 @@ type ListProps = {
     data: any
 }
 
-//List of displayed items, no case sensitivity
+{
+    /* List of displayed items, no case sensitivity */
+}
 const List = ({ searchPhrase, data, typeOfItems, setClicked, setSearchPhrase }: ListProps) => {
     return (
         <Box maxHeight={200}>
             <FlatList
+                style={{ flex: 0 }}
+                initialNumToRender={data.length}
                 alwaysBounceVertical={false}
                 showsVerticalScrollIndicator={false}
                 data={data}
                 renderItem={({ item }: ListRenderItemInfo<ItemProps>) => {
                     if (searchPhrase === '') {
+                        console.log('1', searchPhrase)
                         return <View />
-                    }
-                    if (
+                    } else if (
                         item.name
                             .toLowerCase()
-                            .includes(searchPhrase.trim().replace(/ /g,'_').toLowerCase())
+                            .includes(searchPhrase.trim().replace(/ /g, '_').toLowerCase())
                     ) {
+                        console.log('2', item.name)
                         return (
                             <Item
                                 typeOfItem={typeOfItems}
@@ -157,6 +166,7 @@ const List = ({ searchPhrase, data, typeOfItems, setClicked, setSearchPhrase }: 
                             />
                         )
                     } else {
+                        console.log('3', searchPhrase)
                         return <View />
                     }
                 }}
