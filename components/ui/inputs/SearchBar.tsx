@@ -141,8 +141,8 @@ const List = ({ searchPhrase, data, typeOfItems, setClicked, setSearchPhrase }: 
                     }
                     if (
                         item.name
-                            .toUpperCase()
-                            .includes(searchPhrase.toUpperCase().trim().replace(/\s/g, ''))
+                            .toLowerCase()
+                            .includes(searchPhrase.trim().replace(/ /g,'_').toLowerCase())
                     ) {
                         return (
                             <Item

@@ -2,22 +2,21 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { createBox, createText } from '@shopify/restyle';
 import { Theme } from '../../utils/theme';
-import { TouchableOpacity, Image, Dimensions, Modal, Alert, Button, Pressable } from "react-native";
+import { TouchableOpacity } from "react-native";
 import { NavigationScreenProp } from "react-navigation";
 import { SwipeListView } from 'react-native-swipe-list-view';
-import RecipeCard from "../../components/ui/recipe/recipeCard";
-import { HiddenCard } from "../../components/ui/recipe/hiddenCard";
+import RecipeCard from "../../components/ui/recipe/RecipeCard";
+import { HiddenCard } from "../../components/ui/recipe/HiddenCard";
 import { IMealAmount, resetPlanConfiguration, selectNewPlanConfiguration } from "../../redux/slice/newPlanSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { Meal, RecipeSwipeObject, FrontendPlan, FoodPreference, LeftOver } from "../../utils/dataTypes";
 import NewPlanNavigationBar from '../NewPlanPage/NavigationNewPlanBar'
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import { createPlan, swipeleft, swiperight } from "../../utils/axios/planGenerationCalls";
 import { AppDispatch } from "../../redux/store";
 import { acceptPlan } from "../../redux/slice/currentPlanSlice";
-import RecipePage from "../RecipePage/RecipePage";
-import MealCard from "../../components/ui/recipe/mealCard";
-import { ScoreBar } from "../../components/ui/common/scoreBar";
+import SplashAnimation from "./components/Animation";
+import TopBar from "./components/TopBar";
+import RecipeModal from "./components/RecipeModal";
 
 const Text = createText<Theme>()
 const Box = createBox<Theme>()
@@ -25,60 +24,6 @@ const Box = createBox<Theme>()
 export type SwapMealsPageProps = {
   navigation: NavigationScreenProp<any, any>
 };
-
-export type TopBarProps = {
-  score: number
-}
-
-const TopBar = ({ score }: TopBarProps) => {
-  return (
-    <Box marginTop="l" marginHorizontal="xs" padding="m">
-      <Text variant="subheader">Wähle deine Rezepte...</Text>
-      <ScoreBar
-        score={score}
-        maxScore={1}
-      />
-      <Box flexDirection={"row"} flexGrow={1}>
-        <Box flex={1} justifyContent={"flex-start"} alignItems={"center"} flexDirection={"row"}>
-          <Ionicons name="arrow-back-circle-outline" size={20} color="black" />
-          <Text paddingLeft={"xs"} variant={"body"} color={"secondaryCardText"}>
-            Prev
-          </Text>
-        </Box>
-        <Box>
-          <Text variant={"body"} color={"secondaryCardText"}>
-            Nachhaltigkeit
-          </Text>
-        </Box>
-        <Box flex={1} justifyContent={"flex-end"} alignItems={"center"} flexDirection={"row"}>
-          <Text paddingRight={"xs"} variant={"body"} color={"secondaryCardText"}>
-            Next
-          </Text>
-          <Ionicons name="arrow-forward-circle-outline" size={20} color="black" />
-        </Box>
-      </Box>
-    </Box>
-  )
-}
-
-type animationProps = {
-  setupPhase: boolean
-}
-
-const Animation = (props: animationProps) => {
-  const windowWidth = Dimensions.get('window').width;
-  if (props.setupPhase) {
-    return (
-      <Box alignItems={"center"} flexGrow={1} flexDirection={"column"} justifyContent={"center"}>
-        <Image
-          style={{ width: windowWidth, height: 9 / 16 * windowWidth }}
-          source={require('../../assets/animation.gif')} />
-      </Box>
-    )
-  } else {
-    return <Box />
-  }
-}
 
 const SwapMealsPage = ({ navigation }: SwapMealsPageProps) => {
   // Initial State for Animation
@@ -175,7 +120,7 @@ const SwapMealsPage = ({ navigation }: SwapMealsPageProps) => {
         }>
         <Box flexGrow={1} height="50%">
           <TopBar score={sustainabilityScore} />
-          <Animation setupPhase={setupPhase} />
+          <SplashAnimation setupPhase={setupPhase} />
           <SwipeListView
             data={recipeList}
             keyExtractor={(data) => "" + data.id}
@@ -227,32 +172,7 @@ const SwapMealsPage = ({ navigation }: SwapMealsPageProps) => {
       </ NewPlanNavigationBar>
       {
         selectedRecipe ?
-          <Modal
-            animationType="slide"
-            transparent={true}
-            visible={modalVisible}
-
-            onRequestClose={() => {
-              Alert.alert("Modal has been closed.");
-              setModalVisible(!modalVisible);
-            }}
-          >
-            <Box
-              flex={1}
-              shadowColor="black"
-              shadowOpacity={0.86}
-              shadowRadius={100}
-              shadowOffset={{ width: 0, height: 10 }}>
-              <Box justifyContent="center"
-                flex={1}
-                alignItems="center"
-                marginTop="xxl"
-                backgroundColor="secondaryCardBackground"
-                marginStart="s" marginHorizontal="s" borderTopRightRadius={40} borderTopLeftRadius={40} overflow="hidden">
-                <MealCard recipe={selectedRecipe} onClick={() => setModalVisible(!modalVisible)} />
-              </Box>
-            </Box>
-          </Modal>
+          <RecipeModal visible={modalVisible} toggleModal={() => setModalVisible(!modalVisible)} recipe={selectedRecipe} />
           :
           <></>
       }

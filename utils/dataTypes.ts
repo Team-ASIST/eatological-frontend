@@ -93,7 +93,7 @@ export interface LeftOver {
     id: number
     name: string
     smallestAmount: number
-    amount: number
+    quantity: number
     unit: string
 }
 

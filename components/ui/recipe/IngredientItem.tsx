@@ -78,8 +78,8 @@ export const IngredientItem = ({ ingredientName, unit, season, local, alternativ
                     />
                     <Text variant={"body"} color={"secondaryCardText"}> Season </Text>
                 </Box>
-                <Text variant={"body"} color="primaryCardText">
-                    {bought >= required ? (bought * smallestAmount).toFixed(2) : 0.0} / {(required * smallestAmount).toFixed(2)} {unit}
+                <Text variant={"body"} color="secondaryCardText">
+                    {(bought * smallestAmount).toFixed(2)} / {(required * smallestAmount).toFixed(2)} {unit}
                 </Text>
                 <Box flexDirection={"row"} alignItems="center">
                     <Ionicons

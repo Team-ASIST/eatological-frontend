@@ -2,12 +2,11 @@ import React, { useState } from "react";
 import { createBox, createText } from '@shopify/restyle';
 import { Theme } from '../../../utils/theme';
 import { Ingredient, LeftOver, RecipeSwipeObject, smallIngredient } from "../../../utils/dataTypes";
-import { Animated, ScrollView, View, Image } from "react-native";
+import { ScrollView, View, Image } from "react-native";
 import { IngredientItem } from "./IngredientItem";
 import InstructionItem from "./DirectionList";
 import { useSelector } from "react-redux";
 import { selectAllIngredients } from "../../../redux/slice/currentPlanSlice";
-import { BackFloatingButton } from "../../../components/ui/inputs/BackFloatingButton";
 import { selectAllLeftovers } from "../../../redux/slice/newPlanSlice";
 
 const Text = createText<Theme>();
@@ -19,8 +18,7 @@ enum RecipeAction {
 }
 
 interface MealPageProps {
-    recipe: RecipeSwipeObject,
-    onClick: Function
+    recipe: RecipeSwipeObject
 }
 
 const MealCard = (props: MealPageProps) => {
@@ -123,7 +121,7 @@ const MealCard = (props: MealPageProps) => {
                                         season={ingredient.season}
                                         local={ingredient.local}
                                         alternative={ingredient.alternative}
-                                        bought={leftover ? leftover.amount : 0}
+                                        bought={leftover ? leftover.quantity : 0}
                                         required={item.quantity} 
                                         smallestAmount={ingredient.smallestAmount} />
                                 }
@@ -141,7 +139,6 @@ const MealCard = (props: MealPageProps) => {
                         </Box>
                 }
             </ScrollView>
-            <BackFloatingButton closingTag="✕" onClick={props.onClick} />
         </Box >
     );
 }
