@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { createBox, createText } from '@shopify/restyle';
 import Ionicons from "react-native-vector-icons/Ionicons";
 import theme, { Theme } from "../../../utils/theme";
@@ -20,6 +20,7 @@ export type IngredientItemProps = {
     alternative: string,
     bought: number,
     required: number,
+    smallestAmount: number
 }
 
 const CheckIcon = ({ bought }: CheckIconProps) => {
@@ -28,7 +29,7 @@ const CheckIcon = ({ bought }: CheckIconProps) => {
             <Ionicons
                 name={'checkmark'}
                 size={50}
-                color={theme.colors.white}
+                color={theme.colors.black}
             />
         )
     } else {
@@ -36,13 +37,13 @@ const CheckIcon = ({ bought }: CheckIconProps) => {
             <Ionicons
                 name={'close'}
                 size={50}
-                color={theme.colors.white}
+                color={theme.colors.black}
             />
         )
     }
 }
 
-export const IngredientItem = ({ ingredientName, unit, season, local, alternative, bought, required }: IngredientItemProps) => {
+export const IngredientItem = ({ ingredientName, unit, season, local, alternative, bought, required, smallestAmount }: IngredientItemProps) => {
     return (
         <Box
             backgroundColor={bought >= required ? 'navigationButtonColor' : 'mainBackground' }
@@ -60,7 +61,7 @@ export const IngredientItem = ({ ingredientName, unit, season, local, alternativ
             </Box>
 
             <Box flex={5}>
-                <Text variant={"body"} color="primaryCardText">
+                <Text variant={"body"} color={"secondaryCardText"}>
                     {ingredientName}
                     {alternative === null ? "" : "\nAlt: [ " + alternative + " ]"}
                 </Text>
@@ -73,20 +74,20 @@ export const IngredientItem = ({ ingredientName, unit, season, local, alternativ
                     <Ionicons
                         name={season ? 'checkmark-circle-outline' : 'close-circle-outline'}
                         size={15}
-                        color={theme.colors.white}
+                        color={theme.colors.black}
                     />
-                    <Text variant={"body"}> Season </Text>
+                    <Text variant={"body"} color={"secondaryCardText"}> Season </Text>
                 </Box>
-                <Text variant={"body"} color="primaryCardText">
-                    {bought.toFixed(2) >= required.toFixed(2) ? required.toFixed(2) : 0.0} / {required.toFixed(2)} {unit}
+                <Text variant={"body"} color="secondaryCardText">
+                    {(bought * smallestAmount).toFixed(2)} / {(required * smallestAmount).toFixed(2)} {unit}
                 </Text>
                 <Box flexDirection={"row"} alignItems="center">
                     <Ionicons
                         name={local ? 'checkmark-circle-outline' : 'close-circle-outline'}
                         size={15}
-                        color={theme.colors.white}
+                        color={theme.colors.black}
                     />
-                    <Text variant={"body"}> Local </Text>
+                    <Text variant={"body"} color={"secondaryCardText"}> Local </Text>
                 </Box>
             </Box>
         </Box>

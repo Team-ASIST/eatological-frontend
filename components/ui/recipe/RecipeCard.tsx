@@ -56,7 +56,7 @@ const recipeCard = (props: RecipeCardProps) => {
                 </ImageBackground>
 
                 {/** top-right corner */}
-                <Box padding='xs' style={{ position: 'absolute', top: 10, right: 0, backgroundColor: theme.colors.accent }}>
+                <Box padding='xs' style={{ position: 'absolute', top: 25, right: 0, backgroundColor: theme.colors.accent }}>
                     <Text
                         variant="body">
                         {props.cookingTime} mins

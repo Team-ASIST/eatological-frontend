@@ -5,13 +5,13 @@ import { Ingredient, LargeGrocery, Meal, smallIngredient } from "../../utils/dat
 import { RootTabParamList } from "../../navigation/types";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { Animated, ScrollView, View } from "react-native";
-import { IngredientItem } from "./components/IngredientItem";
-import InstructionItem from "./components/DirectionList";
 import { useDispatch, useSelector } from "react-redux";
 import { planCook, selectAllIngredients, selectAllRecipes, selectSortedGroceries } from "../../redux/slice/currentPlanSlice";
 import TextButton from "../../components/ui/inputs/TextButton";
 import { AppDispatch } from "../../redux/store";
 import { BackFloatingButton } from "../../components/ui/inputs/BackFloatingButton";
+import { IngredientItem } from "../../components/ui/recipe/IngredientItem";
+import InstructionItem from "../../components/ui/recipe/DirectionList";
 
 const IMAGE_SCALE_MAX = 10;
 const LABEL_HEADER_MARGIN = 30;
@@ -24,7 +24,7 @@ enum RecipeAction {
     Ingredients
 }
 
-type RecipePageProps = NativeStackScreenProps<RootTabParamList, 'Recipe'>;
+type RecipePageProps = NativeStackScreenProps<RootTabParamList, 'Recipe'>
 
 const RecipePage = (props: RecipePageProps) => {
     const [currentAction, setCurrentAction] = useState<RecipeAction>(RecipeAction.Ingredients)
@@ -103,12 +103,12 @@ const RecipePage = (props: RecipePageProps) => {
                             }} />
                             <Box justifyContent={"space-evenly"} flexDirection="row">
                                 <Box>
-                                    <Text variant={"body"}>Prep Time</Text>
-                                    <Text variant={"boldBody"}>{recipe.prepTime}m</Text>
+                                    <Text variant={"body"} color={"secondaryCardText"}>Prep Time</Text>
+                                    <Text variant={"boldBody"} color={"secondaryCardText"}>{recipe.prepTime}m</Text>
                                 </Box>
                                 <Box>
-                                    <Text variant={"body"}>Cook Time</Text>
-                                    <Text variant={"boldBody"}>{recipe.totalTime}m</Text>
+                                    <Text variant={"body"} color={"secondaryCardText"}>Cook Time</Text>
+                                    <Text variant={"boldBody"} color={"secondaryCardText"}>{recipe.totalTime}m</Text>
                                 </Box>
                             </Box>
                         </Box>
@@ -157,7 +157,7 @@ const RecipePage = (props: RecipePageProps) => {
                                 flex={1}
                                 onTouchEnd={() => { setCurrentAction(RecipeAction.Directions) }}
                             >
-                                <Text variant={"subsubheader"}>Directions</Text>
+                                <Text variant={"subsubheader"} color={"secondaryCardText"}>Directions</Text>
                             </Box>
                         </Box>
                         {
@@ -177,7 +177,8 @@ const RecipePage = (props: RecipePageProps) => {
                                                         local={grocery.ingredient.local}
                                                         alternative={grocery.ingredient.alternative}
                                                         bought={grocery.grocery.bought}
-                                                        required={item.quantity} />
+                                                        required={item.quantity} 
+                                                        smallestAmount={grocery.ingredient.smallestAmount} />
                                                 }
                                             }
                                         ) :
@@ -194,7 +195,8 @@ const RecipePage = (props: RecipePageProps) => {
                                                         local={ingredient.local}
                                                         alternative={ingredient.alternative}
                                                         bought={item.quantity}
-                                                        required={item.quantity} />
+                                                        required={item.quantity}
+                                                        smallestAmount={ingredient.smallestAmount} />
                                                 }
                                             }
                                         )
@@ -209,14 +211,14 @@ const RecipePage = (props: RecipePageProps) => {
                                         )
                                     }
                                     <Box>
-                                        <TextButton disabled={meal.cooked} icon={'checkmark'} size={30} label={meal.cooked ? "Marked as cooked" : "Mark as cooked"} onPress={() => dispatch(planCook(meal.recipe.id))} />
+                                        <TextButton disabled={meal.cooked} icon={'checkmark'} color={"black"} size={30} label={meal.cooked ? "Marked as cooked" : "Mark as cooked"} onPress={() => dispatch(planCook(meal.recipe.id))} />
                                     </Box>
                                 </Box>
                         }
                     </Box>
                 </Animated.View>
             </ScrollView>
-            <BackFloatingButton route="CurrentPlan" navigation={props.navigation} />
+            <BackFloatingButton closingTag="<" onClick={() => props.navigation.navigate("CurrentPlan")} />
         </Box >
     );
 }

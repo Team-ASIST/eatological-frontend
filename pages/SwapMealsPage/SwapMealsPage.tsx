@@ -2,20 +2,21 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { createBox, createText } from '@shopify/restyle';
 import { Theme } from '../../utils/theme';
-import { TouchableOpacity, Image, Dimensions } from "react-native";
+import { TouchableOpacity } from "react-native";
 import { NavigationScreenProp } from "react-navigation";
 import { SwipeListView } from 'react-native-swipe-list-view';
-import RecipeCard from "../../components/ui/recipe/recipeCard";
-import { HiddenCard } from "../../components/ui/recipe/hiddenCard";
-import { IFoodPreference, ILeftOver, IMealAmount, resetPlanConfiguration, selectNewPlanConfiguration } from "../../redux/slice/newPlanSlice";
+import RecipeCard from "../../components/ui/recipe/RecipeCard";
+import { HiddenCard } from "../../components/ui/recipe/HiddenCard";
+import { IMealAmount, resetPlanConfiguration, selectNewPlanConfiguration } from "../../redux/slice/newPlanSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { Meal, RecipeSwipeObject, FrontendPlan } from "../../utils/dataTypes";
+import { Meal, RecipeSwipeObject, FrontendPlan, FoodPreference, LeftOver } from "../../utils/dataTypes";
 import NewPlanNavigationBar from '../NewPlanPage/NavigationNewPlanBar'
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import { createPlan, swipeleft, swiperight } from "../../utils/axios/planGenerationCalls";
 import { AppDispatch } from "../../redux/store";
 import { acceptPlan } from "../../redux/slice/currentPlanSlice";
-import { ScoreBar } from "../../components/ui/common/scoreBar";
+import SplashAnimation from "./components/Animation";
+import TopBar from "./components/TopBar";
+import RecipeModal from "./components/RecipeModal";
 
 const Text = createText<Theme>()
 const Box = createBox<Theme>()
@@ -23,60 +24,6 @@ const Box = createBox<Theme>()
 export type SwapMealsPageProps = {
   navigation: NavigationScreenProp<any, any>
 };
-
-export type TopBarProps = {
-  score: number
-}
-
-const TopBar = ({ score }: TopBarProps) => {
-  return (
-    <Box marginTop="l" marginHorizontal="xs" padding="m">
-      <Text variant="subheader">Choose your Recipes...</Text>
-      <ScoreBar
-        score={score}
-        maxScore={1}
-      />
-      <Box flexDirection={"row"} flexGrow={1}>
-        <Box flex={1} justifyContent={"flex-start"} alignItems={"center"} flexDirection={"row"}>
-          <Ionicons name="arrow-back-circle-outline" size={20} color="black" />
-          <Text paddingLeft={"xs"} variant={"body"} color={"secondaryCardText"}>
-            Prev
-          </Text>
-        </Box>
-        <Box>
-          <Text variant={"body"} >
-            Sustainability
-          </Text>
-        </Box>
-        <Box flex={1} justifyContent={"flex-end"} alignItems={"center"} flexDirection={"row"}>
-          <Text paddingRight={"xs"} variant={"body"} color={"secondaryCardText"}>
-            Next
-          </Text>
-          <Ionicons name="arrow-forward-circle-outline" size={20} color="black" />
-        </Box>
-      </Box>
-    </Box>
-  )
-}
-
-type animationProps = {
-  setupPhase: boolean
-}
-
-const Animation = (props: animationProps) => {
-  const windowWidth = Dimensions.get('window').width;
-  if (props.setupPhase) {
-    return (
-      <Box alignItems={"center"} flexGrow={1} flexDirection={"column"} justifyContent={"center"}>
-        <Image
-          style={{ width: windowWidth, height: 9 / 16 * windowWidth }}
-          source={require('../../assets/animation.gif')} />
-      </Box>
-    )
-  } else {
-    return <Box />
-  }
-}
 
 const SwapMealsPage = ({ navigation }: SwapMealsPageProps) => {
   // Initial State for Animation
@@ -92,11 +39,15 @@ const SwapMealsPage = ({ navigation }: SwapMealsPageProps) => {
   // Sustainability Score for future animations
   const [sustainabilityScore, setSustainabilityScore] = useState(0)
 
+  const [modalVisible, setModalVisible] = useState(false);
+
+  const [selectedRecipe, setSelectedRecipe] = useState<RecipeSwipeObject | undefined>(undefined)
+
   const dispatch = useDispatch<AppDispatch>()
 
   // Fetch Initial Plan on First Mounting
   useEffect(() => {
-    createPlan(mealAmount.map((m: IMealAmount) => m.amount), leftovers.map((l: ILeftOver) => ({ id: l.id, quantity: l.quantity })), preferences.map((f: IFoodPreference) => f.id)).then(
+    createPlan(mealAmount.map((m: IMealAmount) => m.amount), leftovers.map((l: LeftOver) => ({ id: l.id, quantity: l.quantity })), preferences.map((f: FoodPreference) => f.id)).then(
       (initialPlan: FrontendPlan) => {
         setRecipeList(initialPlan.recipeSwipeObjects)
         setSwipeTracker(Array(initialPlan.recipeSwipeObjects.length).fill(0))
@@ -169,7 +120,7 @@ const SwapMealsPage = ({ navigation }: SwapMealsPageProps) => {
         }>
         <Box flexGrow={1} height="50%">
           <TopBar score={sustainabilityScore} />
-          <Animation setupPhase={setupPhase} />
+          <SplashAnimation setupPhase={setupPhase} />
           <SwipeListView
             data={recipeList}
             keyExtractor={(data) => "" + data.id}
@@ -197,12 +148,17 @@ const SwapMealsPage = ({ navigation }: SwapMealsPageProps) => {
 
             renderItem={(data, rowMap) => (
               <TouchableOpacity activeOpacity={1}>
-                <Box paddingTop={"m"}>
+                <Box marginTop={"m"} borderRadius={20} overflow="hidden">
                   <RecipeCard
                     imageSource={data.item.recipe.imageUrl}
                     cookingTime={data.item.recipe.prepTime}
                     recipeName={data.item.recipe.name}
-                    persons={data.item.portions} />
+                    persons={data.item.portions}
+                    onClick={() => {
+                      setSelectedRecipe(data.item)
+                      setModalVisible(true)
+                    }
+                    } />
                 </Box>
               </TouchableOpacity>
             )}
@@ -214,6 +170,12 @@ const SwapMealsPage = ({ navigation }: SwapMealsPageProps) => {
           />
         </Box>
       </ NewPlanNavigationBar>
+      {
+        selectedRecipe ?
+          <RecipeModal visible={modalVisible} toggleModal={() => setModalVisible(!modalVisible)} recipe={selectedRecipe} />
+          :
+          <></>
+      }
     </Box >
   );
 }

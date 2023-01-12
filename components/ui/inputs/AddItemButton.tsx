@@ -22,9 +22,9 @@ const AddItemButton = ({ onPress }: AddItemButtonProps) => {
                         <Ionicons
                             name={'add-outline'}
                             size={28}
-                            color={theme.colors.accent}
+                            color={theme.colors.primaryCardBackground}
                         />
-                        <Text variant={'subsubheader'} color={'accent'}>
+                        <Text variant={'subsubheader'} color={'primaryCardBackground'}>
                             Add Meal
                         </Text>
                     </Box>

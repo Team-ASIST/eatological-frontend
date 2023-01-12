@@ -132,7 +132,8 @@ const SettingsPage = ({ navigation }: SettingsPageProps) => {
             }
           icon={"people-circle-outline"}
           size={35}
-          label={"Konto wechseln"}
+          label={"Switch to Account"}
+          color={switchMode ? theme.colors.primaryCardBackground : theme.colors.black}
           disabled={false}
         />
       </Box>
