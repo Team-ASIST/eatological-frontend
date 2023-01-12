@@ -29,107 +29,98 @@ export const UsernameInput = ({
     changeUser,
 }: UsernameInputProps) => {
     return (
-        <Box>
-            <Modal visible={modalVisible} animationType="slide" transparent={true}>
+        <Modal visible={modalVisible} animationType="slide" transparent={true}>
+            {/* Container for all components in modal*/}
+            <Box
+                top={80}
+                backgroundColor="white"
+                paddingVertical="xl"
+                paddingHorizontal="m"
+                margin="s"
+                borderRadius={20}
+                height={'100%'}
+                shadowOpacity={0.05}>
+                <Text variant={'subheader'} marginHorizontal={'l'}>
+                    {switchMode
+                        ? 'Wechsel zu einem existierenden Konto!'
+                        : 'Gib einen neuen Nutzernamen an!'}
+                </Text>
+                {/* Container for Input field */}
                 <Box
-                    top={80}
-                    alignItems="center"
+                    flexDirection="row"
+                    padding="m"
+                    margin={'l'}
                     backgroundColor="white"
-                    padding={'m'}
-                    marginHorizontal={'s'}
-                    borderRadius={20}
-                    height={'100%'}
-                    shadowOpacity={0.05}>
-                    <Box top={30} padding="m">
-                        <Text variant={'subheader'} margin={'m'}>
-                            {switchMode
-                                ? 'Wechsel zu einem schon existierenden Konto!'
-                                : 'Gib einen neuen Nutzernamen an!'}{' '}
-                        </Text>
+                    alignItems="center"
+                    borderRadius={5}
+                    borderWidth={2}
+                    borderColor="black"
+                    justifyContent="space-between">
+                    {/* Input field */}
+                    <TextInput
+                        style={{ width: 235 }}
+                        placeholder={switchMode ? 'Kontonamen eingeben...' : 'Neuer Nutzername...'}
+                        value={currentUsername}
+                        onChangeText={setCurrentUsername}
+                        onFocus={() => {
+                            setClicked(true)
+                        }}
+                    />
+                    {/* close button, depending on whether the Input is clicked or not */}
+                    {clicked && (
+                        <IconButton
+                            onPress={() => {
+                                Keyboard.dismiss()
+                                setClicked(false)
+                                setCurrentUsername('')
+                            }}
+                            icon={'close'}
+                            size={15}
+                            color={theme.colors.black}
+                        />
+                    )}
+                </Box>
+                {/* Container for Okay and Abbrechen Button*/}
+                <Box flexDirection="row" justifyContent="space-between" marginHorizontal={'l'}>
+                    <TouchableOpacity
+                        onPress={() => {
+                            setClicked(false)
+                            changeUser(currentUsername)
+                            setCurrentUsername('')
+                            setModalVisible(!modalVisible)
+                        }}>
                         <Box
-                            flexDirection="row"
-                            padding="m"
-                            margin="l"
-                            backgroundColor="white"
-                            alignItems="center"
                             borderRadius={5}
                             borderWidth={2}
-                            width={280}
-                            borderColor="black"
-                            justifyContent="space-between">
-                            {/* Input field */}
-
-                            <TextInput
-                                style={{ width: 235 }}
-                                placeholder={
-                                    switchMode ? 'Kontonamen eingeben...' : 'Neuer Nutzername...'
-                                }
-                                value={currentUsername}
-                                onChangeText={setCurrentUsername}
-                                onFocus={() => {
-                                    setClicked(true)
-                                }}
-                            />
-                            {/* close button, depending on whether the Input is clicked or not */}
-                            {clicked && (
-                                <IconButton
-                                    onPress={() => {
-                                        Keyboard.dismiss()
-                                        setClicked(false)
-                                        setCurrentUsername('')
-                                    }}
-                                    icon={'close'}
-                                    size={15}
-                                    color={theme.colors.black}
-                                />
-                            )}
+                            borderColor="success"
+                            paddingHorizontal={'m'}>
+                            <Text
+                                variant="boldBody"
+                                color={'success'}
+                                fontSize={18}
+                                fontWeight={'bold'}>
+                                Okay
+                            </Text>
                         </Box>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        onPress={() => {
+                            setClicked(false)
+                            setCurrentUsername('')
+                            setModalVisible(!modalVisible)
+                        }}>
                         <Box
-                            flexDirection="row"
-                            justifyContent="space-between"
-                            marginHorizontal={'l'}>
-                            <TouchableOpacity
-                                onPress={() => {
-                                    setClicked(false)
-                                    changeUser(currentUsername)
-                                    setCurrentUsername('')
-                                    setModalVisible(!modalVisible)
-                                }}>
-                                <Box
-                                    borderRadius={5}
-                                    borderWidth={2}
-                                    borderColor="success"
-                                    paddingHorizontal={'m'}>
-                                    <Text
-                                        variant="boldBody"
-                                        color={'success'}
-                                        fontSize={18}
-                                        fontWeight={'bold'}>
-                                        Okay
-                                    </Text>
-                                </Box>
-                            </TouchableOpacity>
-
-                            <TouchableOpacity
-                                onPress={() => {
-                                    setClicked(false)
-                                    setCurrentUsername('')
-                                    setModalVisible(!modalVisible)
-                                }}>
-                                <Box
-                                    borderRadius={5}
-                                    borderWidth={1}
-                                    borderColor="black"
-                                    paddingHorizontal={'m'}>
-                                    <Text variant="body" color={'black'} fontSize={18}>
-                                        Abbrechen
-                                    </Text>
-                                </Box>
-                            </TouchableOpacity>
+                            borderRadius={5}
+                            borderWidth={1}
+                            borderColor="black"
+                            paddingHorizontal={'m'}>
+                            <Text variant="body" color={'black'} fontSize={18}>
+                                Abbrechen
+                            </Text>
                         </Box>
-                    </Box>
+                    </TouchableOpacity>
                 </Box>
-            </Modal>
-        </Box>
+            </Box>
+        </Modal>
     )
 }

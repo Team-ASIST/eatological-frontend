@@ -106,8 +106,8 @@ const SettingsPage = ({ navigation }: SettingsPageProps) => {
           changeUser={changeUser}
         />
       </Box>
-
-      <Box marginTop={"s"}>
+      <Box marginTop={"m"}>
+      <Box marginTop={"s"} padding={'s'}>
         
         <TextButton
           onPress={() => {
@@ -123,7 +123,7 @@ const SettingsPage = ({ navigation }: SettingsPageProps) => {
         />
       </Box>
 
-      <Box marginTop={"s"}>
+      <Box padding={'s'}>
         <TextButton
           onPress={() => {
             setSwitchMode(true)
@@ -138,7 +138,7 @@ const SettingsPage = ({ navigation }: SettingsPageProps) => {
         />
       </Box>
 
-      <Box marginTop={"s"} marginBottom={"m"}>
+      <Box marginBottom={"l"} padding={'s'}>
         <TextButton
           onPress={
             deleteUsername}
@@ -149,9 +149,10 @@ const SettingsPage = ({ navigation }: SettingsPageProps) => {
           disabled={false}
         />
       </Box>
+      </Box>
 
       <Box marginTop={"m"} marginBottom={"m"} alignItems="center">
-        <Text variant="subsubheader">Choose your Diet...</Text>
+        <Text variant="subsubheader">Wähle Deine Ernährungsform...</Text>
       </Box>
 
       <ScrollView showsVerticalScrollIndicator={false}>
