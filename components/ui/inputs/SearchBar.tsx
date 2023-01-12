@@ -145,14 +145,12 @@ const List = ({ searchPhrase, data, typeOfItems, setClicked, setSearchPhrase }: 
                 data={data}
                 renderItem={({ item }: ListRenderItemInfo<ItemProps>) => {
                     if (searchPhrase === '') {
-                        console.log('1', searchPhrase)
                         return <View />
                     } else if (
                         item.name
                             .toLowerCase()
                             .includes(searchPhrase.trim().replace(/ /g, '_').toLowerCase())
                     ) {
-                        console.log('2', item.name)
                         return (
                             <Item
                                 typeOfItem={typeOfItems}
@@ -166,7 +164,6 @@ const List = ({ searchPhrase, data, typeOfItems, setClicked, setSearchPhrase }: 
                             />
                         )
                     } else {
-                        console.log('3', searchPhrase)
                         return <View />
                     }
                 }}
