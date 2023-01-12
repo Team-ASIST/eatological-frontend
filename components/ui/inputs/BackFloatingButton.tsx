@@ -9,13 +9,13 @@ const Text = createText<Theme>()
 const Box = createBox<Theme>()
 
 type BackFloatingButtonProps = {
-    route: string
-    navigation: NativeStackNavigationProp<any, any>
+    onClick: Function
+    closingTag: '✕' | '<'
 }
 
-export const BackFloatingButton = ({ route, navigation }: BackFloatingButtonProps) => {
+export const BackFloatingButton = ({ closingTag, onClick }: BackFloatingButtonProps) => {
     return (
-        <TouchableOpacity style={{ position: 'absolute', top: 20, left: 30, borderRadius: 50, elevation: 3 }} onPress={() => navigation.navigate(route)}>
+        <TouchableOpacity style={{ position: 'absolute', top: 20, left: 30, borderRadius: 50, elevation: 3 }} onPress={() => onClick()}>
             <Box
                 backgroundColor="white"
                 borderRadius={50}
@@ -31,7 +31,7 @@ export const BackFloatingButton = ({ route, navigation }: BackFloatingButtonProp
                 shadowRadius={3}
                 shadowOpacity={0.5}
             >
-                <Text variant={"header"} color={"accent"}>&#60;</Text>
+                <Text variant={"header"} color={"accent"}>{closingTag}</Text>
             </Box>
         </TouchableOpacity >
     )

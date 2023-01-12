@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { createBox, createText } from '@shopify/restyle';
 import Ionicons from "react-native-vector-icons/Ionicons";
 import theme, { Theme } from "../../../utils/theme";
@@ -20,6 +20,7 @@ export type IngredientItemProps = {
     alternative: string,
     bought: number,
     required: number,
+    smallestAmount: number
 }
 
 const CheckIcon = ({ bought }: CheckIconProps) => {
@@ -42,7 +43,7 @@ const CheckIcon = ({ bought }: CheckIconProps) => {
     }
 }
 
-export const IngredientItem = ({ ingredientName, unit, season, local, alternative, bought, required }: IngredientItemProps) => {
+export const IngredientItem = ({ ingredientName, unit, season, local, alternative, bought, required, smallestAmount }: IngredientItemProps) => {
     return (
         <Box
             backgroundColor={bought >= required ? 'navigationButtonColor' : 'mainBackground' }
@@ -77,8 +78,8 @@ export const IngredientItem = ({ ingredientName, unit, season, local, alternativ
                     />
                     <Text variant={"body"} color={"secondaryCardText"}> Season </Text>
                 </Box>
-                <Text variant={"body"} color={"secondaryCardText"}>
-                    {bought.toFixed(2) >= required.toFixed(2) ? required.toFixed(2) : 0.0} / {required.toFixed(2)} {unit}
+                <Text variant={"body"} color="secondaryCardText">
+                    {(bought * smallestAmount).toFixed(2)} / {(required * smallestAmount).toFixed(2)} {unit}
                 </Text>
                 <Box flexDirection={"row"} alignItems="center">
                     <Ionicons

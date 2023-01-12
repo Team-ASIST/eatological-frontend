@@ -1,4 +1,5 @@
 import { createSlice, nanoid } from '@reduxjs/toolkit'
+import { FoodPreference, LeftOver } from '../../utils/dataTypes'
 import { RootState } from '../store'
 
 export interface IMealAmount {
@@ -6,23 +7,10 @@ export interface IMealAmount {
     amount: number
 }
 
-export interface ILeftOver {
-    id: number
-    name: string
-    smallestAmount: number
-    quantity: number
-    unit: string
-}
-
-export interface IFoodPreference {
-    id: number
-    name: string
-}
-
 interface IState {
     mealAmount: IMealAmount[]
-    leftovers: ILeftOver[]
-    preferences: IFoodPreference[]
+    leftovers: LeftOver[]
+    preferences: FoodPreference[]
 }
 
 const initialState: IState = {

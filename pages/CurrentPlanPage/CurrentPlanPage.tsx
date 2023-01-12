@@ -1,7 +1,7 @@
 import React from "react";
 import { createBox } from '@shopify/restyle';
 import { Theme } from '../../utils/theme';
-import RecipeCard from "../../components/ui/recipe/recipeCard";
+import RecipeCard from "../../components/ui/recipe/RecipeCard";
 import { RefreshControl, ScrollView } from "react-native-gesture-handler";
 import { useDispatch, useSelector } from "react-redux";
 import { getGroceries, getPlan, selectAllGroceries, selectAllRecipes, selectUpdatingPlan } from "../../redux/slice/currentPlanSlice";

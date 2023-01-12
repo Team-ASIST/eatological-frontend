@@ -46,7 +46,7 @@ const GroceryButton = ({ ingredientId, grocery, ingredient, onClick }: GroceryBu
                 </TouchableOpacity>
             </Box>
 
-            <Box flex={6}>
+            <Box flex={5}>
                 <Text variant={"body"} color="primaryCardText">
                     {ingredient.name}
                     {ingredient.alternative === null ? "" : "\nAlt: [ " + ingredient.alternative + " ]"}
@@ -55,7 +55,7 @@ const GroceryButton = ({ ingredientId, grocery, ingredient, onClick }: GroceryBu
 
 
             {/* Season, Amounts, Local */}
-            <Box flexDirection={"column"} alignItems="flex-start" flex={4}>
+            <Box flexDirection={"column"} alignItems="flex-start" flex={5}>
                 <Box flexDirection={"row"} alignItems="center">
                     <Ionicons
                         name={ingredient.season ? 'checkmark-circle-outline' : 'close-circle-outline'}
@@ -65,7 +65,7 @@ const GroceryButton = ({ ingredientId, grocery, ingredient, onClick }: GroceryBu
                     <Text variant={"body"}> Season </Text>
                 </Box>
                 <Text variant={"body"} color="primaryCardText">
-                    {grocery.bought} / {grocery.required} {ingredient.unit}
+                    {(grocery.bought * ingredient.smallestAmount).toFixed(2)} / {(grocery.required * ingredient.smallestAmount).toFixed(2)} {ingredient.unit}
                 </Text>
                 <Box flexDirection={"row"} alignItems="center">
                     <Ionicons
