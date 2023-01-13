@@ -28,6 +28,7 @@ const AppWrapper = () => {
   )
 }
 
+
 const App = () => {
   //load ingredients and store them in redux store (ingredientSlice)
   const dispatch = useDispatch<AppDispatch>()
@@ -68,15 +69,15 @@ const App = () => {
   }
   return (
     <Provider store={store}>
-      <PersistGate loading={<SplashScreen />} persistor={persistor} onBeforeLift={onBeforeLift}>
-        <ThemeProvider theme={colorTheme === 'dark' ? darkTheme : theme}>
-          <NavigationContainer>
+      <ThemeProvider theme={colorTheme === 'dark' ? darkTheme : theme}>
+        <NavigationContainer>
+          <PersistGate loading={<SplashScreen />} persistor={persistor} onBeforeLift={onBeforeLift}>
             <SafeAreaView style={{ flex: 1, paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0 }}>
               <TabNavigator />
             </SafeAreaView>
-          </NavigationContainer>
-        </ThemeProvider>
-      </PersistGate>
+          </PersistGate>
+        </NavigationContainer>
+      </ThemeProvider>
     </Provider>
   );
 }
