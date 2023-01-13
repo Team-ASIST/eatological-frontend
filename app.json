@@ -3,6 +3,7 @@
     "name": "eatological-frontend",
     "slug": "eatological-frontend",
     "version": "1.0.0",
+    "owner": "seb711",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "automatic",
