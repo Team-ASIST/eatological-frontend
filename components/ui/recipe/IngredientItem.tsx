@@ -2,6 +2,10 @@ import React from "react";
 import { createBox, createText } from '@shopify/restyle';
 import Ionicons from "react-native-vector-icons/Ionicons";
 import theme, { Theme } from "../../../utils/theme";
+import TagItem from "../common/TagItem";
+import IconButton from "../inputs/IconButton";
+import { Modal, Pressable } from "react-native";
+import Tooltip from "rn-tooltip";
 
 
 const Text = createText<Theme>();
@@ -17,7 +21,7 @@ export type IngredientItemProps = {
     unit: string,
     season: boolean,
     local: boolean,
-    alternative: string,
+    alternative?: string,
     bought: number,
     required: number,
     smallestAmount: number
@@ -46,7 +50,7 @@ const CheckIcon = ({ bought }: CheckIconProps) => {
 export const IngredientItem = ({ ingredientName, unit, season, local, alternative, bought, required, smallestAmount }: IngredientItemProps) => {
     return (
         <Box
-            backgroundColor={bought >= required ? 'navigationButtonColor' : 'mainBackground' }
+            backgroundColor={bought >= required ? 'navigationButtonColor' : 'mainBackground'}
             flexDirection={"row"}
             justifyContent={"space-between"}
             alignItems={"center"}
@@ -60,34 +64,25 @@ export const IngredientItem = ({ ingredientName, unit, season, local, alternativ
                 <CheckIcon bought={(bought >= required)} />
             </Box>
 
-            <Box flex={5}>
-                <Text variant={"body"} color={"secondaryCardText"}>
+            <Box flex={5} flexDirection="row" alignItems={"center"}>
+                <Text variant={"body"} color={"secondaryCardText"} marginRight="xs">
                     {ingredientName}
-                    {alternative === null ? "" : "\nAlt: [ " + alternative + " ]"}
                 </Text>
+                {alternative ?
+                    <Tooltip width={200} height={"auto"} actionType="press" backgroundColor={theme.colors.accent} popover={<Text variant="body">{alternative}</Text>}>
+                            <Ionicons color={theme.colors.black} name={"information-circle-outline"} size={30} />
+                    </Tooltip> : <></>}
             </Box>
 
 
             {/* Season, Amounts, Local */}
             <Box flexDirection={"column"} alignItems="flex-start" flex={5}>
-                <Box flexDirection={"row"} alignItems="center">
-                    <Ionicons
-                        name={season ? 'checkmark-circle-outline' : 'close-circle-outline'}
-                        size={15}
-                        color={theme.colors.black}
-                    />
-                    <Text variant={"body"} color={"secondaryCardText"}> Saison </Text>
-                </Box>
                 <Text variant={"body"} color="secondaryCardText">
                     {(bought * smallestAmount).toFixed(2)} / {(required * smallestAmount).toFixed(2)} {unit}
                 </Text>
                 <Box flexDirection={"row"} alignItems="center">
-                    <Ionicons
-                        name={local ? 'checkmark-circle-outline' : 'close-circle-outline'}
-                        size={15}
-                        color={theme.colors.black}
-                    />
-                    <Text variant={"body"} color={"secondaryCardText"}> Lokal </Text>
+                    {season ? <TagItem text={"Season"} backgroundColor={"accent"} /> : <></>}
+                    {local ? <TagItem text={"Lokal"} backgroundColor={"alert"} /> : <></>}
                 </Box>
             </Box>
         </Box>
