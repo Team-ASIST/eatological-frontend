@@ -105,8 +105,6 @@ const Item = ({
                         dispatch(leftoverAdded({ id, name, smallestAmount, amount, unit }))
                     } else if (typeOfItem === 'foodpreference') {
                         dispatch(preferenceAdded({ id, name }))
-                    } else {
-                        console.log('Unknown Type of item.')
                     }
                     setClicked(false)
                     setSearchPhrase('')

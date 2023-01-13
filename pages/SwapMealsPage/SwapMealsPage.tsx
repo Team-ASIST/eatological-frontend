@@ -56,7 +56,7 @@ const SwapMealsPage = ({ navigation }: SwapMealsPageProps) => {
         setSetupPhase(false)
       }
     ).catch(
-      error => { console.error(error) }
+      error => { console.warn(error) }
     )
   }, [])
 

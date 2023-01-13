@@ -1,9 +1,9 @@
-import { backend } from "./config";
+import { instance } from ".";
 import { Recipe, BackendPlan, Meal } from "../dataTypes";
 
 export const recipes = async (): Promise<Recipe[]> => {
     try {
-        const response = await backend().get(
+        const response = await instance.get(
             '/recipes'
         )
 
@@ -12,17 +12,17 @@ export const recipes = async (): Promise<Recipe[]> => {
             let recipes: Recipe[] = response.data
             return recipes
         }
-        console.error("Call Recipes aborted!")
+        console.warn("Call Recipes aborted!")
 
     } catch (error) {
-        console.error(error)
+        console.warn(error)
     }
     return [] as Recipe[]
 }
 
 export const plan = async (): Promise<Meal[]> => {
     try {
-        const response = await backend().get(
+        const response = await instance.get(
             '/plan'
         )
 
@@ -44,10 +44,10 @@ export const plan = async (): Promise<Meal[]> => {
             
             return meals
         }
-        console.error("Call Recipes aborted!")
+        console.warn("Call Recipes aborted!")
 
     } catch (error) {
-        console.error(error)
+        console.warn(error)
     }
     return [] as Meal[]
 }
@@ -55,7 +55,7 @@ export const plan = async (): Promise<Meal[]> => {
 export const planCook = async (recipeID: number): Promise<Meal[]> => {
     let recipeArg = JSON.stringify(recipeID)
     try {
-        const response = await backend().put(
+        const response = await instance.put(
             '/plan/cook',
             {},
             {
@@ -83,10 +83,10 @@ export const planCook = async (recipeID: number): Promise<Meal[]> => {
 
             return meals
         }
-        console.error("Call planCook aborted!")
+        console.warn("Call planCook aborted!")
 
     } catch (error) {
-        console.error(error)
+        console.warn(error)
     }
     return [] as Meal[]
 }
