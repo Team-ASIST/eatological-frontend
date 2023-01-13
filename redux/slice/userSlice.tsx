@@ -119,7 +119,6 @@ export const getToken = createAsyncThunk<
             }
         } catch (error) {
             // Call erroneous
-            console.error(error)
             throw error
         }
     }
@@ -203,7 +202,6 @@ export const renameUser = createAsyncThunk<
             }
         } catch (error) {
             // Call erroneous
-            console.error(error)
             throw error
         }
     }
