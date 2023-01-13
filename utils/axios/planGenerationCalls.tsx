@@ -38,10 +38,10 @@ export const createPlan = async (portions: number[], leftovers: smallIngredient[
 
             return { recipeSwipeObjects: recipeSwipeObjects, sustainabilityScore: initialPlan.sustainabilityScore }
         }
-        console.error("Call CreatePlan aborted!")
+        console.warn("Call CreatePlan aborted!")
     } catch (error) {
         // Call erroneous
-        console.error(error)
+        console.warn(error)
     }
     return { recipeSwipeObjects: [], sustainabilityScore: 0 }
 }
@@ -66,9 +66,9 @@ export const swipeleft = async (currentList: RecipeSwipeObject[], mealID: number
             return { recipeSwipeObjects: result, sustainabilityScore: newPlan.sustainabilityScore } as FrontendPlan
         }
 
-        console.error("Call SwipeLeft aborted!")
+        console.warn("Call SwipeLeft aborted!")
     } catch (error) {
-        console.error(error)
+        console.warn(error)
     }
     // Send Previous plan (Sustainability Score?)
     return { recipeSwipeObjects: currentList, sustainabilityScore: 0 } as FrontendPlan
@@ -94,10 +94,10 @@ export const swiperight = async (currentList: RecipeSwipeObject[], mealID: numbe
             result[mealID].swapRecipe(newPlan.meals[mealID].recipe)
             return { recipeSwipeObjects: result, sustainabilityScore: newPlan.sustainabilityScore } as FrontendPlan
         }
-        console.error("Call SwipeRight aborted!")
+        console.warn("Call SwipeRight aborted!")
     } catch (error) {
         // Call erroneous
-        console.error(error)
+        console.warn(error)
     }
     // Send Previous plan (Sustainability Score?)
     return { recipeSwipeObjects: currentList, sustainabilityScore: 0 } as FrontendPlan

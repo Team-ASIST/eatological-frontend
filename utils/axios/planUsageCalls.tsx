@@ -12,10 +12,10 @@ export const recipes = async (): Promise<Recipe[]> => {
             let recipes: Recipe[] = response.data
             return recipes
         }
-        console.error("Call Recipes aborted!")
+        console.warn("Call Recipes aborted!")
 
     } catch (error) {
-        console.error(error)
+        console.warn(error)
     }
     return [] as Recipe[]
 }
@@ -44,10 +44,10 @@ export const plan = async (): Promise<Meal[]> => {
             
             return meals
         }
-        console.error("Call Recipes aborted!")
+        console.warn("Call Recipes aborted!")
 
     } catch (error) {
-        console.error(error)
+        console.warn(error)
     }
     return [] as Meal[]
 }
@@ -83,10 +83,10 @@ export const planCook = async (recipeID: number): Promise<Meal[]> => {
 
             return meals
         }
-        console.error("Call planCook aborted!")
+        console.warn("Call planCook aborted!")
 
     } catch (error) {
-        console.error(error)
+        console.warn(error)
     }
     return [] as Meal[]
 }

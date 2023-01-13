@@ -183,12 +183,12 @@ export const updateGroceries = createAsyncThunk<
                 // Return data
                 return response.data.groceries as Grocery[]
             } else {
-                console.error("Call Groceries aborted!")
+                console.warn("Call Groceries aborted!")
                 throw Error("Response was not 200")
             }
         } catch (error) {
             // Call erroneous
-            console.error(error)
+            console.warn("[updateGroceries]", error)
             throw error
         }
     }
@@ -201,6 +201,7 @@ export const acceptPlan = createAsyncThunk<
     'currentPlan/acceptPlan',
     async (meals, thunkApi) => {
         try {
+            console.log("acceptPlan")
             const response = await instance.post(
                 '/plan/accept',
                 {},
@@ -211,7 +212,7 @@ export const acceptPlan = createAsyncThunk<
             return meals
         } catch (error) {
             // Call erroneous
-            console.error(error)
+            console.warn("[acceptPlan]", error)
             throw error
         }
     }
@@ -224,6 +225,7 @@ export const getPlan = createAsyncThunk<
     'currentPlan/getPlan',
     async () => {
         try {
+            console.log("getPlan")
             const response = await instance.get(
                 '/plan'
             )
@@ -247,11 +249,11 @@ export const getPlan = createAsyncThunk<
 
                 return meals
             } else {
-                console.error("Call Groceries aborted!")
+                console.warn("Call Groceries aborted!")
                 throw Error("Response was not 200")
             }
         } catch (error) {
-            console.error(error)
+            console.warn("[getPlan]", error)
             throw error
         }
     }
@@ -263,6 +265,7 @@ export const getIngredients = createAsyncThunk<
     'currentPlan/getIngredients',
     async () => {
         try {
+            console.log("getIngredients")
             const response = await instance.get(
                 '/ingredients'
             )
@@ -272,11 +275,11 @@ export const getIngredients = createAsyncThunk<
                 let ingredients: Ingredient[] = response.data
                 return ingredients
             } else {
-                console.error("Call Groceries aborted!")
+                console.warn("Call Groceries aborted!")
                 throw Error("Response was not 200")
             }
         } catch (error) {
-            console.error(error)
+            console.warn("[getIngredients]", error)
             throw error
         }
     }
@@ -286,6 +289,7 @@ export const planCook = createAsyncThunk(
     'currentPlan/planCook',
     async (mealId: number) => {
         try {
+            console.log("planCook")
             const response = await instance.put(
                 '/plan/cook',
                 {},
@@ -297,7 +301,7 @@ export const planCook = createAsyncThunk(
             )
         } catch (error) {
             // Call erroneous
-            console.error(error)
+            console.warn("[planCook]", error)
             throw error
         }
     }
@@ -309,6 +313,7 @@ export const getGroceries = createAsyncThunk<
     'currentPlan/getGroceries',
     async () => {
         try {
+            console.log("getGroceries")
             // Get Groceries for the User
             const response = await instance.get(
                 '/groceries'
@@ -318,12 +323,12 @@ export const getGroceries = createAsyncThunk<
                 // Return data
                 return response.data.groceries as Grocery[]
             } else {
-                console.error("Call Groceries aborted!")
+                console.warn("Call Groceries aborted!")
                 throw Error("Response was not 200")
             }
         } catch (error) {
             // Call erroneous
-            console.error(error)
+            console.warn("[getGroceries]", error)
             throw error
         }
     }

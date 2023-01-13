@@ -19,10 +19,10 @@ export const getRestrictions = async () : Promise<Restriction[]> => {
 
             return restrictions
         }
-        console.error("Call RenameUser aborted!")
+        console.warn("Call RenameUser aborted!")
 
     } catch (error) {
-        console.error(error)
+        console.warn(error)
     }
     return [] as Restriction[]
 }
@@ -43,10 +43,10 @@ export const setRestrictions = async (restriction: string) : Promise<boolean> =>
         if (response.status = 200) {
             return true
         }
-        console.error("Call RenameUser aborted!")
+        console.warn("Call RenameUser aborted!")
 
     } catch (error) {
-        console.error(error)
+        console.warn(error)
     }
     return false
 }

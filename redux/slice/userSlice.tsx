@@ -114,7 +114,7 @@ export const getToken = createAsyncThunk<
                 }
 
             } else {
-                console.error("Call Groceries aborted!")
+                console.warn("Call Groceries aborted!")
                 throw Error("Response was not 200")
             }
         } catch (error) {
@@ -152,12 +152,12 @@ export const addUser = createAsyncThunk<
                 }
 
             } else {
-                console.error("Call Groceries aborted!")
+                console.warn("Call Groceries aborted!")
                 throw Error("Response was not 200")
             }
         } catch (error) {
             // Call erroneous
-            console.error(error)
+            console.warn(error)
             throw error
         }
     }
@@ -197,7 +197,7 @@ export const renameUser = createAsyncThunk<
                 }
 
             } else {
-                console.error("Call Groceries aborted!")
+                console.warn("Call Groceries aborted!")
                 throw Error("Response was not 200")
             }
         } catch (error) {
@@ -235,12 +235,12 @@ export const deleteUser = createAsyncThunk<
                 }
 
             } else {
-                console.error("Call Groceries aborted!")
+                console.warn("Call Groceries aborted!")
                 throw Error("Response was not 200")
             }
         } catch (error) {
             // Call erroneous
-            console.error(error)
+            console.warn(error)
             throw error
         }
     }
