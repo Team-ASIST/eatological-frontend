@@ -3,9 +3,7 @@ import { AxiosError, AxiosRequestConfig } from 'axios'
 
 
 const setUpInterceptor = (token: string) => {
-    const handleError = async (error: AxiosError) => {
-        return Promise.reject(error)
-    }
+    instance.interceptors.request.clear()
 
     instance.interceptors.request.use(
         async (config: any | AxiosRequestConfig) => {
@@ -15,11 +13,10 @@ const setUpInterceptor = (token: string) => {
             if (token == "") {
                 (config as any).headers['EatologicalToken'] = 'dev@eatological.de';
             }
+
             return config
         }
     )
-
-    instance.interceptors.response.use((response) => response, handleError)
 }
 
 export default setUpInterceptor
