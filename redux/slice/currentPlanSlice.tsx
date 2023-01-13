@@ -201,7 +201,6 @@ export const acceptPlan = createAsyncThunk<
     'currentPlan/acceptPlan',
     async (meals, thunkApi) => {
         try {
-            console.log("acceptPlan")
             const response = await instance.post(
                 '/plan/accept',
                 {},
@@ -225,7 +224,6 @@ export const getPlan = createAsyncThunk<
     'currentPlan/getPlan',
     async () => {
         try {
-            console.log("getPlan")
             const response = await instance.get(
                 '/plan'
             )
@@ -265,7 +263,6 @@ export const getIngredients = createAsyncThunk<
     'currentPlan/getIngredients',
     async () => {
         try {
-            console.log("getIngredients")
             const response = await instance.get(
                 '/ingredients'
             )
@@ -289,7 +286,6 @@ export const planCook = createAsyncThunk(
     'currentPlan/planCook',
     async (mealId: number) => {
         try {
-            console.log("planCook")
             const response = await instance.put(
                 '/plan/cook',
                 {},
@@ -313,7 +309,6 @@ export const getGroceries = createAsyncThunk<
     'currentPlan/getGroceries',
     async () => {
         try {
-            console.log("getGroceries")
             // Get Groceries for the User
             const response = await instance.get(
                 '/groceries'
