@@ -24,7 +24,7 @@ const MealQuantityScreen = ({ navigation }: Props) => {
         <PlusMinusInput key={meal.id}
             increment={() => dispatch(mealIncrement({ id: meal.id }))}
             decrement={() => dispatch(mealDecrement({ id: meal.id }))}
-            value={meal.amount} title={`Meal ${index + 1}`} />
+            value={meal.amount} title={`Gericht ${index + 1}`} />
     ))
 
     const addMeal = (
@@ -45,7 +45,7 @@ const MealQuantityScreen = ({ navigation }: Props) => {
                     }
                 }>
                 <Box marginVertical="l" marginHorizontal="xs" padding="m" height={"75%"}>
-                    <Text variant="subheader">How many meals are you planning for?</Text>
+                    <Text variant="subheader">Wie viele Gerichte möchtest du planen?</Text>
                     <Box marginVertical="l">
                         <ScrollView alwaysBounceVertical={false} showsVerticalScrollIndicator={false}>
                             {mealInputs}

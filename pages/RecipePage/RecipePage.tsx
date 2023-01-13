@@ -47,7 +47,6 @@ const RecipePage = (props: RecipePageProps) => {
                     width: '100%',
                     padding: 0
                 }} />
-
                 <Box padding="m">
                     <Text
                         variant="subheader">
@@ -60,13 +59,61 @@ const RecipePage = (props: RecipePageProps) => {
                     }} />
                     <Box justifyContent={"space-evenly"} flexDirection="row">
                         <Box>
-                            <Text variant={"body"} color={"secondaryCardText"}>Prep Time</Text>
-                            <Text variant={"boldBody"} color={"secondaryCardText"}>{recipe.prepTime}m</Text>
+                            <Text variant={"body"} color={"secondaryCardText"}>Vorbereitungszeit</Text>
+                            <Text variant={"boldBody"} color={"secondaryCardText"}>{recipe.prepTime} mins</Text>
                         </Box>
                         <Box>
-                            <Text variant={"body"} color={"secondaryCardText"}>Cook Time</Text>
-                            <Text variant={"boldBody"} color={"secondaryCardText"}>{recipe.totalTime}m</Text>
+                            <Text variant={"body"} color={"secondaryCardText"}>Gesamtzeit</Text>
+                            <Text variant={"boldBody"} color={"secondaryCardText"}>{recipe.totalTime} mins</Text>
                         </Box>
+                    </Box>
+                </Box>
+                <Box justifyContent={"space-evenly"} flexDirection="row">
+                    <Box
+                        padding={"m"}
+                        backgroundColor={
+                            currentAction == RecipeAction.Ingredients ?
+                                "secondaryButtonColor" :
+                                "primaryButtonColor"
+                        }
+                        borderBottomColor={
+                            currentAction == RecipeAction.Ingredients ?
+                                "white" :
+                                "secondaryButtonColor"
+                        }
+                        borderBottomWidth={
+                            currentAction == RecipeAction.Ingredients ?
+                                5 :
+                                0
+                        }
+                        flexDirection="row"
+                        flex={1}
+                        onTouchEnd={() => { setCurrentAction(RecipeAction.Ingredients) }}
+                    >
+                        <Text variant={"subsubheader"}>Zutaten</Text>
+                    </Box>
+                    <Box
+                        padding={"m"}
+                        backgroundColor={
+                            currentAction == RecipeAction.Directions ?
+                                "secondaryButtonColor" :
+                                "primaryButtonColor"
+                        }
+                        borderBottomColor={
+                            currentAction == RecipeAction.Directions ?
+                                "white" :
+                                "secondaryButtonColor"
+                        }
+                        borderBottomWidth={
+                            currentAction == RecipeAction.Directions ?
+                                5 :
+                                0
+                        }
+                        flexDirection="row"
+                        flex={1}
+                        onTouchEnd={() => { setCurrentAction(RecipeAction.Directions) }}
+                    >
+                        <Text variant={"subsubheader"} color={"secondaryCardText"}>Anweisungen</Text>
                     </Box>
                 </Box>
                 <Box justifyContent={"space-evenly"} flexDirection="row">
@@ -168,11 +215,11 @@ const RecipePage = (props: RecipePageProps) => {
                                 )
                             }
                             <Box>
-                                <TextButton disabled={meal.cooked} icon={'checkmark'} color={"black"} size={30} label={meal.cooked ? "Marked as cooked" : "Mark as cooked"} onPress={() => dispatch(planCook(meal.recipe.id))} />
+                                <TextButton disabled={meal.cooked} icon={'checkmark'} color={"black"} size={30} label={meal.cooked ? "Als gekocht markiert" : "Als gekocht markieren"} onPress={() => dispatch(planCook(meal.recipe.id))} />
                             </Box>
                         </Box>
                 }
-            </ScrollView>
+            </ScrollView >
             <BackFloatingButton closingTag="<" onClick={() => props.navigation.navigate("CurrentPlan")} />
         </Box >
     );

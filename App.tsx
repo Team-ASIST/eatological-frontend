@@ -16,7 +16,7 @@ import {
   Fraunces_700Bold,
 } from '@expo-google-fonts/fraunces'
 import { TabNavigator } from './navigation/tabNavigator'
-import { getIngredients } from './redux/slice/currentPlanSlice'
+import { getIngredients, getPlan } from './redux/slice/currentPlanSlice'
 import SplashScreen from './pages/SplashScreen/SplashScreen'
 import { addUser, getToken } from './redux/slice/userSlice'
 //Wrapper component which enables the usage of useDispatch in App component
@@ -38,12 +38,18 @@ const App = () => {
     if (name == "") {
       dispatch(addUser("")).then(
         () => dispatch(getToken(store.getState().user.name)).then(
-          () => dispatch(getIngredients())
+          () => {
+            dispatch(getIngredients())
+            dispatch(getPlan())
+          }
         )
       )
     } else {
       dispatch(getToken(name)).then(
-        () => dispatch(getIngredients())
+        () => {
+          dispatch(getIngredients())
+          dispatch(getPlan())
+        }
       )
     }
   }

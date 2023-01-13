@@ -2,7 +2,8 @@ import { createBox, createText } from '@shopify/restyle'
 import { Theme } from '../../utils/theme'
 import { NavigationScreenProp } from 'react-navigation'
 import { useDispatch, useSelector } from 'react-redux'
-import { resetPlanConfiguration, selectAllPreferences, IFoodPreference, preferenceRemoved } from '../../redux/slice/newPlanSlice'
+import { resetPlanConfiguration, selectAllPreferences, preferenceRemoved } from '../../redux/slice/newPlanSlice'
+import { FoodPreference } from '../../utils/dataTypes'
 import { ScrollView } from "react-native-gesture-handler";
 import NewPlanNavigationBar from './NavigationNewPlanBar'
 import { AppDispatch } from '../../redux/store'
@@ -23,8 +24,9 @@ const FoodPreferencesScreen = ({ navigation }: Props) => {
     const dispatch = useDispatch<AppDispatch>()
     const route = useRoute()
 
-    const preferenceInputs = preferences.map((preference: IFoodPreference) => (
+    const preferenceInputs = preferences.map((preference: FoodPreference) => (
         <IngredientInput
+        key={preference.id}
             remove={() => dispatch(preferenceRemoved({ id: preference.id }))}
             title={preference.name}
         />

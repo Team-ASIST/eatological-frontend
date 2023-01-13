@@ -62,7 +62,7 @@ const GroceryButton = ({ ingredientId, grocery, ingredient, onClick }: GroceryBu
                         size={15}
                         color={theme.colors.white}
                     />
-                    <Text variant={"body"}> Season </Text>
+                    <Text variant={"body"}> Saison </Text>
                 </Box>
                 <Text variant={"body"} color="primaryCardText">
                     {(grocery.bought * ingredient.smallestAmount).toFixed(2)} / {(grocery.required * ingredient.smallestAmount).toFixed(2)} {ingredient.unit}
@@ -73,7 +73,7 @@ const GroceryButton = ({ ingredientId, grocery, ingredient, onClick }: GroceryBu
                         size={15}
                         color={theme.colors.white}
                     />
-                    <Text variant={"body"}> Local </Text>
+                    <Text variant={"body"}> Lokal </Text>
                 </Box>
             </Box>
         </Box>
