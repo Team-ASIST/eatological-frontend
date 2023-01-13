@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { useColorScheme, Text, SafeAreaView, Platform, StatusBar } from 'react-native'
 import { NavigationContainer } from '@react-navigation/native'
 import { ThemeProvider } from '@shopify/restyle'

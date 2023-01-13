@@ -1,4 +1,4 @@
-import { backend } from "./config";
+import { instance } from ".";
 import { FrontendPlan, BackendPlan, RecipeSwipeObject, smallIngredient } from "../dataTypes";
 
 export const createPlan = async (portions: number[], leftovers: smallIngredient[], preferences: number[]): Promise<FrontendPlan> => {
@@ -9,7 +9,7 @@ export const createPlan = async (portions: number[], leftovers: smallIngredient[
 
     try {
         // Create a new Plan API
-        const response = await backend().get(
+        const response = await instance.get(
             '/plan/create',
             {
                 headers: {
@@ -50,7 +50,7 @@ export const swipeleft = async (currentList: RecipeSwipeObject[], mealID: number
     const result = currentList.map((x) => x)
     try {
         // Get Plan with old Recipe API
-        const response = await backend().put(
+        const response = await instance.put(
             '/plan/swipeleft',
             {},
             {
@@ -78,7 +78,7 @@ export const swiperight = async (currentList: RecipeSwipeObject[], mealID: numbe
     const result = currentList.map((x) => x)
     try {
         // Get Plan with new Recipe API
-        const response = await backend().put(
+        const response = await instance.put(
             '/plan/swiperight',
             {},
             {

@@ -1,9 +1,10 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import { backend } from '../../utils/axios/config'
+import { instance } from '../../utils/axios'
 import { AppDispatch, RootState } from '../store'
 import axios, { AxiosRequestConfig } from 'axios'
 import { resetPlanConfiguration } from './newPlanSlice'
 import { resetCurrentPlan, resetGroceries } from './currentPlanSlice'
+import setUpInterceptor from '../../utils/axios/interceptor'
 
 interface IUserState {
     name: string,
@@ -49,6 +50,7 @@ const userSlice = createSlice({
             })
             .addCase(getToken.fulfilled, (state, action) => {
                 const token = action.payload as string
+                setUpInterceptor(token)
                 state.token = token
             })
             .addCase(renameUser.pending, (state) => {
@@ -89,7 +91,7 @@ export const getToken = createAsyncThunk<
     async (name, thunkApi) => {
         try {
             // Add new random user to the database
-            const response = await backend().get(
+            const response = await instance.get(
                 '/token',
                 {
                     headers: {
@@ -135,7 +137,7 @@ export const addUser = createAsyncThunk<
     async (name, thunkApi) => {
         try {
             // Add new user to the database
-            const response = await backend().post(
+            const response = await instance.post(
                 '/user/add',
                 {}
             )
@@ -174,7 +176,7 @@ export const renameUser = createAsyncThunk<
     async (name, thunkApi) => {
         try {
             // Rename active user
-            const response = await backend().put(
+            const response = await instance.put(
                 '/user/rename',
                 {},
                 {
@@ -219,7 +221,7 @@ export const deleteUser = createAsyncThunk<
     async (name, thunkApi) => {
         try {
             // Delete User
-            const response = await backend().delete(
+            const response = await instance.delete(
                 '/user/delete'
             )
 

@@ -1,10 +1,10 @@
-import { backend } from "./config";
+import { instance } from ".";
 import { Restriction } from "../dataTypes";
 
 // Currently only string Restrictions defined
 export const getRestrictions = async () : Promise<Restriction[]> => {
     try {
-        const response = await backend().get(
+        const response = await instance.get(
             '/restrictions'
         )
 
@@ -30,7 +30,7 @@ export const getRestrictions = async () : Promise<Restriction[]> => {
 // Currently only string Restrictions defined
 export const setRestrictions = async (restriction: string) : Promise<boolean> => {
     try {
-        const response = await backend().post(
+        const response = await instance.post(
             '/restrictions/set',
             {},
             {

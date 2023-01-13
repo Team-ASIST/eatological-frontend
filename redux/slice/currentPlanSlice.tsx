@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import { backend } from '../../utils/axios/config'
+import { instance } from '../../utils/axios'
 import { Meal, LargeGrocery, Grocery, Ingredient, BackendPlan, smallIngredient } from '../../utils/dataTypes'
 import { AppDispatch, RootState } from '../store'
 
@@ -169,7 +169,7 @@ export const updateGroceries = createAsyncThunk<
         let groceriesArg = JSON.stringify(updatedGroceries)
         try {
             // Get Groceries for the User
-            const response = await backend().put(
+            const response = await instance.put(
                 '/groceries/buy',
                 {},
                 {
@@ -201,7 +201,7 @@ export const acceptPlan = createAsyncThunk<
     'currentPlan/acceptPlan',
     async (meals, thunkApi) => {
         try {
-            const response = await backend().post(
+            const response = await instance.post(
                 '/plan/accept',
                 {},
                 { headers: {} }
@@ -224,7 +224,7 @@ export const getPlan = createAsyncThunk<
     'currentPlan/getPlan',
     async () => {
         try {
-            const response = await backend().get(
+            const response = await instance.get(
                 '/plan'
             )
 
@@ -263,7 +263,7 @@ export const getIngredients = createAsyncThunk<
     'currentPlan/getIngredients',
     async () => {
         try {
-            const response = await backend().get(
+            const response = await instance.get(
                 '/ingredients'
             )
 
@@ -286,7 +286,7 @@ export const planCook = createAsyncThunk(
     'currentPlan/planCook',
     async (mealId: number) => {
         try {
-            const response = await backend().put(
+            const response = await instance.put(
                 '/plan/cook',
                 {},
                 {
@@ -310,7 +310,7 @@ export const getGroceries = createAsyncThunk<
     async () => {
         try {
             // Get Groceries for the User
-            const response = await backend().get(
+            const response = await instance.get(
                 '/groceries'
             )
 
