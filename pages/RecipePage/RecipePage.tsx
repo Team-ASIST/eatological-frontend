@@ -116,54 +116,6 @@ const RecipePage = (props: RecipePageProps) => {
                         <Text variant={"subsubheader"} color={"secondaryCardText"}>Anweisungen</Text>
                     </Box>
                 </Box>
-                <Box justifyContent={"space-evenly"} flexDirection="row">
-                    <Box
-                        padding={"m"}
-                        backgroundColor={
-                            currentAction == RecipeAction.Ingredients ?
-                                "secondaryButtonColor" :
-                                "primaryButtonColor"
-                        }
-                        borderBottomColor={
-                            currentAction == RecipeAction.Ingredients ?
-                                "white" :
-                                "secondaryButtonColor"
-                        }
-                        borderBottomWidth={
-                            currentAction == RecipeAction.Ingredients ?
-                                5 :
-                                0
-                        }
-                        flexDirection="row"
-                        flex={1}
-                        onTouchEnd={() => { setCurrentAction(RecipeAction.Ingredients) }}
-                    >
-                        <Text variant={"subsubheader"}>Ingredients</Text>
-                    </Box>
-                    <Box
-                        padding={"m"}
-                        backgroundColor={
-                            currentAction == RecipeAction.Directions ?
-                                "secondaryButtonColor" :
-                                "primaryButtonColor"
-                        }
-                        borderBottomColor={
-                            currentAction == RecipeAction.Directions ?
-                                "white" :
-                                "secondaryButtonColor"
-                        }
-                        borderBottomWidth={
-                            currentAction == RecipeAction.Directions ?
-                                5 :
-                                0
-                        }
-                        flexDirection="row"
-                        flex={1}
-                        onTouchEnd={() => { setCurrentAction(RecipeAction.Directions) }}
-                    >
-                        <Text variant={"subsubheader"} color={"secondaryCardText"}>Directions</Text>
-                    </Box>
-                </Box>
                 {
                     currentAction == RecipeAction.Ingredients ?
                         (
