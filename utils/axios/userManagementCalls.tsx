@@ -14,7 +14,7 @@ export const getRestrictions = async () : Promise<Restriction[]> => {
             for (const name of names ){
                 restrictions.push({name: name, active: false})
             }
-            restrictions.push({name: "None", active: true})
+            restrictions.push({name: "None", active: false})
 
 
             return restrictions

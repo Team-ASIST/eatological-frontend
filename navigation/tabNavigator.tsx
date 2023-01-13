@@ -60,10 +60,10 @@ export const TabNavigator = () => {
                 component={PlanStackScreen}
                 options={{ headerShown: false, tabBarStyle: { display: 'none' }, unmountOnBlur: true }}
             />
-            <Tab.Screen name="GroceryList" options={{ headerShown: false, title: "Grocery List", unmountOnBlur: true }} component={GroceryListPage} />
-            <Tab.Screen name="CurrentPlan" options={{ headerShown: false, title: "Current Plan" }} component={CurrentPlan} />
-            <Tab.Screen name="Recipe" options={{ headerShown: false, title: "Recipe" }} component={RecipePage} />
-            <Tab.Screen name="Settings" options={{ headerShown: false, unmountOnBlur: true }} component={SettingsPage} />
+            <Tab.Screen name="GroceryList" options={{ headerShown: false, title: "Einkaufsliste", unmountOnBlur: true }} component={GroceryListPage} />
+            <Tab.Screen name="CurrentPlan" options={{ headerShown: false, title: "Aktueller Plan" }} component={CurrentPlan} />
+            <Tab.Screen name="Recipe" options={{ headerShown: false, title: "Rezept" }} component={RecipePage} />
+            <Tab.Screen name="Settings" options={{ headerShown: false, title: "Einstellungen" , unmountOnBlur: true }} component={SettingsPage} />
         </Tab.Navigator>
     )
 }

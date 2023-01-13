@@ -3,7 +3,7 @@ import { createBox, createText } from '@shopify/restyle';
 import theme, { Theme } from '../../utils/theme';
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../redux/store";
-import { selectUsername, selectToken, getToken, renameUser, deleteUser, changeUsername } from "../../redux/slice/userSlice";
+import { selectUsername, selectToken, getToken, renameUser, deleteUser } from "../../redux/slice/userSlice";
 import { useSelector } from "react-redux";
 import TextButton from "../../components/ui/inputs/TextButton";
 import { NavigationScreenProp } from "react-navigation";
@@ -13,7 +13,6 @@ import { Restriction } from "../../utils/dataTypes";
 import { getRestrictions, setRestrictions } from "../../utils/axios/userManagementCalls";
 import { ScrollView } from "react-native";
 import { RestrictionButton } from "../../components/ui/inputs/RestrictionButton";
-import { resetPlanConfiguration } from "../../redux/slice/newPlanSlice";
 
 
 const Text = createText<Theme>();
@@ -37,14 +36,9 @@ const SettingsPage = ({ navigation }: SettingsPageProps) => {
   const changeUser = (newUsername: string) => {
     if (!switchMode) {
       dispatch(renameUser(newUsername))
-    } else{
+    } else {
       dispatch(getToken(newUsername))
-      setSwitchMode(false)
     }
-  }
-
-  const setSwitchUser = () => {
-    setSwitchMode(!switchMode)
   }
 
   const deleteUsername = () => {
@@ -107,48 +101,47 @@ const SettingsPage = ({ navigation }: SettingsPageProps) => {
         />
       </Box>
       <Box marginTop={"m"}>
-      <Box marginTop={"s"} padding={'s'}>
-        
-        <TextButton
-          onPress={() => {
-            setSwitchMode(false)
-            setModalVisible(true)
-          }
+        <Box marginTop={"s"} padding={'s'}>
+          <TextButton
+            onPress={() => {
+              setSwitchMode(false)
+              setModalVisible(true)
             }
-          icon={"person-circle-outline"}
-          size={35}
-          label={"Nutzernamen ändern"}
-          disabled={false}
-          color={theme.colors.black}
-        />
-      </Box>
-
-      <Box padding={'s'}>
-        <TextButton
-          onPress={() => {
-            setSwitchMode(true)
-            setModalVisible(true)
-          }
             }
-          icon={"people-circle-outline"}
-          size={35}
-          label={"Konto wechseln"}
-          color={theme.colors.black}
-          disabled={false}
-        />
-      </Box>
+            icon={"person-circle-outline"}
+            size={35}
+            label={"Nutzernamen ändern"}
+            disabled={false}
+            color={theme.colors.black}
+          />
+        </Box>
 
-      <Box marginBottom={"l"} padding={'s'}>
-        <TextButton
-          onPress={
-            deleteUsername}
-          icon={"close-circle-outline"}
-          size={35}
-          label={"Aktiven Account löschen"}
-          color={theme.colors.black}
-          disabled={false}
-        />
-      </Box>
+        <Box padding={'s'}>
+          <TextButton
+            onPress={() => {
+              setSwitchMode(true)
+              setModalVisible(true)
+            }
+            }
+            icon={"people-circle-outline"}
+            size={35}
+            label={"Konto wechseln"}
+            color={theme.colors.black}
+            disabled={false}
+          />
+        </Box>
+
+        <Box marginBottom={"l"} padding={'s'}>
+          <TextButton
+            onPress={
+              deleteUsername}
+            icon={"close-circle-outline"}
+            size={35}
+            label={"Aktiven Account löschen"}
+            color={theme.colors.black}
+            disabled={false}
+          />
+        </Box>
       </Box>
 
       <Box marginTop={"m"} marginBottom={"m"} alignItems="center">

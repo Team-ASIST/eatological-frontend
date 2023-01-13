@@ -76,7 +76,7 @@ export const IngredientItem = ({ ingredientName, unit, season, local, alternativ
                         size={15}
                         color={theme.colors.black}
                     />
-                    <Text variant={"body"} color={"secondaryCardText"}> Season </Text>
+                    <Text variant={"body"} color={"secondaryCardText"}> Saison </Text>
                 </Box>
                 <Text variant={"body"} color="secondaryCardText">
                     {(bought * smallestAmount).toFixed(2)} / {(required * smallestAmount).toFixed(2)} {unit}
@@ -87,7 +87,7 @@ export const IngredientItem = ({ ingredientName, unit, season, local, alternativ
                         size={15}
                         color={theme.colors.black}
                     />
-                    <Text variant={"body"} color={"secondaryCardText"}> Local </Text>
+                    <Text variant={"body"} color={"secondaryCardText"}> Lokal </Text>
                 </Box>
             </Box>
         </Box>
