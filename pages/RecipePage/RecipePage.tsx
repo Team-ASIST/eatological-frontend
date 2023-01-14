@@ -12,6 +12,7 @@ import { AppDispatch } from "../../redux/store";
 import { BackFloatingButton } from "../../components/ui/inputs/BackFloatingButton";
 import { IngredientItem } from "../../components/ui/recipe/IngredientItem";
 import InstructionItem from "../../components/ui/recipe/DirectionList";
+import { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
 
 const Text = createText<Theme>();
 const Box = createBox<Theme>();
@@ -21,19 +22,19 @@ enum RecipeAction {
     Ingredients
 }
 
-type RecipePageProps = NativeStackScreenProps<RootTabParamList, 'Recipe'>
+type RecipePageProps = BottomTabScreenProps<RootTabParamList, 'Recipe'>
 
-const RecipePage = (props: RecipePageProps) => {
+const RecipePage = ({navigation, route}: RecipePageProps) => {
     const [currentAction, setCurrentAction] = useState<RecipeAction>(RecipeAction.Ingredients)
     const dispatch = useDispatch<AppDispatch>()
     const groceries = useSelector(selectSortedGroceries)
     const ingredients = useSelector(selectAllIngredients)
-    const { mealId } = props.route.params;
+    const { mealId } = route.params;
     const meal = useSelector(selectAllRecipes).find((meal: Meal) => meal.id === mealId)
 
     if (!meal) {
-        props.navigation.navigate('CurrentPlan')
-        return
+        navigation.navigate('CurrentPlan')
+        return (<Box />)
     }
 
     const recipe = meal!.recipe
@@ -172,7 +173,7 @@ const RecipePage = (props: RecipePageProps) => {
                         </Box>
                 }
             </ScrollView >
-            <BackFloatingButton closingTag="<" onClick={() => props.navigation.navigate("CurrentPlan")} />
+            <BackFloatingButton closingTag="<" onClick={() => navigation.navigate("CurrentPlan")} />
         </Box >
     );
 }
