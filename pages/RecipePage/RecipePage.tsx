@@ -134,7 +134,7 @@ const RecipePage = ({navigation, route}: RecipePageProps) => {
                                                 local={grocery.ingredient.local}
                                                 alternative={grocery.ingredient.alternative}
                                                 bought={grocery.grocery.bought}
-                                                required={item.quantity}
+                                                required={item.quantity * meal.portions}
                                                 smallestAmount={grocery.ingredient.smallestAmount} />
                                         }
                                     }
@@ -151,8 +151,8 @@ const RecipePage = ({navigation, route}: RecipePageProps) => {
                                                 season={ingredient.season}
                                                 local={ingredient.local}
                                                 alternative={ingredient.alternative}
-                                                bought={item.quantity}
-                                                required={item.quantity}
+                                                bought={item.quantity * meal.portions}
+                                                required={item.quantity* meal.portions}
                                                 smallestAmount={ingredient.smallestAmount} />
                                         }
                                     }

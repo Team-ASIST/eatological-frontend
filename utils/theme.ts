@@ -103,6 +103,12 @@ const theme = createTheme({
             lineHeight: 24,
             color: 'primaryCardText',
         },
+        tag: {
+            fontFamily: 'Fraunces_700Bold',
+            fontSize: 12,
+            lineHeight: 16,
+            color: 'primaryCardText',
+        },
         boldBody: {
             fontFamily: 'Fraunces_700Bold',
             fontSize: 16,
