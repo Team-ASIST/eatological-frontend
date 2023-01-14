@@ -13,6 +13,8 @@ import { Restriction } from "../../utils/dataTypes";
 import { getRestrictions, setRestrictions } from "../../utils/axios/userManagementCalls";
 import { ScrollView } from "react-native";
 import { RestrictionButton } from "../../components/ui/inputs/RestrictionButton";
+import { RestrictionModal } from "../../components/ui/inputs/RestrictionModal";
+import { getPlan } from "../../redux/slice/currentPlanSlice";
 
 
 const Text = createText<Theme>();
@@ -31,13 +33,19 @@ const SettingsPage = ({ navigation }: SettingsPageProps) => {
   const [switchMode, setSwitchMode] = useState(false)
   const [modalVisible, setModalVisible] = useState(false)
 
+  // Restriction Management
+  const [currentRestrictions, setCurrentRestrictions] = useState([] as Restriction[])
+  const [restrictionsVisible, setRestrictionsVisible] = useState(false)
+
   const dispatch = useDispatch<AppDispatch>()
 
   const changeUser = (newUsername: string) => {
     if (!switchMode) {
       dispatch(renameUser(newUsername))
     } else {
-      dispatch(getToken(newUsername))
+      dispatch(getToken(newUsername)).then(
+        () => dispatch(getPlan())
+      )
     }
   }
 
@@ -46,10 +54,6 @@ const SettingsPage = ({ navigation }: SettingsPageProps) => {
       dispatch(deleteUser(username))
     }
   }
-
-  // Restriction Management
-
-  const [currentRestrictions, setCurrentRestrictions] = useState([] as Restriction[])
 
   // Fetch available restrictions
   useEffect(() => {
@@ -101,6 +105,14 @@ const SettingsPage = ({ navigation }: SettingsPageProps) => {
         />
       </Box>
       <Box marginTop={"m"}>
+        <RestrictionModal
+          visible={restrictionsVisible}
+          toggleModal={() => setRestrictionsVisible(!restrictionsVisible)}
+          restrictions={currentRestrictions}
+          setNewRestriction={setNewRestriction}
+        />
+      </Box>
+      <Box marginTop={"m"}>
         <Box marginTop={"s"} padding={'s'}>
           <TextButton
             onPress={() => {
@@ -131,7 +143,7 @@ const SettingsPage = ({ navigation }: SettingsPageProps) => {
           />
         </Box>
 
-        <Box marginBottom={"l"} padding={'s'}>
+        <Box marginBottom={"m"} padding={'s'}>
           <TextButton
             onPress={
               deleteUsername}
@@ -142,27 +154,21 @@ const SettingsPage = ({ navigation }: SettingsPageProps) => {
             disabled={false}
           />
         </Box>
+
+        <Box padding={'s'}>
+          <TextButton
+            onPress={() => {
+              setRestrictionsVisible(true)
+            }
+            }
+            icon={"ellipsis-vertical-circle-outline"}
+            size={35}
+            label={"Ernährungsform wählen"}
+            color={theme.colors.black}
+            disabled={false}
+          />
+        </Box>
       </Box>
-
-      <Box marginTop={"m"} marginBottom={"m"} alignItems="center">
-        <Text variant="subsubheader">Wähle Deine Ernährungsform...</Text>
-      </Box>
-
-      <ScrollView showsVerticalScrollIndicator={false}>
-        {
-          currentRestrictions.map((elem: Restriction) => {
-            return (
-              <RestrictionButton
-                key={elem.name}
-                restriction={elem}
-                setNewRestriction={setNewRestriction}
-              />
-            )
-          })
-        }
-      </ScrollView>
-      <Box />
-
     </Box>
   );
 }
