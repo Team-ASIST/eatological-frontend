@@ -14,10 +14,15 @@ import { getRestrictions, setRestrictions } from "../../utils/axios/userManageme
 import { RefreshControl, ScrollView } from "react-native-gesture-handler";
 import { RestrictionModal } from "../../components/ui/inputs/RestrictionModal";
 import { getPlan } from "../../redux/slice/currentPlanSlice";
-
+import { FeedbackModal } from "../../components/ui/common/FeedbackModal";
+import { store } from "../../redux/store";
 
 const Text = createText<Theme>();
 const Box = createBox<Theme>();
+
+const wait = (timeout: number) => {
+  return new Promise(resolve => setTimeout(resolve, timeout));
+}
 
 export type SettingsPageProps = {
   navigation: NavigationScreenProp<any, any>
@@ -31,7 +36,11 @@ const SettingsPage = ({ navigation }: SettingsPageProps) => {
   const [clicked, setClicked] = useState(false)
   const [switchMode, setSwitchMode] = useState(false)
   const [modalVisible, setModalVisible] = useState(false)
+
+  // UpdateState
   const updating = useSelector(selectUpdatingUser)
+  const [resultVisible, setResultVisible] = useState(false)
+  const [success, setSuccess] = useState(false)
 
   // Restriction Management
   const [currentRestrictions, setCurrentRestrictions] = useState([] as Restriction[])
@@ -39,19 +48,42 @@ const SettingsPage = ({ navigation }: SettingsPageProps) => {
 
   const dispatch = useDispatch<AppDispatch>()
 
+  const displaySuccess = async (oldName: string) => {
+    if (store.getState().user.name != oldName) {
+      setSuccess(true)
+      setResultVisible(true)
+      await wait(500)
+      setResultVisible(false)
+    } else {
+      setSuccess(false)
+      setResultVisible(true)
+      await wait(500)
+      setResultVisible(false)
+    }
+  }
+
   const changeUser = (newUsername: string) => {
+    const oldName = username
     if (!switchMode) {
-      dispatch(renameUser(newUsername))
+      dispatch(renameUser(newUsername)).then(
+        async () => displaySuccess(oldName)
+      )
     } else {
       dispatch(getToken(newUsername)).then(
-        () => dispatch(getPlan())
+        () => {
+          displaySuccess(oldName)
+          dispatch(getPlan())
+        }
       )
     }
   }
 
   const deleteUsername = () => {
+    const oldName = username
     if (username != "" && token.startsWith('T')) {
-      dispatch(deleteUser(username))
+      dispatch(deleteUser(username)).then(
+        async () => displaySuccess(oldName)
+      )
     }
   }
 
@@ -87,6 +119,8 @@ const SettingsPage = ({ navigation }: SettingsPageProps) => {
           refreshing={updating}
         />
       }>
+        <FeedbackModal success={success} modalVisible={resultVisible} />
+
         <Box marginTop={"l"} flexDirection={"row"} alignItems={"center"} paddingLeft="s">
           <Ionicons name="person-circle-outline" size={30} color={theme.colors.black} />
           <Box paddingLeft={"xs"}>
