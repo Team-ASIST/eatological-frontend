@@ -38,7 +38,7 @@ const RecipeModal = ({visible, toggleModal, recipe}: RecipeModalProps) => {
                 flex={1}
                 alignItems="center"
                 marginTop="xxl"
-                backgroundColor="secondaryCardBackground"
+                backgroundColor="mainBackground"
                 marginStart="s" marginHorizontal="s" borderTopRightRadius={40} borderTopLeftRadius={40} overflow="hidden">
                 <MealCard recipe={recipe} />
                 <BackFloatingButton closingTag="✕" onClick={toggleModal} />

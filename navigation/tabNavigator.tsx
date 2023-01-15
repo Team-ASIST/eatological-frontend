@@ -62,7 +62,7 @@ export const TabNavigator = () => {
             />
             <Tab.Screen name="GroceryList" options={{ headerShown: false, title: "Einkaufsliste", unmountOnBlur: true }} component={GroceryListPage} />
             <Tab.Screen name="CurrentPlan" options={{ headerShown: false, title: "Aktueller Plan" }} component={CurrentPlan} />
-            <Tab.Screen name="Recipe" options={{ headerShown: false, title: "Rezept" }} component={RecipePage} />
+            <Tab.Screen name="Recipe" options={{ headerShown: false, title: "Rezept", unmountOnBlur: true }} component={RecipePage} />
             <Tab.Screen name="Settings" options={{ headerShown: false, title: "Einstellungen" , unmountOnBlur: true }} component={SettingsPage} />
         </Tab.Navigator>
     )

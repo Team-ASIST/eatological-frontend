@@ -41,6 +41,7 @@ const userSlice = createSlice({
             .addCase(addUser.fulfilled, (state, action) => {
                 const username = action.payload as string
                 state.name = username
+                state.updating = false
             })
             .addCase(getToken.pending, (state) => {
                 state.updating = true
@@ -52,6 +53,7 @@ const userSlice = createSlice({
                 const token = action.payload as string
                 setUpInterceptor(token)
                 state.token = token
+                state.updating = false
             })
             .addCase(renameUser.pending, (state) => {
                 state.updating = true
@@ -62,6 +64,7 @@ const userSlice = createSlice({
             .addCase(renameUser.fulfilled, (state, action) => {
                 const newName = action.payload as string
                 state.name = newName
+                state.updating = false
             })
             .addCase(deleteUser.pending, (state) => {
                 state.updating = true
@@ -75,6 +78,7 @@ const userSlice = createSlice({
                     state.name = ""
                     state.token = ""
                 }
+                state.updating = false
             })
     }
 })
