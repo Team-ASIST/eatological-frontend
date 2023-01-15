@@ -121,8 +121,8 @@ const MealCard = (props: MealPageProps) => {
                                         season={ingredient.season}
                                         local={ingredient.local}
                                         alternative={ingredient.alternative}
-                                        bought={leftover ? leftover.quantity : 0}
-                                        required={item.quantity * props.recipe.portions} 
+                                        bought={leftover ? Number(leftover.quantity.toPrecision(2)) : 0}
+                                        required={Number((item.quantity * props.recipe.portions).toPrecision(2))} 
                                         smallestAmount={ingredient.smallestAmount} />
                                 }
                             }

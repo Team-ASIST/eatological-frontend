@@ -3,7 +3,7 @@ import { createBox, createText } from '@shopify/restyle';
 import { Theme } from '../../utils/theme';
 import { Ingredient, LargeGrocery, Meal, smallIngredient } from "../../utils/dataTypes";
 import { RootTabParamList } from "../../navigation/types";
-import { Animated, ScrollView, Image, View } from "react-native";
+import { ScrollView, Image, View, TouchableHighlight } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { planCook, selectAllIngredients, selectAllRecipes, selectSortedGroceries } from "../../redux/slice/currentPlanSlice";
 import TextButton from "../../components/ui/inputs/TextButton";
@@ -23,7 +23,7 @@ enum RecipeAction {
 
 type RecipePageProps = BottomTabScreenProps<RootTabParamList, 'Recipe'>
 
-const RecipePage = ({navigation, route}: RecipePageProps) => {
+const RecipePage = ({ navigation, route }: RecipePageProps) => {
     const [currentAction, setCurrentAction] = useState<RecipeAction>(RecipeAction.Ingredients)
     const dispatch = useDispatch<AppDispatch>()
     const groceries = useSelector(selectSortedGroceries)
@@ -69,52 +69,66 @@ const RecipePage = ({navigation, route}: RecipePageProps) => {
                     </Box>
                 </Box>
                 <Box justifyContent={"space-evenly"} flexDirection="row">
-                    <Box
-                        padding={"m"}
-                        backgroundColor={
-                            currentAction == RecipeAction.Ingredients ?
-                                "secondaryButtonColor" :
-                                "primaryButtonColor"
-                        }
-                        borderBottomColor={
-                            currentAction == RecipeAction.Ingredients ?
-                                "white" :
-                                "secondaryButtonColor"
-                        }
-                        borderBottomWidth={
-                            currentAction == RecipeAction.Ingredients ?
-                                5 :
-                                0
-                        }
-                        flexDirection="row"
-                        flex={1}
-                        onTouchEnd={() => { setCurrentAction(RecipeAction.Ingredients) }}
+                    <TouchableHighlight
+                        activeOpacity={0.6}
+                        underlayColor="#DDDDDD"
+                        style={{flex: 1}}
+                        onPress={() => { setCurrentAction(RecipeAction.Ingredients) }}
                     >
-                        <Text variant={"subsubheader"}>Zutaten</Text>
-                    </Box>
-                    <Box
-                        padding={"m"}
-                        backgroundColor={
-                            currentAction == RecipeAction.Directions ?
-                                "secondaryButtonColor" :
-                                "primaryButtonColor"
-                        }
-                        borderBottomColor={
-                            currentAction == RecipeAction.Directions ?
-                                "white" :
-                                "secondaryButtonColor"
-                        }
-                        borderBottomWidth={
-                            currentAction == RecipeAction.Directions ?
-                                5 :
-                                0
-                        }
-                        flexDirection="row"
-                        flex={1}
-                        onTouchEnd={() => { setCurrentAction(RecipeAction.Directions) }}
+                        <Box
+                            padding={"m"}
+                            backgroundColor={
+                                currentAction == RecipeAction.Ingredients ?
+                                    "secondaryButtonColor" :
+                                    "primaryButtonColor"
+                            }
+                            borderBottomColor={
+                                currentAction == RecipeAction.Ingredients ?
+                                    "white" :
+                                    "secondaryButtonColor"
+                                    
+                            }
+                            borderBottomWidth={
+                                currentAction == RecipeAction.Ingredients ?
+                                    5 :
+                                    0
+                            }
+                            flexDirection="row"
+                            flex={1}
+                        >
+                            <Text variant={"subsubheader"}>Zutaten</Text>
+                        </Box>
+                    </TouchableHighlight>
+                    <TouchableHighlight
+                        activeOpacity={0.6}
+                        underlayColor="#DDDDDD"
+                        style={{flex: 1}}
+                        onPress={() => { setCurrentAction(RecipeAction.Ingredients) }}
                     >
-                        <Text variant={"subsubheader"} color={"secondaryCardText"}>Anweisungen</Text>
-                    </Box>
+                        <Box
+                            padding={"m"}
+                            backgroundColor={
+                                currentAction == RecipeAction.Directions ?
+                                    "secondaryButtonColor" :
+                                    "primaryButtonColor"
+                            }
+                            borderBottomColor={
+                                currentAction == RecipeAction.Directions ?
+                                    "white" :
+                                    "secondaryButtonColor"
+                            }
+                            borderBottomWidth={
+                                currentAction == RecipeAction.Directions ?
+                                    5 :
+                                    0
+                            }
+                            flexDirection="row"
+                            flex={1}
+                            onTouchEnd={() => { setCurrentAction(RecipeAction.Directions) }}
+                        >
+                            <Text variant={"subsubheader"} color={"secondaryCardText"}>Anweisungen</Text>
+                        </Box>
+                    </TouchableHighlight>
                 </Box>
                 {
                     currentAction == RecipeAction.Ingredients ?
@@ -132,8 +146,8 @@ const RecipePage = ({navigation, route}: RecipePageProps) => {
                                                 season={grocery.ingredient.season}
                                                 local={grocery.ingredient.local}
                                                 alternative={grocery.ingredient.alternative}
-                                                bought={grocery.grocery.bought}
-                                                required={item.quantity * meal.portions}
+                                                bought={Number(grocery.grocery.bought.toPrecision(2))}
+                                                required={Number((item.quantity * meal.portions).toPrecision(2))}
                                                 smallestAmount={grocery.ingredient.smallestAmount} />
                                         }
                                     }
@@ -151,7 +165,7 @@ const RecipePage = ({navigation, route}: RecipePageProps) => {
                                                 local={ingredient.local}
                                                 alternative={ingredient.alternative}
                                                 bought={item.quantity * meal.portions}
-                                                required={item.quantity* meal.portions}
+                                                required={item.quantity * meal.portions}
                                                 smallestAmount={ingredient.smallestAmount} />
                                         }
                                     }
