@@ -3,7 +3,6 @@ import { createBox, createText } from '@shopify/restyle';
 import { Theme } from '../../utils/theme';
 import { Ingredient, LargeGrocery, Meal, smallIngredient } from "../../utils/dataTypes";
 import { RootTabParamList } from "../../navigation/types";
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { Animated, ScrollView, Image, View } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { planCook, selectAllIngredients, selectAllRecipes, selectSortedGroceries } from "../../redux/slice/currentPlanSlice";
@@ -167,7 +166,7 @@ const RecipePage = ({navigation, route}: RecipePageProps) => {
                                     )
                                 )
                             }
-                            <Box>
+                            <Box backgroundColor={meal.cooked ? "navigationButtonColor" : "white"}>
                                 <TextButton disabled={meal.cooked} icon={'checkmark'} color={"black"} size={30} label={meal.cooked ? "Als gekocht markiert" : "Als gekocht markieren"} onPress={() => dispatch(planCook(meal.recipe.id))} />
                             </Box>
                         </Box>

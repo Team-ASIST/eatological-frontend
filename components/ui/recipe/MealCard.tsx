@@ -48,12 +48,12 @@ const MealCard = (props: MealPageProps) => {
                     }} />
                     <Box justifyContent={"space-evenly"} flexDirection="row">
                         <Box>
-                            <Text variant={"body"}>Vorbereitungszeit</Text>
-                            <Text variant={"boldBody"}>{recipe.prepTime} mins</Text>
+                            <Text variant={"body"} color={"secondaryCardText"}>Vorbereitungszeit</Text>
+                            <Text variant={"boldBody"} color={"secondaryCardText"}>{recipe.prepTime} mins</Text>
                         </Box>
                         <Box>
-                            <Text variant={"body"}>Gesamtzeit</Text>
-                            <Text variant={"boldBody"}>{recipe.totalTime} mins</Text>
+                            <Text variant={"body"} color={"secondaryCardText"}>Gesamtzeit</Text>
+                            <Text variant={"boldBody"} color={"secondaryCardText"}>{recipe.totalTime} mins</Text>
                         </Box>
                     </Box>
                 </Box>
