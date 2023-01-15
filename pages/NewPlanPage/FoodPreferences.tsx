@@ -46,7 +46,7 @@ const FoodPreferencesScreen = ({ navigation }: Props) => {
                     }
                 }>
                 <Box marginVertical="l" marginHorizontal="xs" padding="m" height={"75%"}>
-                    <Text variant="subheader">Möchtest Du etwas bestimmtes essen?</Text>
+                    <Text variant="subheader">Möchtest du etwas bestimmtes essen?</Text>
                     <Box position="relative" zIndex={1}>
                         <SearchBar typeOfItems="foodpreference"></SearchBar>
                     </Box>
