@@ -48,6 +48,7 @@ const CheckIcon = ({ bought }: CheckIconProps) => {
 }
 
 export const IngredientItem = ({ ingredientName, unit, season, local, alternative, bought, required, smallestAmount }: IngredientItemProps) => {
+    
     return (
         <Box
             backgroundColor={bought >= required ? 'navigationButtonColor' : 'mainBackground'}
@@ -64,7 +65,7 @@ export const IngredientItem = ({ ingredientName, unit, season, local, alternativ
                 <CheckIcon bought={(bought >= required)} />
             </Box>
 
-            <Box flex={5} flexDirection="row" alignItems={"center"}>
+            <Box flex={5} flexDirection="row" alignItems={"center"} flexWrap="wrap">
                 <Text variant={"body"} color={"secondaryCardText"} marginRight="xs">
                     {ingredientName}
                 </Text>

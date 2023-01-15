@@ -29,7 +29,7 @@ const CurrentPlan = ({ navigation }: CurrentPlanProps) => {
       let largeGrocery = groceries.find(largeGrocery => largeGrocery.ingredientId === inrd.id)
 
       if (largeGrocery) {
-        if (largeGrocery.grocery.bought < inrd.quantity) {
+        if (Number(largeGrocery.grocery.bought.toPrecision(2)) < Number(inrd.quantity.toPrecision(2))) {
           isReady = false
           break
         }

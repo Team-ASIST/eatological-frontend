@@ -22,7 +22,7 @@ export const palette = {
      
     white: '#ffffff',
     black: '#000000',
-    grey: '#5E5854',
+    grey: '#aEa8a4',
     sonicSilver: '#7E7570'
 };
 

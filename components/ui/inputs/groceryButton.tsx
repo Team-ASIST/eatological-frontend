@@ -3,6 +3,8 @@ import theme, { Theme } from '../../../utils/theme';
 import { TouchableOpacity } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import { Grocery, Ingredient } from '../../../utils/dataTypes';
+import TagItem from '../common/TagItem';
+import Tooltip from 'rn-tooltip';
 
 const Text = createText<Theme>();
 const Box = createBox<Theme>();
@@ -46,34 +48,25 @@ const GroceryButton = ({ ingredientId, grocery, ingredient, onClick }: GroceryBu
                 </TouchableOpacity>
             </Box>
 
-            <Box flex={5}>
-                <Text variant={"body"} color="primaryCardText">
+            <Box flex={5} flexDirection="row" alignItems={"center"} flexWrap="wrap">
+                <Text variant={"body"} color="primaryCardText" marginRight="xs">
                     {ingredient.name}
-                    {ingredient.alternative === null ? "" : "\nAlt: [ " + ingredient.alternative + " ]"}
                 </Text>
+                {ingredient.alternative ?
+                    <Tooltip width={200} height={"auto"} actionType="press" backgroundColor={theme.colors.accent} popover={<Text variant="body">{ingredient.alternative}</Text>}>
+                            <Ionicons color={theme.colors.primaryCardText} name={"information-circle-outline"} size={30} />
+                    </Tooltip> : <></>}
             </Box>
 
 
             {/* Season, Amounts, Local */}
             <Box flexDirection={"column"} alignItems="flex-start" flex={5}>
-                <Box flexDirection={"row"} alignItems="center">
-                    <Ionicons
-                        name={ingredient.season ? 'checkmark-circle-outline' : 'close-circle-outline'}
-                        size={15}
-                        color={theme.colors.white}
-                    />
-                    <Text variant={"body"}> Saison </Text>
-                </Box>
                 <Text variant={"body"} color="primaryCardText">
-                    {(grocery.bought * ingredient.smallestAmount).toFixed(2)} / {(grocery.required * ingredient.smallestAmount).toFixed(2)} {ingredient.unit}
+                {(grocery.bought * ingredient.smallestAmount).toFixed(2)} / {(grocery.required * ingredient.smallestAmount).toFixed(2)} {ingredient.unit}
                 </Text>
                 <Box flexDirection={"row"} alignItems="center">
-                    <Ionicons
-                        name={ingredient.local ? 'checkmark-circle-outline' : 'close-circle-outline'}
-                        size={15}
-                        color={theme.colors.white}
-                    />
-                    <Text variant={"body"}> Lokal </Text>
+                    {ingredient.season ? <TagItem text={"Season"} backgroundColor={"inactiveButtonColor"} /> : <></>}
+                    {ingredient.local ? <TagItem text={"Lokal"} backgroundColor={"alert"} /> : <></>}
                 </Box>
             </Box>
         </Box>
