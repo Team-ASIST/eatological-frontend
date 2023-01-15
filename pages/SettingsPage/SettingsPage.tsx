@@ -33,7 +33,6 @@ const SettingsPage = ({ navigation }: SettingsPageProps) => {
   const username = useSelector(selectUsername)
   const token = useSelector(selectToken)
   const [currentUsername, setCurrentUsername] = useState("")
-  const [clicked, setClicked] = useState(false)
   const [switchMode, setSwitchMode] = useState(false)
   const [modalVisible, setModalVisible] = useState(false)
 
@@ -114,7 +113,7 @@ const SettingsPage = ({ navigation }: SettingsPageProps) => {
 
   return (
     <Box padding="m" backgroundColor="mainBackground" flex={1}>
-      <ScrollView refreshControl={
+      <ScrollView keyboardShouldPersistTaps={'handled'} refreshControl={
         <RefreshControl
           refreshing={updating}
         />
@@ -132,8 +131,6 @@ const SettingsPage = ({ navigation }: SettingsPageProps) => {
           <UsernameInput
             modalVisible={modalVisible}
             setModalVisible={setModalVisible}
-            clicked={clicked}
-            setClicked={setClicked}
             switchMode={switchMode}
             currentUsername={currentUsername}
             setCurrentUsername={setCurrentUsername}

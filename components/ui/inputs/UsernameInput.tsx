@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { createBox, createText } from '@shopify/restyle'
 import theme, { Theme } from '../../../utils/theme'
 import { TextInput, Keyboard, Modal, TouchableOpacity } from 'react-native'
@@ -11,8 +11,6 @@ export type UsernameInputProps = {
     modalVisible: boolean
     setModalVisible: (arg0: boolean) => void
     switchMode: boolean
-    clicked: boolean
-    setClicked: (arg0: boolean) => void
     currentUsername: string
     setCurrentUsername: (arg0: string) => void
     changeUser: (arg0: string) => void
@@ -22,12 +20,11 @@ export const UsernameInput = ({
     modalVisible,
     setModalVisible,
     switchMode,
-    clicked,
-    setClicked,
     currentUsername,
     setCurrentUsername,
     changeUser,
 }: UsernameInputProps) => {
+    const [clicked, setClicked] = useState(false)
     return (
         <Modal visible={modalVisible} animationType="slide" transparent={true}>
             {/* Container for all components in modal*/}
@@ -49,7 +46,7 @@ export const UsernameInput = ({
                 <Box
                     flexDirection="row"
                     padding="m"
-                    margin={'l'}
+                    margin="l"
                     backgroundColor="white"
                     alignItems="center"
                     borderRadius={5}
@@ -58,7 +55,7 @@ export const UsernameInput = ({
                     justifyContent="space-between">
                     {/* Input field */}
                     <TextInput
-                        style={{ width: 235 }}
+                        hitSlop={{top: 20, bottom: 20, left: 20, right: 210}}
                         placeholder={switchMode ? 'Kontonamen eingeben...' : 'Neuer Nutzername...'}
                         value={currentUsername}
                         onChangeText={setCurrentUsername}
@@ -69,6 +66,7 @@ export const UsernameInput = ({
                     {/* close button, depending on whether the Input is clicked or not */}
                     {clicked && (
                         <IconButton
+                        
                             onPress={() => {
                                 Keyboard.dismiss()
                                 setClicked(false)

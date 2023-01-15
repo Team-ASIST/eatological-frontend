@@ -39,7 +39,7 @@ const SearchBarDisplay = ({
             justifyContent="space-between">
             {/* Input field */}
             <TextInput
-                style={{ width: 235 }}
+            hitSlop={{top: 20, bottom: 20, left: 20, right: 210}}
                 placeholder="Suche..."
                 value={searchPhrase}
                 onChangeText={setSearchPhrase}
@@ -110,6 +110,7 @@ const Item = ({
                     } else if (typeOfItem === 'foodpreference') {
                         dispatch(preferenceAdded({ id, name }))
                     }
+                    Keyboard.dismiss()
                     setClicked(false)
                     setSearchPhrase('')
                 }}
@@ -140,6 +141,7 @@ const List = ({ searchPhrase, data, typeOfItems, setClicked, setSearchPhrase }: 
                 initialNumToRender={data.length}
                 alwaysBounceVertical={false}
                 showsVerticalScrollIndicator={false}
+                keyboardShouldPersistTaps={'handled'}
                 data={data}
                 renderItem={({ item }: ListRenderItemInfo<ItemProps>) => {
                     if (searchPhrase === '') {
