@@ -22,7 +22,7 @@ const Box = createBox<Theme>()
           <Box flex={1} justifyContent={"flex-start"} alignItems={"center"} flexDirection={"row"}>
             <Ionicons name="arrow-back-circle-outline" size={20} color="black" />
             <Text paddingLeft={"xs"} variant={"body"} color={"secondaryCardText"}>
-              Prev
+              Alt
             </Text>
           </Box>
           <Box>
@@ -32,7 +32,7 @@ const Box = createBox<Theme>()
           </Box>
           <Box flex={1} justifyContent={"flex-end"} alignItems={"center"} flexDirection={"row"}>
             <Text paddingRight={"xs"} variant={"body"} color={"secondaryCardText"}>
-              Next
+              Neu
             </Text>
             <Ionicons name="arrow-forward-circle-outline" size={20} color="black" />
           </Box>
