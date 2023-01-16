@@ -119,7 +119,7 @@ export const getToken = createAsyncThunk<
                     }
                     return message.token
                 } else {
-                    return thunkApi.getState().user.token
+                    return ""
                 }
 
             } else {
@@ -128,6 +128,12 @@ export const getToken = createAsyncThunk<
             }
         } catch (error) {
             // Call erroneous
+
+            if ((error as any).response.status === 403 && 'errorCode' in (error as any).response.data) {
+                return ""
+            }
+
+            console.warn(error)
             throw error
         }
     }
@@ -242,6 +248,8 @@ export const deleteUser = createAsyncThunk<
                     thunkApi.dispatch(addUser("Delete"))
                     return true
                 } else {
+                    thunkApi.dispatch(resetCurrentPlan())
+                    thunkApi.dispatch(addUser("Delete"))
                     return false
                 }
 
@@ -251,6 +259,13 @@ export const deleteUser = createAsyncThunk<
             }
         } catch (error) {
             // Call erroneous
+
+            if ((error as any).response.status === 401) {
+                thunkApi.dispatch(resetCurrentPlan())
+                thunkApi.dispatch(addUser("Delete"))
+                return false
+            }
+
             console.warn(error)
             throw error
         }

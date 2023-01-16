@@ -33,9 +33,11 @@ const App = () => {
   //load ingredients and store them in redux store (ingredientSlice)
   const dispatch = useDispatch<AppDispatch>()
 
+  // Load User
   const onBeforeLift = () => {
     const name = store.getState().user.name
 
+    // No Previous User persisted
     if (name == "") {
       dispatch(addUser("AppStart")).then(
         () => dispatch(getToken(store.getState().user.name)).then(
@@ -46,10 +48,24 @@ const App = () => {
         )
       )
     } else {
+      // Persisted User has been found
       dispatch(getToken(name)).then(
         () => {
-          dispatch(getIngredients())
-          dispatch(getPlan())
+          // User is still active in Backend
+          if (store.getState().user.token != "") {
+            dispatch(getIngredients())
+            dispatch(getPlan())
+          }else{
+            // User is no longer active in Backend
+            dispatch(addUser("AppStart")).then(
+              () => dispatch(getToken(store.getState().user.name)).then(
+                () => {
+                  dispatch(getIngredients())
+                  dispatch(getPlan())
+                }
+              )
+            )
+          }
         }
       )
     }
