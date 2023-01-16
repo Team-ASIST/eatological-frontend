@@ -39,7 +39,7 @@ const RecipePage = ({ navigation, route }: RecipePageProps) => {
     const recipe = meal!.recipe
 
     return (
-        <Box flex={1}>
+        <Box flex={1} backgroundColor={"mainBackground"}>
             {/* https://dev.to/reime005/image-scroll-zoom-in-react-native-29f7 */}
             <ScrollView bounces={false}>
                 <Image resizeMode="cover" source={{ uri: recipe.imageUrl }} style={{

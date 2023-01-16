@@ -28,7 +28,7 @@ interface NavigationNewPlanBarProps {
 
 const NavigationNewPlanBar = (props: NavigationNewPlanBarProps): ReactElement => {
   const theme = useTheme<Theme>();
-  const route = useRoute();
+  const route = useRoute()
 
   const customStyles = {
     stepStrokeCurrentColor: theme.colors.accent,

@@ -1,5 +1,5 @@
 import { createText, createBox } from '@shopify/restyle'
-import theme, { Theme } from '../../../utils/theme'
+import { Theme } from '../../../utils/theme'
 import React from 'react'
 import { TouchableOpacity } from 'react-native'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'

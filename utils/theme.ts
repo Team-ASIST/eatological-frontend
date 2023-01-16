@@ -23,6 +23,7 @@ export const palette = {
     white: '#ffffff',
     black: '#000000',
     grey: '#aEa8a4',
+    darkGrey: '#2E2824',
     sonicSilver: '#7E7570'
 };
 
@@ -139,12 +140,14 @@ export const darkTheme: Theme = {
     ...theme,
     colors: {
         ...theme.colors,
-        mainBackground: palette.grey,
+        mainBackground: palette.darkGrey,
         mainForeground: palette.white,
-
+        secondaryCardText: palette.white,
+        primaryCardBackground: palette.navyGreen,
+        primaryCardText: palette.white,
         secondaryCardBackground: palette.navyGreen,
-        secondaryCardText: palette.black,
         accent: palette.sapGreen,
+        primaryButtonColor: palette.pastelPink,
     },
 };
 

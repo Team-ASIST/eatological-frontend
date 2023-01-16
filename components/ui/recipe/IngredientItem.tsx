@@ -1,7 +1,7 @@
 import React from "react";
-import { createBox, createText } from '@shopify/restyle';
+import { createBox, createText, useTheme } from '@shopify/restyle';
 import Ionicons from "react-native-vector-icons/Ionicons";
-import theme, { Theme } from "../../../utils/theme";
+import { Theme } from "../../../utils/theme";
 import TagItem from "../common/TagItem";
 import IconButton from "../inputs/IconButton";
 import { Modal, Pressable } from "react-native";
@@ -28,12 +28,14 @@ export type IngredientItemProps = {
 }
 
 const CheckIcon = ({ bought }: CheckIconProps) => {
+    const theme = useTheme<Theme>()
+
     if (bought) {
         return (
             <Ionicons
                 name={'checkmark'}
                 size={50}
-                color={theme.colors.black}
+                color={theme.colors.secondaryCardText}
             />
         )
     } else {
@@ -41,14 +43,15 @@ const CheckIcon = ({ bought }: CheckIconProps) => {
             <Ionicons
                 name={'close'}
                 size={50}
-                color={theme.colors.black}
+                color={theme.colors.secondaryCardText}
             />
         )
     }
 }
 
 export const IngredientItem = ({ ingredientName, unit, season, local, alternative, bought, required, smallestAmount }: IngredientItemProps) => {
-    
+    const theme = useTheme<Theme>()
+
     return (
         <Box
             backgroundColor={bought >= required ? 'navigationButtonColor' : 'mainBackground'}
@@ -71,7 +74,7 @@ export const IngredientItem = ({ ingredientName, unit, season, local, alternativ
                 </Text>
                 {alternative ?
                     <Tooltip width={200} height={"auto"} actionType="press" backgroundColor={theme.colors.accent} popover={<Text variant="body">{alternative}</Text>}>
-                            <Ionicons color={theme.colors.black} name={"information-circle-outline"} size={30} />
+                            <Ionicons color={theme.colors.secondaryCardText} name={"information-circle-outline"} size={30} />
                     </Tooltip> : <></>}
             </Box>
 

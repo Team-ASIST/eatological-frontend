@@ -1,7 +1,7 @@
 import { ImageBackground, TouchableOpacity } from 'react-native'
 import React, { Fragment } from 'react'
-import theme, { Theme } from '../../../utils/theme';
-import { createText, createBox } from '@shopify/restyle';
+import { Theme } from '../../../utils/theme';
+import { createText, createBox, useTheme } from '@shopify/restyle';
 import { BlurView } from 'expo-blur';
 import IconText from '../common/iconText';
 
@@ -19,6 +19,8 @@ export type RecipeCardProps = {
 }
 
 const recipeCard = (props: RecipeCardProps) => {
+    const theme = useTheme<Theme>()
+
     return (
         <TouchableOpacity disabled={props.onClick ? false : true} onPress={() => props.onClick ? props.onClick() : undefined}>
             <Box backgroundColor="secondaryCardBackground" height={theme.heights.m}>
