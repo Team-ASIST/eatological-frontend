@@ -14,8 +14,8 @@ import { getRestrictions, setRestrictions } from "../../utils/axios/userManageme
 import { RefreshControl, ScrollView } from "react-native-gesture-handler";
 import { RestrictionModal } from "../../components/ui/inputs/RestrictionModal";
 import { getPlan } from "../../redux/slice/currentPlanSlice";
-import { FeedbackModal } from "../../components/ui/common/FeedbackModal";
 import { store } from "../../redux/store";
+import { Alert } from "react-native";
 
 const Text = createText<Theme>();
 const Box = createBox<Theme>();
@@ -39,8 +39,6 @@ const SettingsPage = ({ navigation }: SettingsPageProps) => {
 
   // UpdateState
   const updating = useSelector(selectUpdatingUser)
-  const [resultVisible, setResultVisible] = useState(false)
-  const [success, setSuccess] = useState(false)
 
   // Restriction Management
   const [currentRestrictions, setCurrentRestrictions] = useState([] as Restriction[])
@@ -50,17 +48,16 @@ const SettingsPage = ({ navigation }: SettingsPageProps) => {
   const dispatch = useDispatch<AppDispatch>()
 
   const displaySuccess = async (oldName: string) => {
+    let message: string = ""
     if (store.getState().user.name != oldName) {
-      setSuccess(true)
-      setResultVisible(true)
-      await wait(500)
-      setResultVisible(false)
+      message = "Erfolgreiche Benutzerummeldung: " + store.getState().user.name
     } else {
-      setSuccess(false)
-      setResultVisible(true)
-      await wait(500)
-      setResultVisible(false)
+      message = "Benutzeranfrage nicht erfolgreich."
     }
+
+    Alert.alert('Benutzeränderung', message, [
+      {text: 'OK', onPress: () => {}},
+    ])
   }
 
   const changeUser = (newUsername: string) => {
@@ -134,7 +131,6 @@ const SettingsPage = ({ navigation }: SettingsPageProps) => {
           refreshing={updating}
         />
       }>
-        <FeedbackModal success={success} modalVisible={resultVisible} />
 
         <Box marginTop={"l"} flexDirection={"row"} alignItems={"center"} paddingLeft="s">
           <Ionicons name="person-circle-outline" size={30} color={theme.colors.black} />

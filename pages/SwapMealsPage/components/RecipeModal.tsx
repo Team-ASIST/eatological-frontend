@@ -1,6 +1,6 @@
 
 
-import { View, Modal, Alert } from 'react-native'
+import { Modal } from 'react-native'
 import React from 'react'
 import { Theme } from '../../../utils/theme'
 import { createBox, createText } from '@shopify/restyle'
