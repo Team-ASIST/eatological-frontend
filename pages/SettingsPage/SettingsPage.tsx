@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { createBox, createText } from '@shopify/restyle';
-import theme, { Theme } from '../../utils/theme';
+import { createBox, createText, useTheme } from '@shopify/restyle';
+import { Theme } from '../../utils/theme';
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../redux/store";
 import { selectUsername, selectToken, getToken, renameUser, deleteUser, selectUpdatingUser, selectRestriction, changeRestriction } from "../../redux/slice/userSlice";
@@ -32,6 +32,7 @@ const SettingsPage = ({ navigation }: SettingsPageProps) => {
   // User Management
   const username = useSelector(selectUsername)
   const token = useSelector(selectToken)
+  const theme = useTheme<Theme>()
   const [currentUsername, setCurrentUsername] = useState("")
   const [clicked, setClicked] = useState(false)
   const [switchMode, setSwitchMode] = useState(false)
@@ -137,7 +138,7 @@ const SettingsPage = ({ navigation }: SettingsPageProps) => {
         <FeedbackModal success={success} modalVisible={resultVisible} />
 
         <Box marginTop={"l"} flexDirection={"row"} alignItems={"center"} paddingLeft="s">
-          <Ionicons name="person-circle-outline" size={30} color={theme.colors.black} />
+          <Ionicons name="person-circle-outline" size={30} color={theme.colors.secondaryCardText} />
           <Box paddingLeft={"xs"}>
             <Text variant="subsubheader">{username}</Text>
           </Box>
@@ -175,7 +176,6 @@ const SettingsPage = ({ navigation }: SettingsPageProps) => {
               size={35}
               label={"Nutzernamen ändern"}
               disabled={false}
-              color={theme.colors.black}
             />
           </Box>
 
@@ -189,7 +189,6 @@ const SettingsPage = ({ navigation }: SettingsPageProps) => {
               icon={"people-circle-outline"}
               size={35}
               label={"Konto wechseln"}
-              color={theme.colors.black}
               disabled={false}
             />
           </Box>
@@ -201,7 +200,6 @@ const SettingsPage = ({ navigation }: SettingsPageProps) => {
               icon={"close-circle-outline"}
               size={35}
               label={"Aktiven Account löschen"}
-              color={theme.colors.black}
               disabled={false}
             />
           </Box>
@@ -215,7 +213,6 @@ const SettingsPage = ({ navigation }: SettingsPageProps) => {
               icon={"ellipsis-vertical-circle-outline"}
               size={35}
               label={"Ernährungsform wählen"}
-              color={theme.colors.black}
               disabled={false}
             />
           </Box>

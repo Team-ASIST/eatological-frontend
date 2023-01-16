@@ -1,5 +1,5 @@
 import { createBox } from '@shopify/restyle';
-import theme, { Theme } from '../utils/theme';
+import { Theme } from '../utils/theme';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { RootStackParamList } from './types';
 import { SafeAreaView } from 'react-native';

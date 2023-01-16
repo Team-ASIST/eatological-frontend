@@ -1,6 +1,6 @@
 import React from 'react'
-import { createBox, createText } from '@shopify/restyle'
-import theme, { Theme } from '../../../utils/theme'
+import { createBox, createText, useTheme } from '@shopify/restyle'
+import { Theme } from '../../../utils/theme'
 import IconButton from './IconButton'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 
@@ -15,6 +15,8 @@ const Box = createBox<Theme>()
 const Text = createText<Theme>()
 
 const PlusMinusInput = ({ increment, decrement, value, title }: PlusMinusInputProps) => {
+    const theme = useTheme<Theme>()
+
     return (
         <Box
             marginVertical="s"

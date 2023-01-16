@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
-import { createBox, createText } from '@shopify/restyle'
+import { createBox, createText, useTheme } from '@shopify/restyle'
 import { TextInput, Keyboard, FlatList, ListRenderItemInfo, View } from 'react-native'
-import theme, { Theme } from '../../../utils/theme'
+import { Theme } from '../../../utils/theme'
 import IconButton from './IconButton'
 import { leftoverAdded, preferenceAdded } from '../../../redux/slice/newPlanSlice'
 import { useDispatch, useSelector } from 'react-redux'
@@ -26,7 +26,9 @@ const SearchBarDisplay = ({
     searchPhrase,
     setSearchPhrase,
     setClicked,
-}: SearchBarDisplayProps) => {
+}: SearchBarDisplayProps) => { 
+    const theme = useTheme<Theme>()
+    
     return (
         <Box
             flexDirection="row"
@@ -39,7 +41,7 @@ const SearchBarDisplay = ({
             justifyContent="space-between">
             {/* Input field */}
             <TextInput
-                style={{ width: 235 }}
+                style={{ width: 235, color: theme.colors.secondaryCardText }}
                 placeholder="Suche..."
                 value={searchPhrase}
                 onChangeText={setSearchPhrase}
@@ -57,7 +59,7 @@ const SearchBarDisplay = ({
                     }}
                     icon={'close'}
                     size={15}
-                    color={theme.colors.black}
+                    color={theme.colors.secondaryCardText}
                 />
             )}
         </Box>
@@ -92,6 +94,8 @@ const Item = ({
     setSearchPhrase,
 }: ItemProps) => {
     const dispatch = useDispatch<AppDispatch>()
+    const theme = useTheme<Theme>()
+
     return (
         <Box
             padding="xs"
@@ -115,7 +119,7 @@ const Item = ({
                 }}
                 icon={'ios-add-circle-outline'}
                 size={25}
-                color={theme.colors.black}
+                color={theme.colors.secondaryCardText}
             />
         </Box>
     )

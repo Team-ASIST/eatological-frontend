@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { createBox, createText } from '@shopify/restyle';
+import { createBox, createText, useTheme } from '@shopify/restyle';
 import { Theme } from '../../utils/theme';
 import { Ingredient, LargeGrocery, Meal, smallIngredient } from "../../utils/dataTypes";
 import { RootTabParamList } from "../../navigation/types";
@@ -30,6 +30,7 @@ const RecipePage = ({ navigation, route }: RecipePageProps) => {
     const ingredients = useSelector(selectAllIngredients)
     const { mealId } = route.params;
     const meal = useSelector(selectAllRecipes).find((meal: Meal) => meal.id === mealId)
+    const theme = useTheme<Theme>()
 
     if (!meal) {
         navigation.navigate('CurrentPlan')
@@ -39,7 +40,7 @@ const RecipePage = ({ navigation, route }: RecipePageProps) => {
     const recipe = meal!.recipe
 
     return (
-        <Box flex={1}>
+        <Box flex={1} backgroundColor={"mainBackground"}>
             {/* https://dev.to/reime005/image-scroll-zoom-in-react-native-29f7 */}
             <ScrollView bounces={false}>
                 <Image resizeMode="cover" source={{ uri: recipe.imageUrl }} style={{
@@ -180,8 +181,8 @@ const RecipePage = ({ navigation, route }: RecipePageProps) => {
                                     )
                                 )
                             }
-                            <Box backgroundColor={meal.cooked ? "navigationButtonColor" : "white"}>
-                                <TextButton disabled={meal.cooked} icon={'checkmark'} color={"black"} size={30} label={meal.cooked ? "Als gekocht markiert" : "Als gekocht markieren"} onPress={() => dispatch(planCook(meal.recipe.id))} />
+                            <Box backgroundColor={meal.cooked ? "navigationButtonColor" : undefined}>
+                                <TextButton disabled={meal.cooked} icon={'checkmark'} size={30} label={meal.cooked ? "Als gekocht markiert" : "Als gekocht markieren"} onPress={() => dispatch(planCook(meal.recipe.id))} />
                             </Box>
                         </Box>
                 }
