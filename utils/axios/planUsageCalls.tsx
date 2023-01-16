@@ -7,12 +7,9 @@ export const recipes = async (): Promise<Recipe[]> => {
             '/recipes'
         )
 
-        if (response.status = 200) {
-            // Extract data and parse results into Ingredient Array
-            let recipes: Recipe[] = response.data
-            return recipes
-        }
-        console.warn("Call Recipes aborted!")
+        // Extract data and parse results into Ingredient Array
+        let recipes: Recipe[] = response.data
+        return recipes
 
     } catch (error) {
         console.warn(error)
@@ -26,25 +23,22 @@ export const plan = async (): Promise<Meal[]> => {
             '/plan'
         )
 
-        if (response.status = 200) {
-            // Extract data and parse results into Meal Array
-            let plan: BackendPlan = response.data
-            const meals: Meal[] = []
+        // Extract data and parse results into Meal Array
+        let plan: BackendPlan = response.data
+        const meals: Meal[] = []
 
-            plan.meals.forEach((meal: any, idx: number) => {
-                meals.push(
-                    {
-                        id: idx,
-                        recipe: meal.recipe,
-                        portions: meal.portion,
-                        cooked: meal.cooked
-                    } as Meal
-                )
-            })
-            
-            return meals
-        }
-        console.warn("Call Recipes aborted!")
+        plan.meals.forEach((meal: any, idx: number) => {
+            meals.push(
+                {
+                    id: idx,
+                    recipe: meal.recipe,
+                    portions: meal.portion,
+                    cooked: meal.cooked
+                } as Meal
+            )
+        })
+
+        return meals
 
     } catch (error) {
         console.warn(error)
@@ -65,25 +59,22 @@ export const planCook = async (recipeID: number): Promise<Meal[]> => {
             }
         )
 
-        if (response.status = 200) {
-            // Extract data and parse results into Meal Array
-            let plan: BackendPlan = response.data
-            const meals: Meal[] = []
+        // Extract data and parse results into Meal Array
+        let plan: BackendPlan = response.data
+        const meals: Meal[] = []
 
-            plan.meals.forEach((meal: any, idx: number) => {
-                meals.push(
-                    {
-                        id: idx,
-                        recipe: meal.recipe,
-                        portions: meal.portion,
-                        cooked: meal.cooked
-                    } as Meal
-                )
-            })
+        plan.meals.forEach((meal: any, idx: number) => {
+            meals.push(
+                {
+                    id: idx,
+                    recipe: meal.recipe,
+                    portions: meal.portion,
+                    cooked: meal.cooked
+                } as Meal
+            )
+        })
 
-            return meals
-        }
-        console.warn("Call planCook aborted!")
+        return meals
 
     } catch (error) {
         console.warn(error)

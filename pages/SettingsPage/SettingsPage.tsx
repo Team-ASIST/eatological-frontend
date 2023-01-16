@@ -86,7 +86,7 @@ const SettingsPage = ({ navigation }: SettingsPageProps) => {
   const deleteUsername = () => {
     const oldName = username
     if (username != "" && token.startsWith('T')) {
-      dispatch(deleteUser(username)).then(
+      dispatch(deleteUser()).then(
         async () => {
           displaySuccess(oldName)
           dispatch(changeRestriction(""))

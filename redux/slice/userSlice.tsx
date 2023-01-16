@@ -192,14 +192,14 @@ export const renameUser = createAsyncThunk<
 
 export const deleteUser = createAsyncThunk<
     boolean,
-    string,
+    void,
     {
         dispatch: AppDispatch,
         state: RootState
     }
 >(
     'user/delete',
-    async (name, thunkApi) => {
+    async (_, thunkApi) => {
         try {
             // Delete User
             const response = await instance.delete(

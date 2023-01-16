@@ -319,7 +319,7 @@ export const selectSortedGroceries = (state: RootState) => {
         if (grocery1.grocery.bought >= grocery1.grocery.required && grocery2.grocery.bought < grocery2.grocery.required) {
             return 1
         }
-        if (grocery1.grocery.bought < grocery1.grocery.required && grocery2.grocery.bought > grocery2.grocery.required) {
+        if (grocery1.grocery.bought < grocery1.grocery.required && grocery2.grocery.bought >= grocery2.grocery.required) {
             return -1
         }
 
