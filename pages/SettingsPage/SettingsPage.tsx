@@ -3,7 +3,7 @@ import { createBox, createText } from '@shopify/restyle';
 import theme, { Theme } from '../../utils/theme';
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../redux/store";
-import { selectUsername, selectToken, getToken, renameUser, deleteUser, selectUpdatingUser } from "../../redux/slice/userSlice";
+import { selectUsername, selectToken, getToken, renameUser, deleteUser, selectUpdatingUser, selectRestriction, changeRestriction } from "../../redux/slice/userSlice";
 import { useSelector } from "react-redux";
 import TextButton from "../../components/ui/inputs/TextButton";
 import { NavigationScreenProp } from "react-navigation";
@@ -45,6 +45,7 @@ const SettingsPage = ({ navigation }: SettingsPageProps) => {
   // Restriction Management
   const [currentRestrictions, setCurrentRestrictions] = useState([] as Restriction[])
   const [restrictionsVisible, setRestrictionsVisible] = useState(false)
+  const restriction = useSelector(selectRestriction)
 
   const dispatch = useDispatch<AppDispatch>()
 
@@ -73,6 +74,10 @@ const SettingsPage = ({ navigation }: SettingsPageProps) => {
         () => {
           displaySuccess(oldName)
           dispatch(getPlan())
+          dispatch(changeRestriction(""))
+          for (const rest of currentRestrictions) {
+            rest.active = false
+          }
         }
       )
     }
@@ -82,7 +87,13 @@ const SettingsPage = ({ navigation }: SettingsPageProps) => {
     const oldName = username
     if (username != "" && token.startsWith('T')) {
       dispatch(deleteUser(username)).then(
-        async () => displaySuccess(oldName)
+        async () => {
+          displaySuccess(oldName)
+          dispatch(changeRestriction(""))
+          for (const rest of currentRestrictions) {
+            rest.active = false
+          }
+        }
       )
     }
   }
@@ -91,6 +102,9 @@ const SettingsPage = ({ navigation }: SettingsPageProps) => {
   useEffect(() => {
     getRestrictions().then(
       (availableRestrictions: Restriction[]) => {
+        if (availableRestrictions.find(Restriction => Restriction.name === restriction)) {
+          availableRestrictions.find(Restriction => Restriction.name === restriction)!.active = true
+        }
         setCurrentRestrictions(availableRestrictions)
       }
     )
@@ -109,6 +123,7 @@ const SettingsPage = ({ navigation }: SettingsPageProps) => {
         }
       }
       setCurrentRestrictions(current)
+      dispatch(changeRestriction(restriction))
     }
   }
 
