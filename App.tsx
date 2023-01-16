@@ -39,13 +39,11 @@ const App = () => {
 
     // No Previous User persisted
     if (name == "") {
-      dispatch(addUser("AppStart")).then(
-        () => dispatch(getToken(store.getState().user.name)).then(
-          () => {
-            dispatch(getIngredients())
-            dispatch(getPlan())
-          }
-        )
+      dispatch(addUser()).then(
+        () => {
+          dispatch(getIngredients())
+          dispatch(getPlan())
+        }
       )
     } else {
       // Persisted User has been found
@@ -55,15 +53,13 @@ const App = () => {
           if (store.getState().user.token != "") {
             dispatch(getIngredients())
             dispatch(getPlan())
-          }else{
+          } else {
             // User is no longer active in Backend
-            dispatch(addUser("AppStart")).then(
-              () => dispatch(getToken(store.getState().user.name)).then(
-                () => {
-                  dispatch(getIngredients())
-                  dispatch(getPlan())
-                }
-              )
+            dispatch(addUser()).then(
+              () => {
+                dispatch(getIngredients())
+                dispatch(getPlan())
+              }
             )
           }
         }
