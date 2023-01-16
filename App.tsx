@@ -37,7 +37,7 @@ const App = () => {
     const name = store.getState().user.name
 
     if (name == "") {
-      dispatch(addUser("")).then(
+      dispatch(addUser("AppStart")).then(
         () => dispatch(getToken(store.getState().user.name)).then(
           () => {
             dispatch(getIngredients())

@@ -113,7 +113,7 @@ export const getToken = createAsyncThunk<
                 const message = response.data
 
                 if (!('errorCode' in message)) {
-                    if(thunkApi.getState().user.name != name){
+                    if (thunkApi.getState().user.name != name) {
                         thunkApi.dispatch(changeUsername(name))
                         thunkApi.dispatch(resetCurrentPlan())
                     }
@@ -142,7 +142,7 @@ export const addUser = createAsyncThunk<
     }
 >(
     'user/add',
-    async (name, thunkApi) => {
+    async (usage, thunkApi) => {
         try {
             // Add new user to the database
             const response = await instance.post(
@@ -154,7 +154,9 @@ export const addUser = createAsyncThunk<
                 const message = response.data
 
                 if (!('errorCode' in message)) {
-                    thunkApi.dispatch(getToken(message.username))
+                    if (usage != "AppStart") {
+                        thunkApi.dispatch(getToken(message.username))
+                    }
                     return message.username
                 } else {
                     return ""
@@ -237,7 +239,7 @@ export const deleteUser = createAsyncThunk<
 
                 if (!('errorCode' in message)) {
                     thunkApi.dispatch(resetCurrentPlan())
-                    thunkApi.dispatch(addUser(""))
+                    thunkApi.dispatch(addUser("Delete"))
                     return true
                 } else {
                     return false

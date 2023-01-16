@@ -336,10 +336,10 @@ export const selectAllIngredients = (state: RootState) => state.currentPlan.ingr
 export const selectNewPlanConfiguration = (state: RootState) => state.newPlan
 export const selectSortedGroceries = (state: RootState) => {
     return state.currentPlan.groceries.slice().sort(function (grocery1, grocery2) {
-        if (grocery1.grocery.bought === grocery1.grocery.required && grocery2.grocery.bought !== grocery2.grocery.required) {
+        if (grocery1.grocery.bought >= grocery1.grocery.required && grocery2.grocery.bought < grocery2.grocery.required) {
             return 1
         }
-        if (grocery1.grocery.bought !== grocery1.grocery.required && grocery2.grocery.bought === grocery2.grocery.required) {
+        if (grocery1.grocery.bought < grocery1.grocery.required && grocery2.grocery.bought > grocery2.grocery.required) {
             return -1
         }
 
