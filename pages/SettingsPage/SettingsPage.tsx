@@ -33,6 +33,7 @@ const SettingsPage = ({ navigation }: SettingsPageProps) => {
   const username = useSelector(selectUsername)
   const token = useSelector(selectToken)
   const [currentUsername, setCurrentUsername] = useState("")
+  const [clicked, setClicked] = useState(false)
   const [switchMode, setSwitchMode] = useState(false)
   const [modalVisible, setModalVisible] = useState(false)
 
@@ -132,6 +133,8 @@ const SettingsPage = ({ navigation }: SettingsPageProps) => {
             modalVisible={modalVisible}
             setModalVisible={setModalVisible}
             switchMode={switchMode}
+            clicked={clicked}
+            setClicked={setClicked}
             currentUsername={currentUsername}
             setCurrentUsername={setCurrentUsername}
             changeUser={changeUser}

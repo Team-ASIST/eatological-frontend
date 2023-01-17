@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { createBox, createText } from '@shopify/restyle'
 import theme, { Theme } from '../../../utils/theme'
 import { TextInput, Keyboard, Modal, TouchableOpacity } from 'react-native'
@@ -11,6 +11,8 @@ export type UsernameInputProps = {
     modalVisible: boolean
     setModalVisible: (arg0: boolean) => void
     switchMode: boolean
+    clicked: boolean
+    setClicked: (arg0: boolean) => void
     currentUsername: string
     setCurrentUsername: (arg0: string) => void
     changeUser: (arg0: string) => void
@@ -20,11 +22,12 @@ export const UsernameInput = ({
     modalVisible,
     setModalVisible,
     switchMode,
+    clicked,
+    setClicked,
     currentUsername,
     setCurrentUsername,
     changeUser,
 }: UsernameInputProps) => {
-    const [clicked, setClicked] = useState(false)
     return (
         <Modal visible={modalVisible} animationType="slide" transparent={true}>
             {/* Container for all components in modal*/}
@@ -66,7 +69,6 @@ export const UsernameInput = ({
                     {/* close button, depending on whether the Input is clicked or not */}
                     {clicked && (
                         <IconButton
-                        
                             onPress={() => {
                                 Keyboard.dismiss()
                                 setClicked(false)

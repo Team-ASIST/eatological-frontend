@@ -43,7 +43,7 @@ const LeftOverInput = ({
                         size={28}></IconButton>
                     <Box flexDirection="row" alignContent="center" marginHorizontal="s">
                         <Text variant="subsubheader" color={'primaryCardText'} marginLeft="xs">
-                            {value} {unit}
+                            {value.toFixed(2).replace(/\.?0*$/,'')} {unit}
                         </Text>
                     </Box>
                     <IconButton
