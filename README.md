@@ -1,4 +1,4 @@
-# React Native using Expo and Typescript
+# Eatological - Frontend App with Expo and React Native
 
 <img src="./documentationAssets/simulator-home.png" width="300">
 
