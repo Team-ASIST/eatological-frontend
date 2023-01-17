@@ -1,5 +1,5 @@
-import { createBox, createText } from '@shopify/restyle'
-import theme, { Theme } from '../../../utils/theme'
+import { createBox, createText, useTheme } from '@shopify/restyle'
+import { Theme } from '../../../utils/theme'
 import { TouchableOpacity } from 'react-native'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import { Grocery, Ingredient } from '../../../utils/dataTypes';
@@ -17,6 +17,8 @@ export type GroceryButtonProps = {
 }
 
 const GroceryButton = ({ ingredientId, grocery, ingredient, onClick }: GroceryButtonProps) => {
+    const theme = useTheme<Theme>()
+
     return (
         <Box
             backgroundColor={

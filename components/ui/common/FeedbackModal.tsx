@@ -1,6 +1,6 @@
 import { Modal } from "react-native";
-import { createBox } from "@shopify/restyle";
-import theme, { Theme } from '../../../utils/theme';
+import { createBox, useTheme } from "@shopify/restyle";
+import { Theme } from '../../../utils/theme';
 import Ionicons from 'react-native-vector-icons/Ionicons'
 
 const Box = createBox<Theme>();
@@ -11,6 +11,7 @@ type FeedbackModalProps = {
 }
 
 export const FeedbackModal = ({ modalVisible, success }: FeedbackModalProps) => {
+    const theme = useTheme<Theme>()
 
     return (
         <Modal visible={modalVisible} animationType="fade" transparent={true}>

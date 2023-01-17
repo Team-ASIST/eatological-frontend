@@ -1,6 +1,6 @@
 import React from 'react'
 import { createBox, createText } from '@shopify/restyle'
-import theme, { Theme } from '../../../utils/theme'
+import { Theme } from '../../../utils/theme'
 import { Modal } from 'react-native'
 import { Restriction } from '../../../utils/dataTypes'
 import { ScrollView } from 'react-native'

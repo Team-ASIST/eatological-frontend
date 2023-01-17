@@ -1,6 +1,6 @@
 import React from "react";
-import { createBox, createText } from '@shopify/restyle';
-import theme, { Theme } from '../../../utils/theme';
+import { createBox, createText, useTheme } from '@shopify/restyle';
+import { Theme } from '../../../utils/theme';
 import { Restriction } from "../../../utils/dataTypes";
 import { TouchableOpacity } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons'
@@ -14,6 +14,8 @@ type RestrictionButtonProps = {
 }
 
 export const RestrictionButton = ({ restriction, setNewRestriction }: RestrictionButtonProps) => {
+    const theme = useTheme<Theme>()
+
     return (
         <Box
             backgroundColor={restriction.active ? 'accent' : 'inactiveButtonColor'}

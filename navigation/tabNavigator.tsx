@@ -3,17 +3,20 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { RootTabParamList } from './types';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import theme, { fonts } from '../utils/theme';
+import { fonts, Theme } from '../utils/theme';
 import GroceryListPage from '../pages/GroceryListPage/GroceryListPage';
 import CurrentPlan from '../pages/CurrentPlanPage/CurrentPlanPage';
 import { PlanStackScreen } from './newPlanNavigator';
 import RecipePage from '../pages/RecipePage/RecipePage';
 import SettingsPage from '../pages/SettingsPage/SettingsPage';
+import { useTheme } from '@shopify/restyle';
 
 
 const Tab = createBottomTabNavigator<RootTabParamList>();
 
 export const TabNavigator = () => {
+    const theme = useTheme<Theme>()
+
     return (
         <Tab.Navigator initialRouteName="CurrentPlan"
             screenOptions={

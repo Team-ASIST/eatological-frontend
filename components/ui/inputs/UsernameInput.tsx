@@ -1,6 +1,6 @@
 import React from 'react'
-import { createBox, createText } from '@shopify/restyle'
-import theme, { Theme } from '../../../utils/theme'
+import { createBox, createText, useTheme } from '@shopify/restyle'
+import { Theme } from '../../../utils/theme'
 import { TextInput, Keyboard, Modal, TouchableOpacity } from 'react-native'
 import IconButton from './IconButton'
 
@@ -28,6 +28,8 @@ export const UsernameInput = ({
     setCurrentUsername,
     changeUser,
 }: UsernameInputProps) => {
+    const theme = useTheme<Theme>()
+
     return (
         <Modal visible={modalVisible} animationType="slide" transparent={true}>
             {/* Container for all components in modal*/}

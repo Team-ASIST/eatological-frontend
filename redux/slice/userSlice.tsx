@@ -9,12 +9,14 @@ import setUpInterceptor from '../../utils/axios/interceptor'
 interface IUserState {
     name: string,
     token: string,
+    restriction: string,
     updating: boolean,
 }
 
 const initialState: IUserState = {
     name: "",
     token: "",
+    restriction: "",
     updating: false,
 }
 
@@ -28,6 +30,9 @@ const userSlice = createSlice({
         },
         changeUsername(state, action) {
             state.name = action.payload
+        },
+        changeRestriction(state, action) {
+            state.restriction = action.payload
         }
     },
     extraReducers(builder) {
@@ -254,8 +259,10 @@ export const deleteUser = createAsyncThunk<
 export const selectUpdatingUser = (state: RootState) => state.user.updating
 export const selectUsername = (state: RootState) => state.user.name
 export const selectToken = (state: RootState) => state.user.token
+export const selectRestriction = (state: RootState) => state.user.restriction
 
 export const { resetUser } = userSlice.actions
 export const { changeUsername } = userSlice.actions
+export const { changeRestriction } = userSlice.actions
 
 export default userSlice.reducer

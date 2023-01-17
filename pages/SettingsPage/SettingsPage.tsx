@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { createBox, createText } from '@shopify/restyle';
-import theme, { Theme } from '../../utils/theme';
+import { createBox, createText, useTheme } from '@shopify/restyle';
+import { Theme } from '../../utils/theme';
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../redux/store";
-import { selectUsername, selectToken, getToken, renameUser, deleteUser, selectUpdatingUser } from "../../redux/slice/userSlice";
+import { selectUsername, selectToken, getToken, renameUser, deleteUser, selectUpdatingUser, selectRestriction, changeRestriction } from "../../redux/slice/userSlice";
 import { useSelector } from "react-redux";
 import TextButton from "../../components/ui/inputs/TextButton";
 import { NavigationScreenProp } from "react-navigation";
@@ -32,6 +32,7 @@ const SettingsPage = ({ navigation }: SettingsPageProps) => {
   // User Management
   const username = useSelector(selectUsername)
   const token = useSelector(selectToken)
+  const theme = useTheme<Theme>()
   const [currentUsername, setCurrentUsername] = useState("")
   const [clicked, setClicked] = useState(false)
   const [switchMode, setSwitchMode] = useState(false)
@@ -45,6 +46,7 @@ const SettingsPage = ({ navigation }: SettingsPageProps) => {
   // Restriction Management
   const [currentRestrictions, setCurrentRestrictions] = useState([] as Restriction[])
   const [restrictionsVisible, setRestrictionsVisible] = useState(false)
+  const restriction = useSelector(selectRestriction)
 
   const dispatch = useDispatch<AppDispatch>()
 
@@ -73,6 +75,10 @@ const SettingsPage = ({ navigation }: SettingsPageProps) => {
         () => {
           displaySuccess(oldName)
           dispatch(getPlan())
+          dispatch(changeRestriction(""))
+          for (const rest of currentRestrictions) {
+            rest.active = false
+          }
         }
       )
     }
@@ -82,7 +88,13 @@ const SettingsPage = ({ navigation }: SettingsPageProps) => {
     const oldName = username
     if (username != "" && token.startsWith('T')) {
       dispatch(deleteUser(username)).then(
-        async () => displaySuccess(oldName)
+        async () => {
+          displaySuccess(oldName)
+          dispatch(changeRestriction(""))
+          for (const rest of currentRestrictions) {
+            rest.active = false
+          }
+        }
       )
     }
   }
@@ -91,6 +103,9 @@ const SettingsPage = ({ navigation }: SettingsPageProps) => {
   useEffect(() => {
     getRestrictions().then(
       (availableRestrictions: Restriction[]) => {
+        if (availableRestrictions.find(Restriction => Restriction.name === restriction)) {
+          availableRestrictions.find(Restriction => Restriction.name === restriction)!.active = true
+        }
         setCurrentRestrictions(availableRestrictions)
       }
     )
@@ -109,6 +124,7 @@ const SettingsPage = ({ navigation }: SettingsPageProps) => {
         }
       }
       setCurrentRestrictions(current)
+      dispatch(changeRestriction(restriction))
     }
   }
 
@@ -122,7 +138,7 @@ const SettingsPage = ({ navigation }: SettingsPageProps) => {
         <FeedbackModal success={success} modalVisible={resultVisible} />
 
         <Box marginTop={"l"} flexDirection={"row"} alignItems={"center"} paddingLeft="s">
-          <Ionicons name="person-circle-outline" size={30} color={theme.colors.black} />
+          <Ionicons name="person-circle-outline" size={30} color={theme.colors.secondaryCardText} />
           <Box paddingLeft={"xs"}>
             <Text variant="subsubheader">{username}</Text>
           </Box>
@@ -160,7 +176,6 @@ const SettingsPage = ({ navigation }: SettingsPageProps) => {
               size={35}
               label={"Nutzernamen ändern"}
               disabled={false}
-              color={theme.colors.black}
             />
           </Box>
 
@@ -174,7 +189,6 @@ const SettingsPage = ({ navigation }: SettingsPageProps) => {
               icon={"people-circle-outline"}
               size={35}
               label={"Konto wechseln"}
-              color={theme.colors.black}
               disabled={false}
             />
           </Box>
@@ -186,7 +200,6 @@ const SettingsPage = ({ navigation }: SettingsPageProps) => {
               icon={"close-circle-outline"}
               size={35}
               label={"Aktiven Account löschen"}
-              color={theme.colors.black}
               disabled={false}
             />
           </Box>
@@ -200,7 +213,6 @@ const SettingsPage = ({ navigation }: SettingsPageProps) => {
               icon={"ellipsis-vertical-circle-outline"}
               size={35}
               label={"Ernährungsform wählen"}
-              color={theme.colors.black}
               disabled={false}
             />
           </Box>

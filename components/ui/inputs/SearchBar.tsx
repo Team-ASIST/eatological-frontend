@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
-import { createBox, createText } from '@shopify/restyle'
-import { TextInput, Keyboard} from 'react-native'
-import theme, { Theme } from '../../../utils/theme'
+import { createBox, createText, useTheme } from '@shopify/restyle'
+import { TextInput, Keyboard, FlatList, ListRenderItemInfo, View } from 'react-native'
+import { Theme } from '../../../utils/theme'
 import IconButton from './IconButton'
 import { useSelector } from 'react-redux'
 import { selectAllIngredients } from '../../../redux/slice/currentPlanSlice'
@@ -25,7 +25,9 @@ const SearchBarDisplay = ({
     searchPhrase,
     setSearchPhrase,
     setClicked,
-}: SearchBarDisplayProps) => {
+}: SearchBarDisplayProps) => { 
+    const theme = useTheme<Theme>()
+    
     return (
         <Box
             flexDirection="row"
@@ -56,7 +58,7 @@ const SearchBarDisplay = ({
                     }}
                     icon={'close'}
                     size={15}
-                    color={theme.colors.black}
+                    color={theme.colors.secondaryCardText}
                 />
             )}
         </Box>

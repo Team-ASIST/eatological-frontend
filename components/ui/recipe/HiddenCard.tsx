@@ -1,6 +1,6 @@
 import React from "react";
-import { createBox, createText } from '@shopify/restyle';
-import theme, { Theme } from '../../../utils/theme';
+import { createBox, createText, useTheme } from '@shopify/restyle';
+import { Theme } from '../../../utils/theme';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { ActivityIndicator } from "react-native";
 
@@ -20,6 +20,8 @@ const indicator = (isLoading: boolean, left: boolean) => {
 }
 
 export const HiddenCard = (props: HiddenCardProps) => {
+  const theme = useTheme<Theme>()
+
   return (
     <Box height={theme.heights.m} paddingTop={"m"} flexDirection={"row"}>
 
