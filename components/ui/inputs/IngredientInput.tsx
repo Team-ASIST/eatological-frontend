@@ -11,6 +11,7 @@ export interface IngredientInputProps {
 const Box = createBox<Theme>()
 const Text = createText<Theme>()
 
+{/* Field that displays chosen preferences with possibility to delete it */}
 const IngredientInput = ({ remove, title }: IngredientInputProps) => {
     return (
         <Box

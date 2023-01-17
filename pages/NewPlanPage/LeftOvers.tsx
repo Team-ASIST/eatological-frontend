@@ -4,7 +4,6 @@ import { NavigationScreenProp } from 'react-navigation'
 import React from 'react'
 import SearchBar from '../../components/ui/inputs/SearchBar'
 import {
-    ILeftOver,
     selectAllLeftovers,
     leftoverDecrement,
     leftoverIncrement,
@@ -17,6 +16,7 @@ import NewPlanNavigationBar from './NavigationNewPlanBar'
 import { useRoute } from '@react-navigation/native'
 import { resetPlanConfiguration } from '../../redux/slice/newPlanSlice'
 import { AppDispatch } from '../../redux/store'
+import { LeftOver } from '../../utils/dataTypes'
 
 const Text = createText<Theme>()
 const Box = createBox<Theme>()
@@ -30,7 +30,7 @@ const LeftoversScreen = ({ navigation }: Props) => {
     const dispatch = useDispatch<AppDispatch>()
     const route = useRoute()
 
-    const leftoverInputs = leftovers.map((leftover: ILeftOver) => (
+    const leftoverInputs = leftovers.map((leftover: LeftOver) => (
         <LeftOverInput
             key={leftover.id}
             increment={() => dispatch(leftoverIncrement({ id: leftover.id }))}
@@ -52,7 +52,7 @@ const LeftoversScreen = ({ navigation }: Props) => {
                     navigation.navigate('CurrentPlan')
                 }}>
                 <Box marginVertical="l" marginHorizontal="xs" padding="m" height={'75%'}>
-                    <Text variant="subheader">Hast Du Reste im Kühlschrank?</Text>
+                    <Text variant="subheader">Hast du Reste im Kühlschrank?</Text>
                     <Box position="relative" zIndex={1}>
                         <SearchBar typeOfItems="leftover"></SearchBar>
                     </Box>

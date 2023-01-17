@@ -51,7 +51,7 @@ export const UsernameInput = ({
                 <Box
                     flexDirection="row"
                     padding="m"
-                    margin={'l'}
+                    margin="l"
                     backgroundColor="white"
                     alignItems="center"
                     borderRadius={5}
@@ -60,7 +60,7 @@ export const UsernameInput = ({
                     justifyContent="space-between">
                     {/* Input field */}
                     <TextInput
-                        style={{ width: 235 }}
+                        hitSlop={{top: 20, bottom: 20, left: 20, right: 210}}
                         placeholder={switchMode ? 'Kontonamen eingeben...' : 'Neuer Nutzername...'}
                         value={currentUsername}
                         onChangeText={setCurrentUsername}

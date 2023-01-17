@@ -130,7 +130,7 @@ const SettingsPage = ({ navigation }: SettingsPageProps) => {
 
   return (
     <Box padding="m" backgroundColor="mainBackground" flex={1}>
-      <ScrollView refreshControl={
+      <ScrollView keyboardShouldPersistTaps={'handled'} refreshControl={
         <RefreshControl
           refreshing={updating}
         />
