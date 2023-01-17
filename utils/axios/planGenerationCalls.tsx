@@ -37,7 +37,7 @@ export const createPlan = async (portions: number[], leftovers: smallIngredient[
         return { recipeSwipeObjects: recipeSwipeObjects, sustainabilityScore: initialPlan.sustainabilityScore }
     } catch (error) {
         // Call erroneous
-        console.warn(error)
+        console.warn("[createPlan]", error)
     }
     return { recipeSwipeObjects: [], sustainabilityScore: 0 }
 }
@@ -60,7 +60,7 @@ export const swipeleft = async (currentList: RecipeSwipeObject[], mealID: number
         result[mealID].swapRecipe(newPlan.meals[mealID].recipe)
         return { recipeSwipeObjects: result, sustainabilityScore: newPlan.sustainabilityScore } as FrontendPlan
     } catch (error) {
-        console.warn(error)
+        console.warn("[swipeleft]", error)
     }
     // Send Previous plan (Sustainability Score?)
     return { recipeSwipeObjects: currentList, sustainabilityScore: 0 } as FrontendPlan
@@ -86,7 +86,7 @@ export const swiperight = async (currentList: RecipeSwipeObject[], mealID: numbe
         return { recipeSwipeObjects: result, sustainabilityScore: newPlan.sustainabilityScore } as FrontendPlan
     } catch (error) {
         // Call erroneous
-        console.warn(error)
+        console.warn("[swiperight]", error)
     }
     // Send Previous plan (Sustainability Score?)
     return { recipeSwipeObjects: currentList, sustainabilityScore: 0 } as FrontendPlan

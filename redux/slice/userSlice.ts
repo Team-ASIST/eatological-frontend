@@ -122,7 +122,7 @@ export const getToken = createAsyncThunk<
                 return ""
             }
 
-            console.warn(error)
+            console.warn("[getToken]", error)
             throw error
         }
     }
@@ -152,7 +152,7 @@ export const addUser = createAsyncThunk<
             return message.username
         } catch (error) {
             // Call erroneous
-            console.warn(error)
+            console.warn("[addUser]", error)
             throw error
         }
     }
@@ -185,6 +185,7 @@ export const renameUser = createAsyncThunk<
             return name
         } catch (error) {
             // Call erroneous
+            console.warn("[renameUser]", error)
             throw error
         }
     }
@@ -219,7 +220,7 @@ export const deleteUser = createAsyncThunk<
                 return false
             }
 
-            console.warn(error)
+            console.warn("[deleteUser]", error)
             throw error
         }
     }
