@@ -1,69 +1,12 @@
 import React, { useState } from 'react'
-import { createBox, createText, useTheme } from '@shopify/restyle'
-import { TextInput, Keyboard, FlatList, ListRenderItemInfo, View } from 'react-native'
+import { createBox, createText} from '@shopify/restyle'
 import { Theme } from '../../../utils/theme'
-import IconButton from './IconButton'
 import { useSelector } from 'react-redux'
 import { selectAllIngredients } from '../../../redux/slice/currentPlanSlice'
 import ProposalList from './ProposalList'
+import SearchBarDisplay from './SearchBarDisplay'
 
-const Text = createText<Theme>()
 const Box = createBox<Theme>()
-
-type SearchBarDisplayProps = {
-    clicked: boolean
-    searchPhrase: string
-    setSearchPhrase: (input: string) => void
-    setClicked: (click: boolean) => void
-}
-
-{
-    /* Component for the display of the searchBar only */
-}
-const SearchBarDisplay = ({
-    clicked,
-    searchPhrase,
-    setSearchPhrase,
-    setClicked,
-}: SearchBarDisplayProps) => { 
-    const theme = useTheme<Theme>()
-    
-    return (
-        <Box
-            flexDirection="row"
-            padding="m"
-            marginBottom="s"
-            backgroundColor="mainBackground"
-            borderRadius={50}
-            borderWidth={2}
-            borderColor="accent"
-            justifyContent="space-between">
-            {/* Input field */}
-            <TextInput
-            hitSlop={{top: 20, bottom: 20, left: 20, right: 210}}
-                placeholder="Suche..."
-                value={searchPhrase}
-                onChangeText={setSearchPhrase}
-                onFocus={() => {
-                    setClicked(true)
-                }}
-            />
-            {/* close button, depending on whether the search bar is clicked or not */}
-            {clicked && (
-                <IconButton
-                    onPress={() => {
-                        Keyboard.dismiss()
-                        setClicked(false)
-                        setSearchPhrase('')
-                    }}
-                    icon={'close'}
-                    size={15}
-                    color={theme.colors.secondaryCardText}
-                />
-            )}
-        </Box>
-    )
-}
 
 
 type SearchBarProps = {
