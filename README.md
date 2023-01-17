@@ -76,10 +76,6 @@ yarn ios
 
 If you have issues running the app it may help clearing the React Native packager cache. Use the command `yarn expo start --clear` to do this.
 
-## Automated Tests
-
-This project hasn't been set up with automated tests. The blog post [setting up tests for React-Native-Expo-Typescript] can probably help.
-
 ## Folder Structure
 
 ### ```pages```
