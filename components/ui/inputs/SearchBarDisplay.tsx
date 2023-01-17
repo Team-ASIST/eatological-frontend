@@ -1,6 +1,6 @@
 import React from 'react'
 import { createBox, useTheme } from '@shopify/restyle'
-import { TextInput, Keyboard} from 'react-native'
+import { TextInput, Keyboard } from 'react-native'
 import { Theme } from '../../../utils/theme'
 import IconButton from './IconButton'
 
@@ -14,16 +14,16 @@ type SearchBarDisplayProps = {
 }
 
 {
-    /* Component for the display of the searchBar only */
+    /* Component for the display of the searchBar */
 }
 const SearchBarDisplay = ({
     clicked,
     searchPhrase,
     setSearchPhrase,
     setClicked,
-}: SearchBarDisplayProps) => { 
+}: SearchBarDisplayProps) => {
     const theme = useTheme<Theme>()
-    
+
     return (
         <Box
             flexDirection="row"
@@ -36,7 +36,7 @@ const SearchBarDisplay = ({
             justifyContent="space-between">
             {/* Input field */}
             <TextInput
-            hitSlop={{top: 20, bottom: 20, left: 20, right: 210}}
+                hitSlop={{ top: 20, bottom: 20, left: 20, right: 210 }}
                 placeholder="Suche..."
                 value={searchPhrase}
                 onChangeText={setSearchPhrase}

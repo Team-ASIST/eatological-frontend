@@ -9,11 +9,8 @@ import { AppDispatch } from '../../../redux/store'
 
 const Text = createText<Theme>()
 const Box = createBox<Theme>()
-
-
-
 {
-    /* typeOfItem specifies when pressing the plus button if the item is supposed to be a leftover or a foodpreference */
+    /* The typeOfItem property specifies when pressing the plus button if the item is supposed to be a leftover or a foodpreference */
 }
 type ItemProps = {
     typeOfItem: string
@@ -79,7 +76,7 @@ type ListProps = {
 }
 
 {
-    /* List of displayed items, no case sensitivity */
+    /* Ingredient proposal list that displays the ingredients that include the letters typed by the user */
 }
 const ProposalList = ({ searchPhrase, data, typeOfItems, setClicked, setSearchPhrase }: ListProps) => {
     return (
@@ -92,6 +89,7 @@ const ProposalList = ({ searchPhrase, data, typeOfItems, setClicked, setSearchPh
                 keyboardShouldPersistTaps={'handled'}
                 data={data}
                 renderItem={({ item }: ListRenderItemInfo<ItemProps>) => {
+                    /* If nothing is typed or if no ingredient matches the user input, nothing should be shown, else those ingredients that match the include are should be returned  */
                     if (searchPhrase === '') {
                         return <View />
                     } else if (

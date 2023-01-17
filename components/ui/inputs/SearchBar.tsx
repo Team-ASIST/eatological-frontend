@@ -13,6 +13,9 @@ type SearchBarProps = {
     typeOfItems: string
 }
 
+{
+    /* Renders a search bar and an ingredient proposal list, based on the search phrase entered by the user.  */
+}
 const SearchBar = ({ typeOfItems }: SearchBarProps) => {
     const [searchPhrase, setSearchPhrase] = useState('')
     const [clicked, setClicked] = useState(false)
