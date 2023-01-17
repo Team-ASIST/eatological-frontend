@@ -179,13 +179,8 @@ export const updateGroceries = createAsyncThunk<
                 }
             )
 
-            if (response.status = 200) {
-                // Return data
-                return response.data.groceries as Grocery[]
-            } else {
-                console.warn("Call Groceries aborted!")
-                throw Error("Response was not 200")
-            }
+            // Return data
+            return response.data.groceries as Grocery[]
         } catch (error) {
             // Call erroneous
             console.warn("[updateGroceries]", error)
@@ -228,28 +223,23 @@ export const getPlan = createAsyncThunk<
                 '/plan'
             )
 
-            if (response.status = 200) {
-                // Extract data and parse results into Meal Array
-                let plan: BackendPlan = response.data
-                const meals: Meal[] = []
-                let i: number = 0
+            // Extract data and parse results into Meal Array
+            let plan: BackendPlan = response.data
+            const meals: Meal[] = []
+            let i: number = 0
 
-                plan.meals.forEach((meal: any, idx: number) => {
-                    meals.push(
-                        {
-                            id: idx,
-                            recipe: meal.recipe,
-                            portions: meal.portion,
-                            cooked: meal.cooked
-                        } as Meal
-                    )
-                })
+            plan.meals.forEach((meal: any, idx: number) => {
+                meals.push(
+                    {
+                        id: idx,
+                        recipe: meal.recipe,
+                        portions: meal.portion,
+                        cooked: meal.cooked
+                    } as Meal
+                )
+            })
 
-                return meals
-            } else {
-                console.warn("Call Groceries aborted!")
-                throw Error("Response was not 200")
-            }
+            return meals
         } catch (error) {
             console.warn("[getPlan]", error)
             throw error
@@ -267,14 +257,9 @@ export const getIngredients = createAsyncThunk<
                 '/ingredients'
             )
 
-            if (response.status = 200) {
-                // Extract data and parse results into Ingredient Array
-                let ingredients: Ingredient[] = response.data
-                return ingredients
-            } else {
-                console.warn("Call Groceries aborted!")
-                throw Error("Response was not 200")
-            }
+            // Extract data and parse results into Ingredient Array
+            let ingredients: Ingredient[] = response.data
+            return ingredients
         } catch (error) {
             console.warn("[getIngredients]", error)
             throw error
@@ -314,13 +299,8 @@ export const getGroceries = createAsyncThunk<
                 '/groceries'
             )
 
-            if (response.status = 200) {
-                // Return data
-                return response.data.groceries as Grocery[]
-            } else {
-                console.warn("Call Groceries aborted!")
-                throw Error("Response was not 200")
-            }
+            // Return data
+            return response.data.groceries as Grocery[]
         } catch (error) {
             // Call erroneous
             console.warn("[getGroceries]", error)
@@ -336,10 +316,10 @@ export const selectAllIngredients = (state: RootState) => state.currentPlan.ingr
 export const selectNewPlanConfiguration = (state: RootState) => state.newPlan
 export const selectSortedGroceries = (state: RootState) => {
     return state.currentPlan.groceries.slice().sort(function (grocery1, grocery2) {
-        if (grocery1.grocery.bought === grocery1.grocery.required && grocery2.grocery.bought !== grocery2.grocery.required) {
+        if (grocery1.grocery.bought >= grocery1.grocery.required && grocery2.grocery.bought < grocery2.grocery.required) {
             return 1
         }
-        if (grocery1.grocery.bought !== grocery1.grocery.required && grocery2.grocery.bought === grocery2.grocery.required) {
+        if (grocery1.grocery.bought < grocery1.grocery.required && grocery2.grocery.bought >= grocery2.grocery.required) {
             return -1
         }
 

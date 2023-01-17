@@ -109,25 +109,20 @@ export const getToken = createAsyncThunk<
                 }
             )
 
-            if (response.status = 200) {
-                const message = response.data
-
-                if (!('errorCode' in message)) {
-                    if(thunkApi.getState().user.name != name){
-                        thunkApi.dispatch(changeUsername(name))
-                        thunkApi.dispatch(resetCurrentPlan())
-                    }
-                    return message.token
-                } else {
-                    return thunkApi.getState().user.token
-                }
-
-            } else {
-                console.warn("Call Groceries aborted!")
-                throw Error("Response was not 200")
+            const message = response.data
+            if (thunkApi.getState().user.name != name) {
+                thunkApi.dispatch(changeUsername(name))
+                thunkApi.dispatch(resetCurrentPlan())
             }
+            return message.token
         } catch (error) {
             // Call erroneous
+
+            if ((error as any).response.status === 403 && 'errorCode' in (error as any).response.data) {
+                return ""
+            }
+
+            console.warn("[getToken]", error)
             throw error
         }
     }
@@ -135,14 +130,14 @@ export const getToken = createAsyncThunk<
 
 export const addUser = createAsyncThunk<
     string,
-    string,
+    void,
     {
         dispatch: AppDispatch,
         state: RootState
     }
 >(
     'user/add',
-    async (name, thunkApi) => {
+    async (_, thunkApi) => {
         try {
             // Add new user to the database
             const response = await instance.post(
@@ -150,23 +145,14 @@ export const addUser = createAsyncThunk<
                 {}
             )
 
-            if (response.status = 200) {
-                const message = response.data
+            const message = response.data
 
-                if (!('errorCode' in message)) {
-                    thunkApi.dispatch(getToken(message.username))
-                    return message.username
-                } else {
-                    return ""
-                }
+            await thunkApi.dispatch(getToken(message.username))
 
-            } else {
-                console.warn("Call Groceries aborted!")
-                throw Error("Response was not 200")
-            }
+            return message.username
         } catch (error) {
             // Call erroneous
-            console.warn(error)
+            console.warn("[addUser]", error)
             throw error
         }
     }
@@ -194,23 +180,12 @@ export const renameUser = createAsyncThunk<
                 }
             )
 
-            if (response.status = 200) {
-                const message = response.data
-
-                if (!('errorCode' in message)) {
-                    thunkApi.dispatch(getToken(name))
-                    return name
-                } else {
-                    // Return old name
-                    return thunkApi.getState().user.name
-                }
-
-            } else {
-                console.warn("Call Groceries aborted!")
-                throw Error("Response was not 200")
-            }
+            const message = response.data
+            thunkApi.dispatch(getToken(name))
+            return name
         } catch (error) {
             // Call erroneous
+            console.warn("[renameUser]", error)
             throw error
         }
     }
@@ -218,38 +193,34 @@ export const renameUser = createAsyncThunk<
 
 export const deleteUser = createAsyncThunk<
     boolean,
-    string,
+    void,
     {
         dispatch: AppDispatch,
         state: RootState
     }
 >(
     'user/delete',
-    async (name, thunkApi) => {
+    async (_, thunkApi) => {
         try {
             // Delete User
             const response = await instance.delete(
                 '/user/delete'
             )
 
-            if (response.status = 200) {
-                const message = response.data
-
-                if (!('errorCode' in message)) {
-                    thunkApi.dispatch(resetCurrentPlan())
-                    thunkApi.dispatch(addUser(""))
-                    return true
-                } else {
-                    return false
-                }
-
-            } else {
-                console.warn("Call Groceries aborted!")
-                throw Error("Response was not 200")
-            }
+            const message = response.data
+            thunkApi.dispatch(resetCurrentPlan())
+            thunkApi.dispatch(addUser())
+            return true
         } catch (error) {
             // Call erroneous
-            console.warn(error)
+
+            if ((error as any).response.status === 401) {
+                thunkApi.dispatch(resetCurrentPlan())
+                thunkApi.dispatch(addUser())
+                return false
+            }
+
+            console.warn("[deleteUser]", error)
             throw error
         }
     }

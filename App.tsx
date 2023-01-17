@@ -19,11 +19,27 @@ import { TabNavigator } from './navigation/tabNavigator'
 import { getIngredients, getPlan } from './redux/slice/currentPlanSlice'
 import SplashScreen from './pages/SplashScreen/SplashScreen'
 import { addUser, getToken } from './redux/slice/userSlice'
+
 //Wrapper component which enables the usage of useDispatch in App component
 const AppWrapper = () => {
+  const colorTheme = useColorScheme();
+  let [fontsLoaded] = useFonts({
+    Fraunces_300Light,
+    Fraunces_500Medium,
+    Fraunces_700Bold,
+  });
+
+  if (!fontsLoaded) {
+    return <Text>Fonts loading...</Text>
+  }
+
   return (
     <Provider store={store}>
-      <App />
+      <ThemeProvider theme={colorTheme === 'dark' ? darkTheme : theme}>
+        <NavigationContainer>
+          <App />
+        </NavigationContainer>
+      </ThemeProvider>
     </Provider>
   )
 }
@@ -33,53 +49,39 @@ const App = () => {
   //load ingredients and store them in redux store (ingredientSlice)
   const dispatch = useDispatch<AppDispatch>()
 
-  const onBeforeLift = () => {
+  // Load User
+  const onBeforeLift = async () => {
     const name = store.getState().user.name
 
+    // No Previous User persisted
     if (name == "") {
-      dispatch(addUser("")).then(
-        () => dispatch(getToken(store.getState().user.name)).then(
-          () => {
-            dispatch(getIngredients())
-            dispatch(getPlan())
-          }
-        )
-      )
+      await dispatch(addUser())
     } else {
-      dispatch(getToken(name)).then(
-        () => {
-          dispatch(getIngredients())
-          dispatch(getPlan())
+      // Persisted User has been found
+      await dispatch(getToken(name)).then(
+        async () => {
+          // User is still active in Backend
+          if (store.getState().user.token == "") {
+            await dispatch(addUser())
+          }
         }
       )
     }
-  }
 
-  const colorTheme = useColorScheme();
-  let [fontsLoaded] = useFonts({
-    Fraunces_300Light,
-    Fraunces_500Medium,
-    Fraunces_700Bold,
-  });
+    await dispatch(getIngredients())
+    await dispatch(getPlan())
+  }
 
   let persistor = persistStore(store)
 
-  if (!fontsLoaded) {
-    return <Text>Fonts loading...</Text>
-  }
   return (
-    <Provider store={store}>
-      <ThemeProvider theme={colorTheme === 'dark' ? darkTheme : theme}>
-        <NavigationContainer>
-          <PersistGate loading={<SplashScreen />} persistor={persistor} onBeforeLift={onBeforeLift}>
-            <SafeAreaView style={{ flex: 1, paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0 }}>
-              <TabNavigator />
-            </SafeAreaView>
-          </PersistGate>
-        </NavigationContainer>
-      </ThemeProvider>
-    </Provider>
+
+    <PersistGate loading={<SplashScreen />} persistor={persistor} onBeforeLift={async () => await onBeforeLift()}>
+      <SafeAreaView style={{ flex: 1, paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0 }}>
+        <TabNavigator />
+      </SafeAreaView>
+    </PersistGate>
   );
 }
 
-export default AppWrapper; 
+export default AppWrapper;  
