@@ -132,9 +132,9 @@ const SettingsPage = ({ navigation }: SettingsPageProps) => {
           <UsernameInput
             modalVisible={modalVisible}
             setModalVisible={setModalVisible}
-            switchMode={switchMode}
             clicked={clicked}
             setClicked={setClicked}
+            switchMode={switchMode}
             currentUsername={currentUsername}
             setCurrentUsername={setCurrentUsername}
             changeUser={changeUser}
