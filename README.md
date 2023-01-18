@@ -96,4 +96,4 @@ The redux folder stores all redux files that are used across multiple pages. In 
 
 # Coding conventions
 
-In Expo projects, eslint and prettier are doesn’t configured by default. So we need to configure ourselves. For this reason, Expo team made a package named eslint-config-universe to configure these tools.
+In our Expo project, eslint and prettier are doesn’t configured by default; we configured it ourselves with the Expo-package named eslint-config-universe. 
