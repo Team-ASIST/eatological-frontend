@@ -53,6 +53,11 @@ export const IngredientItem = ({ ingredientName, unit, season, local, alternativ
     const theme = useTheme<Theme>()
     const isBought = Number((bought * smallestAmount).toFixed(2)) >= Number((required * smallestAmount).toFixed(2))
 
+    console.log(Math.min(
+        Number((bought * smallestAmount).toFixed(2)),
+        Number((required * smallestAmount).toFixed(2))
+    ))
+
     return (
         <Box
             backgroundColor={isBought ? 'inactiveButtonColor' : 'mainBackground'}
@@ -75,7 +80,7 @@ export const IngredientItem = ({ ingredientName, unit, season, local, alternativ
                 </Text>
                 {alternative ?
                     <Tooltip width={200} height={"auto"} actionType="press" backgroundColor={theme.colors.accent} popover={<Text variant="body">{alternative}</Text>}>
-                            <Ionicons color={theme.colors.secondaryCardText} name={"information-circle-outline"} size={30} />
+                        <Ionicons color={theme.colors.secondaryCardText} name={"information-circle-outline"} size={30} />
                     </Tooltip> : <></>}
             </Box>
 
@@ -83,7 +88,16 @@ export const IngredientItem = ({ ingredientName, unit, season, local, alternativ
             {/* Season, Amounts, Local */}
             <Box flexDirection={"column"} alignItems="flex-end" flex={5} marginRight="m">
                 <Text variant={"body"} color="secondaryCardText">
-                    {Math.min(Number((bought * smallestAmount).toFixed(2)), Number((required * smallestAmount).toFixed(2))).toString().replace(/\.?0*$/,'')} / {(required * smallestAmount).toFixed(2).replace(/\.?0*$/,'')} {unit}
+                    {
+                        Math.min(
+                            Number((bought * smallestAmount).toFixed(2)),
+                            Number((required * smallestAmount).toFixed(2))
+                        )
+                    }
+                    /
+                    {
+                        parseFloat((required * smallestAmount).toFixed(2))
+                    } {unit}
                 </Text>
                 <Box flexDirection={"row"} alignItems="center">
                     {season ? <TagItem text={"Season"} backgroundColor={"accent"} /> : <></>}

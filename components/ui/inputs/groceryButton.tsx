@@ -50,14 +50,21 @@ const GroceryButton = ({ ingredientId, grocery, ingredient, onClick }: GroceryBu
                 </Text>
                 {ingredient.alternative ?
                     <Tooltip width={200} height={"auto"} actionType="press" backgroundColor={theme.colors.accent} popover={<Text variant="body">{ingredient.alternative}</Text>}>
-                            <Ionicons color={theme.colors.primaryCardText} name={"information-circle-outline"} size={30} />
+                        <Ionicons color={theme.colors.primaryCardText} name={"information-circle-outline"} size={30} />
                     </Tooltip> : <></>}
             </Box>
 
             {/* Season, Amounts, Local */}
             <Box flexDirection={"column"} alignItems="flex-end" flex={4} marginRight="m">
                 <Text variant={"body"} color="primaryCardText">
-                {Math.min(Number((grocery.bought * ingredient.smallestAmount).toFixed(2)), Number((grocery.required * ingredient.smallestAmount).toFixed(2))).toString().replace(/\.?0*$/,'')} / {(grocery.required * ingredient.smallestAmount).toFixed(2).replace(/\.?0*$/,'')} {ingredient.unit}
+                    {
+                        Math.min(
+                            Number((grocery.bought * ingredient.smallestAmount).toFixed(2)),
+                            Number((grocery.required * ingredient.smallestAmount).toFixed(2))
+                        )
+                    } / {
+                        parseFloat((grocery.required * ingredient.smallestAmount).toFixed(2))
+                    } {ingredient.unit}
                 </Text>
                 <Box flexDirection={"row"} alignItems="center">
                     {ingredient.season ? <TagItem text={"Season"} backgroundColor={"inactiveButtonColor"} /> : <></>}
