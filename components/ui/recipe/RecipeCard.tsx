@@ -36,13 +36,13 @@ const recipeCard = (props: RecipeCardProps) => {
                         tint="dark"
                         intensity={40}
                     >
-                        <Box padding="s" flexDirection="row" width={"95%"} justifyContent="space-between" alignContent="center" margin="s">
+                        <Box padding="s" flexDirection="row" width={"95%"} justifyContent="space-between" alignContent="center" margin="s"  alignItems="center">
                             <Box flexDirection="row" width={"75%"}>
                                 <Text variant="subsubheader" color={"primaryCardText"}>
                                     {props.recipeName}
                                 </Text>
                             </Box>
-                            <Box flexDirection="row" justifyContent="flex-end" flexGrow={1} width={"25%"}>
+                            <Box flexDirection="row" justifyContent="flex-end" flexGrow={1} width={"25%"} alignItems="center">
                                 {props.ready ?
                                     <Box>
                                         <IconText iconName={'checkmark-outline'} text={''} />

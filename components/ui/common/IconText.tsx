@@ -17,7 +17,7 @@ const iconText = (props: IconTextProps) => {
     const theme = useTheme<Theme>()
 
     return (
-        <Box flexDirection="row" alignContent="center" >
+        <Box flexDirection="row" alignContent="center" alignItems={"center"}>
             <IconButton icon={props.iconName} size={theme.textVariants.subheader.fontSize}/>
             <Text variant="subheader" color={"primaryCardText"}>{props.text}</Text>
         </Box>
