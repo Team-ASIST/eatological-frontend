@@ -51,10 +51,11 @@ const CheckIcon = ({ bought }: CheckIconProps) => {
 
 export const IngredientItem = ({ ingredientName, unit, season, local, alternative, bought, required, smallestAmount }: IngredientItemProps) => {
     const theme = useTheme<Theme>()
+    const isBought = Number((bought * smallestAmount).toFixed(2)) >= Number((required * smallestAmount).toFixed(2))
 
     return (
         <Box
-            backgroundColor={bought >= required ? 'inactiveButtonColor' : 'mainBackground'}
+            backgroundColor={isBought ? 'inactiveButtonColor' : 'mainBackground'}
             flexDirection={"row"}
             justifyContent={"space-between"}
             alignItems={"center"}
@@ -65,7 +66,7 @@ export const IngredientItem = ({ ingredientName, unit, season, local, alternativ
             paddingRight={"xs"}
         >
             <Box flex={2}>
-                <CheckIcon bought={(bought >= required)} />
+                <CheckIcon bought={isBought} />
             </Box>
 
             <Box flex={5} flexDirection="row" alignItems={"center"} flexWrap="wrap">
@@ -80,9 +81,9 @@ export const IngredientItem = ({ ingredientName, unit, season, local, alternativ
 
 
             {/* Season, Amounts, Local */}
-            <Box flexDirection={"column"} alignItems="flex-start" flex={5}>
+            <Box flexDirection={"column"} alignItems="flex-end" flex={5} marginRight="m">
                 <Text variant={"body"} color="secondaryCardText">
-                    {(bought * smallestAmount).toFixed(2)} / {(required * smallestAmount).toFixed(2)} {unit}
+                    {Math.min(Number((bought * smallestAmount).toFixed(2)), Number((required * smallestAmount).toFixed(2))).toString().replace(/\.?0*$/,'')} / {(required * smallestAmount).toFixed(2).replace(/\.?0*$/,'')} {unit}
                 </Text>
                 <Box flexDirection={"row"} alignItems="center">
                     {season ? <TagItem text={"Season"} backgroundColor={"accent"} /> : <></>}

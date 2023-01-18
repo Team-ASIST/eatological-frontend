@@ -18,11 +18,13 @@ export type GroceryButtonProps = {
 
 const GroceryButton = ({ ingredientId, grocery, ingredient, onClick }: GroceryButtonProps) => {
     const theme = useTheme<Theme>()
+    const isBought = Number(grocery.bought.toFixed(2)) >= Number(grocery.required.toFixed(2))
+
 
     return (
         <Box
             backgroundColor={
-                grocery.bought >= grocery.required ? 'inactiveButtonColor' : 'primaryCardBackground'
+                isBought ? 'inactiveButtonColor' : 'primaryCardBackground'
             }
             borderRadius={20}
             flexDirection={'row'}
@@ -34,7 +36,7 @@ const GroceryButton = ({ ingredientId, grocery, ingredient, onClick }: GroceryBu
             paddingRight={'xs'}>
             <Box flex={2}>
                 <TouchableOpacity onPress={() => onClick(ingredientId)}>
-                    {grocery.bought >= grocery.required ? (
+                    {isBought ? (
                         <Ionicons name={'checkmark-outline'} size={50} color={theme.colors.white} />
                     ) : (
                         <Ionicons name={'add-outline'} size={50} color={theme.colors.white} />
@@ -55,7 +57,7 @@ const GroceryButton = ({ ingredientId, grocery, ingredient, onClick }: GroceryBu
             {/* Season, Amounts, Local */}
             <Box flexDirection={"column"} alignItems="flex-end" flex={4} marginRight="m">
                 <Text variant={"body"} color="primaryCardText">
-                {(grocery.bought * ingredient.smallestAmount).toFixed(2).replace(/\.?0*$/,'')} / {(grocery.required * ingredient.smallestAmount).toFixed(2).replace(/\.?0*$/,'')} {ingredient.unit}
+                {Math.min(Number((grocery.bought * ingredient.smallestAmount).toFixed(2)), Number((grocery.required * ingredient.smallestAmount).toFixed(2))).toString().replace(/\.?0*$/,'')} / {(grocery.required * ingredient.smallestAmount).toFixed(2).replace(/\.?0*$/,'')} {ingredient.unit}
                 </Text>
                 <Box flexDirection={"row"} alignItems="center">
                     {ingredient.season ? <TagItem text={"Season"} backgroundColor={"inactiveButtonColor"} /> : <></>}

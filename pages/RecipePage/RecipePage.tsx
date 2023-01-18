@@ -32,7 +32,6 @@ const RecipePage = ({ navigation, route }: RecipePageProps) => {
     // Get the id specifying the recipe from route.params
     const { mealId } = route.params;
     const meal = useSelector(selectAllRecipes).find((meal: Meal) => meal.id === mealId)
-    const theme = useTheme<Theme>()
 
     if (!meal) {
         navigation.navigate('CurrentPlan')
@@ -149,8 +148,8 @@ const RecipePage = ({ navigation, route }: RecipePageProps) => {
                                                 season={grocery.ingredient.season}
                                                 local={grocery.ingredient.local}
                                                 alternative={grocery.ingredient.alternative}
-                                                bought={Number(grocery.grocery.bought.toPrecision(2))}
-                                                required={Number((item.quantity * meal.portions).toPrecision(2))}
+                                                bought={grocery.grocery.bought}
+                                                required={item.quantity * meal.portions}
                                                 smallestAmount={grocery.ingredient.smallestAmount} />
                                         }
                                     }
