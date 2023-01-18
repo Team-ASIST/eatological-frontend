@@ -53,11 +53,6 @@ export const IngredientItem = ({ ingredientName, unit, season, local, alternativ
     const theme = useTheme<Theme>()
     const isBought = Number((bought * smallestAmount).toFixed(2)) >= Number((required * smallestAmount).toFixed(2))
 
-    console.log(Math.min(
-        Number((bought * smallestAmount).toFixed(2)),
-        Number((required * smallestAmount).toFixed(2))
-    ))
-
     return (
         <Box
             backgroundColor={isBought ? 'inactiveButtonColor' : 'mainBackground'}
