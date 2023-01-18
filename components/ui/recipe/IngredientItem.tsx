@@ -54,7 +54,7 @@ export const IngredientItem = ({ ingredientName, unit, season, local, alternativ
 
     return (
         <Box
-            backgroundColor={bought >= required ? 'navigationButtonColor' : 'mainBackground'}
+            backgroundColor={bought >= required ? 'inactiveButtonColor' : 'mainBackground'}
             flexDirection={"row"}
             justifyContent={"space-between"}
             alignItems={"center"}
