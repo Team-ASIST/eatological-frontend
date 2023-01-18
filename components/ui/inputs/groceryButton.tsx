@@ -18,8 +18,7 @@ export type GroceryButtonProps = {
 
 const GroceryButton = ({ ingredientId, grocery, ingredient, onClick }: GroceryButtonProps) => {
     const theme = useTheme<Theme>()
-    const isBought = Number(grocery.bought.toFixed(2)) >= Number(grocery.required.toFixed(2))
-
+    const isBought = grocery.bought >= grocery.required
 
     return (
         <Box
