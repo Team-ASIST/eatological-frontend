@@ -88,6 +88,11 @@ const userSlice = createSlice({
     }
 })
 
+/**
+ * Fetches the token for the selected Username
+ * @param name Username used to fetch the token
+ * @returns Token String
+ */
 export const getToken = createAsyncThunk<
     string,
     string,
@@ -110,6 +115,7 @@ export const getToken = createAsyncThunk<
             )
 
             const message = response.data
+            // If a new Username was used to fetch the token, change the Username and reset the currentPlanSlice
             if (thunkApi.getState().user.name !== name) {
                 thunkApi.dispatch(changeUsername(name))
                 thunkApi.dispatch(resetCurrentPlan())
@@ -118,8 +124,14 @@ export const getToken = createAsyncThunk<
         } catch (error) {
             // Call erroneous
 
+            // If the User is no longer active in the Backend, return empty token
             if ((error as any).response.status === 403 && 'errorCode' in (error as any).response.data) {
-                return ""
+                if(thunkApi.getState().user.token === ""){
+                    await thunkApi.dispatch(addUser())
+                }{
+                    return thunkApi.getState().user.token
+                }
+                
             }
 
             console.warn("[getToken]", error)
@@ -128,6 +140,10 @@ export const getToken = createAsyncThunk<
     }
 )
 
+/**
+ * Add a new Guest User to the System
+ * @returns string representing the newly added Guest User ("Gast" + randomNumber)
+ */
 export const addUser = createAsyncThunk<
     string,
     void,
@@ -158,6 +174,11 @@ export const addUser = createAsyncThunk<
     }
 )
 
+/**
+ * Renames the user to the selected name if the name is not already linked to a different account
+ * @param name new Username which the user wants to be renamed to
+ * @returns name the newly set name
+ */
 export const renameUser = createAsyncThunk<
     string,
     string,
@@ -191,6 +212,10 @@ export const renameUser = createAsyncThunk<
     }
 )
 
+/**
+ * Deletes the active User and immediately generates a new Guest User
+ * @returns boolean representing whether the active user could be deleted
+ */
 export const deleteUser = createAsyncThunk<
     boolean,
     void,

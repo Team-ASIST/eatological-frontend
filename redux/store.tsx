@@ -18,7 +18,7 @@ const persistConfig = {
   key: 'root',
   version: 1,
   storage: AsyncStorage,
-  blacklist: ['updated']
+  blacklist: ['updated', 'token']
 }
 
 const persistedReducer = persistReducer(persistConfig, currentPlanReducer)

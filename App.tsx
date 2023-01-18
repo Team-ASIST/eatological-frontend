@@ -58,14 +58,7 @@ const App = () => {
       await dispatch(addUser())
     } else {
       // Persisted User has been found
-      await dispatch(getToken(name)).then(
-        async () => {
-          // User is still active in Backend
-          if (store.getState().user.token === "") {
-            await dispatch(addUser())
-          }
-        }
-      )
+      await dispatch(getToken(name))
     }
 
     await dispatch(getIngredients())
