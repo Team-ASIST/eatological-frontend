@@ -33,6 +33,8 @@ If you're on a Mac and have Xcode installed, you can run the app using the iOS S
 yarn ios
 ```
 
+Or visit our hosted [Expo Eatological App](https://expo.dev/@eatological/eatological-frontend?serviceType=classic&distribution=expo-go&release-channel=production)
+
 ## Packages
 
 
