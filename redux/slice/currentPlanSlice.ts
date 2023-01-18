@@ -41,7 +41,7 @@ const currentPlanSlice = createSlice({
                     meal.cooked = !meal.cooked
                 }
             })
-            .addCase(acceptPlan.pending, (state, { meta }) => {
+            .addCase(acceptPlan.fulfilled, (state, { meta }) => {
                 const meals = meta.arg as Meal[]
                 state.recipes = meals
             })
@@ -213,7 +213,7 @@ export const acceptPlan = createAsyncThunk<
                 { headers: {} }
             )
             thunkApi.dispatch(resetGroceries())
-            thunkApi.dispatch(getGroceries())
+            await thunkApi.dispatch(getGroceries())
             return meals
         } catch (error) {
             // Call erroneous
