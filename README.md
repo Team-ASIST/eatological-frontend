@@ -15,6 +15,12 @@ You don't need to install any global npm packages for this repo. `expo-cli` is i
 
 ## Running the App
 
+Install all necessary packages via yarn. 
+
+```shell
+yarn install
+```
+
 Start the local server. This will give you a QR code that you can scan using the Expo Client app on your mobile device.
 
 ```shell
@@ -96,4 +102,4 @@ The redux folder stores all redux files that are used across multiple pages. In 
 
 # Coding conventions
 
-In our Expo project, eslint and prettier are doesn’t configured by default; we configured it ourselves with the Expo-package named eslint-config-universe. 
+Eslint and prettier aren’t configured by default; we configured it ourselves with the Expo-package named eslint-config-universe. 
