@@ -11,6 +11,7 @@ import { AppDispatch } from "../../redux/store";
 
 const Box = createBox<Theme>();
 
+// Returns the GroceryListPage containing all Groceries from the UserSlice in sorted order
 const GroceryListPage = () => {
   const dispatch = useDispatch<AppDispatch>()
   const groceries = useSelector(selectSortedGroceries)
@@ -21,12 +22,13 @@ const GroceryListPage = () => {
     dispatch(getGroceries())
   }, [])
 
+  // Fetches the current Plan and Groceries from the Backend if user drags the List down
   const onRefresh = React.useCallback(() => {
     dispatch(getPlan())
     dispatch(getGroceries())
   }, []);
 
-  // Handle Bought Grocery
+  // Handle Bought Grocery by dispatching redux thunk
   const buy = async (ingredientID: number) => {
     const largeGrocery = groceries.find(largeGrocery => largeGrocery.ingredientId === ingredientID)
     if (largeGrocery) {
@@ -37,7 +39,7 @@ const GroceryListPage = () => {
           required: largeGrocery.grocery.required,
           bought: largeGrocery.grocery.required
         })
-        
+
         dispatch(updateGroceries(updatedGroceries))
       }
     }
@@ -46,11 +48,11 @@ const GroceryListPage = () => {
   return (
     <Box padding="m" backgroundColor="mainBackground" flex={1}>
       <ScrollView refreshControl={
-          <RefreshControl
-            refreshing={updating}
-            onRefresh={onRefresh}
-          />
-        }>
+        <RefreshControl
+          refreshing={updating}
+          onRefresh={onRefresh}
+        />
+      }>
         {
           groceries.map((elem: LargeGrocery) => {
             return (

@@ -23,11 +23,13 @@ enum RecipeAction {
 
 type RecipePageProps = BottomTabScreenProps<RootTabParamList, 'Recipe'>
 
+// Returns RecipePage displaying the selected recipe which is specified via the navigation parameters
 const RecipePage = ({ navigation, route }: RecipePageProps) => {
     const [currentAction, setCurrentAction] = useState<RecipeAction>(RecipeAction.Ingredients)
     const dispatch = useDispatch<AppDispatch>()
     const groceries = useSelector(selectSortedGroceries)
     const ingredients = useSelector(selectAllIngredients)
+    // Get the id specifying the recipe from route.params
     const { mealId } = route.params;
     const meal = useSelector(selectAllRecipes).find((meal: Meal) => meal.id === mealId)
     const theme = useTheme<Theme>()

@@ -5,7 +5,7 @@ import { AppDispatch, RootState } from '../store'
 
 
 interface IState {
-    recipes: Meal[], // TODO: Now we have meal and recipe type, this is very confusing
+    recipes: Meal[],
     groceries: LargeGrocery[],
     ingredients: Ingredient[],
     updating: boolean
@@ -152,6 +152,11 @@ const currentPlanSlice = createSlice({
 export const { resetCurrentPlan } = currentPlanSlice.actions
 export const { resetGroceries } = currentPlanSlice.actions
 
+/**
+ * Updates the stored set of Groceries by sending the new set of groceries including the newly bought grocery to the backend
+ * @param groceries set of all Groceries which sh
+ * @returns the updated set of groceries provided by the backend after the request concludes 
+ */
 export const updateGroceries = createAsyncThunk<
     Grocery[],
     Grocery[],
@@ -164,6 +169,7 @@ export const updateGroceries = createAsyncThunk<
     async (groceries, thunkApi) => {
         let oldGroceries = thunkApi.getState().currentPlan.groceries
 
+        // Replaces Grocery in stored set if it is present in the received groceries
         let updatedGroceries: Grocery[] = oldGroceries.map(obj => groceries.find(o => o.ingredientId === obj.ingredientId) || obj.grocery);
 
         let groceriesArg = JSON.stringify(updatedGroceries)
@@ -189,6 +195,11 @@ export const updateGroceries = createAsyncThunk<
     }
 )
 
+/**
+ * Confirm the current plan configuration in SwapMealsPage by requesting an accept in the backend
+ * @param meals current plan active in the SwapMealsPage
+ * @returns the accepted plan
+ */
 export const acceptPlan = createAsyncThunk<
     Meal[],
     Meal[]
@@ -212,6 +223,10 @@ export const acceptPlan = createAsyncThunk<
     }
 )
 
+/**
+ * Fetch the current Plan from the Backend
+ * @returns the Current Plan 
+ */
 export const getPlan = createAsyncThunk<
     Meal[],
     void
@@ -247,6 +262,10 @@ export const getPlan = createAsyncThunk<
     }
 )
 
+/**
+ * Fetch all Ingredients from the Backend
+ * @returns all Ingredients
+ */
 export const getIngredients = createAsyncThunk<
     Ingredient[]
 >(
@@ -267,7 +286,13 @@ export const getIngredients = createAsyncThunk<
     }
 )
 
-export const planCook = createAsyncThunk(
+/**
+ * Sets the Recipe with MealId as cooked in the Backend --> Deregister Groceries
+ */
+export const planCook = createAsyncThunk<
+    void,
+    number
+>(
     'currentPlan/planCook',
     async (mealId: number) => {
         try {
@@ -288,6 +313,10 @@ export const planCook = createAsyncThunk(
     }
 )
 
+/**
+ * Fetches the GroceryList from the Backend
+ * @returns the GroceryList
+ */
 export const getGroceries = createAsyncThunk<
     Grocery[]
 >(
@@ -316,14 +345,16 @@ export const selectAllIngredients = (state: RootState) => state.currentPlan.ingr
 export const selectNewPlanConfiguration = (state: RootState) => state.newPlan
 export const selectSortedGroceries = (state: RootState) => {
     return state.currentPlan.groceries.slice().sort(function (grocery1, grocery2) {
+        // Already bought Ingredients should be at the end of the list
         if (grocery1.grocery.bought >= grocery1.grocery.required && grocery2.grocery.bought < grocery2.grocery.required) {
             return 1
         }
+        // Ingredients which are not yet bought should be at the beginning of the list
         if (grocery1.grocery.bought < grocery1.grocery.required && grocery2.grocery.bought >= grocery2.grocery.required) {
             return -1
         }
 
-        // Alphabetisch sortieren
+        // If both are the same regarding bought or not bought, sort alphabetically
         if (grocery1.ingredient.name < grocery2.ingredient.name) {
             return -1
         } else {

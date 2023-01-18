@@ -25,11 +25,13 @@ type Props = {
     navigation: NavigationScreenProp<any, any>
 }
 
+// Returns the LeftoverScreen containing a Searchbar which enables the user to add Leftovers
 const LeftoversScreen = ({ navigation }: Props) => {
     const leftovers = useSelector(selectAllLeftovers)
     const dispatch = useDispatch<AppDispatch>()
     const route = useRoute()
 
+    // Current Leftovers stored in newPlanSlice
     const leftoverInputs = leftovers.map((leftover: LeftOver) => (
         <LeftOverInput
             key={leftover.id}
