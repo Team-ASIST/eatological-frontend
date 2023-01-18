@@ -5,6 +5,7 @@ import { Theme } from '../../utils/theme'
 
 const Box = createBox<Theme>()
 
+// Returns SplashScreen used at AppStart
 const SplashScreen = () => {
     const windowWidth = Dimensions.get('window').width;
 

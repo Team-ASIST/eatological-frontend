@@ -28,6 +28,7 @@ export type SettingsPageProps = {
   navigation: NavigationScreenProp<any, any>
 };
 
+// Returns the SettingsPage enabling the user to manage their account and set restrictions
 const SettingsPage = ({ navigation }: SettingsPageProps) => {
   // User Management
   const username = useSelector(selectUsername)
@@ -50,8 +51,12 @@ const SettingsPage = ({ navigation }: SettingsPageProps) => {
 
   const dispatch = useDispatch<AppDispatch>()
 
+  /**
+   * Function displaying whether the action (RenameUser, SwitchUser, DeleteUser) was successful
+   * @param oldName previos userName necesssary to determine whether action was successful
+   */
   const displaySuccess = async (oldName: string) => {
-    if (store.getState().user.name != oldName) {
+    if (store.getState().user.name !== oldName) {
       setSuccess(true)
       setResultVisible(true)
       await wait(500)
@@ -64,13 +69,19 @@ const SettingsPage = ({ navigation }: SettingsPageProps) => {
     }
   }
 
+  /**
+   * Change active user by either renaming or switching accounts
+   * @param newUsername Username entered by the user which he wants to be renamed to or switch account to
+   */
   const changeUser = (newUsername: string) => {
     const oldName = username
     if (!switchMode) {
+      // Rename the User to newUsername
       dispatch(renameUser(newUsername)).then(
         async () => displaySuccess(oldName)
       )
     } else {
+      // Switch Account to newUsername
       dispatch(getToken(newUsername)).then(
         () => {
           displaySuccess(oldName)
@@ -84,9 +95,12 @@ const SettingsPage = ({ navigation }: SettingsPageProps) => {
     }
   }
 
+  /**
+   * Delete the active user
+   */
   const deleteUsername = () => {
     const oldName = username
-    if (username != "" && token.startsWith('T')) {
+    if (username !== "" && token.startsWith('T')) {
       dispatch(deleteUser()).then(
         async () => {
           displaySuccess(oldName)
@@ -111,6 +125,10 @@ const SettingsPage = ({ navigation }: SettingsPageProps) => {
     )
   }, [])
 
+  /**
+   * Swich current Restriction to Selected Restriction
+   * @param restriction name of the restriction the user wants to set ("Keine" => Delete active restriction)
+   */
   const setNewRestriction = async (restriction: string) => {
     const success: boolean = await setRestrictions(restriction)
     if (success) {

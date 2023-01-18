@@ -10,7 +10,7 @@ const setUpInterceptor = (token: string) => {
             if (token.startsWith("T")) {
                 (config as any).headers['EatologicalToken'] = token;
             }
-            if (token == "") {
+            if (token === "") {
                 (config as any).headers['EatologicalToken'] = 'dev@eatological.de';
             }
 

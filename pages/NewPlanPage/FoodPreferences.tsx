@@ -19,11 +19,13 @@ type Props = {
     navigation: NavigationScreenProp<any, any>
 }
 
+// Returns the FoodPreferenceScreen containing a Searchbar which enables the user to add preferences
 const FoodPreferencesScreen = ({ navigation }: Props) => {
     const preferences = useSelector(selectAllPreferences)
     const dispatch = useDispatch<AppDispatch>()
     const route = useRoute()
 
+    // Current Preferences stored in newPlanSlice
     const preferenceInputs = preferences.map((preference: FoodPreference) => (
         <IngredientInput
         key={preference.id}

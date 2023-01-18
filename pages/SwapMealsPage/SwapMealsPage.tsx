@@ -1,6 +1,6 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import { createBox, createText } from '@shopify/restyle';
+import { createBox } from '@shopify/restyle';
 import { Theme } from '../../utils/theme';
 import { TouchableOpacity } from "react-native";
 import { NavigationScreenProp } from "react-navigation";
@@ -18,13 +18,13 @@ import SplashAnimation from "./components/Animation";
 import TopBar from "./components/TopBar";
 import RecipeModal from "./components/RecipeModal";
 
-const Text = createText<Theme>()
 const Box = createBox<Theme>()
 
 export type SwapMealsPageProps = {
   navigation: NavigationScreenProp<any, any>
 };
 
+// Returns SwapMealsPage enabling the user to view and change the received plan
 const SwapMealsPage = ({ navigation }: SwapMealsPageProps) => {
   // Initial State for Animation
   const [setupPhase, setSetupPhase] = useState(true)
@@ -36,7 +36,7 @@ const SwapMealsPage = ({ navigation }: SwapMealsPageProps) => {
   const [recipeList, setRecipeList] = useState([] as RecipeSwipeObject[])
   // Manages Locking, Loading Animation
   const [loading, setLoading] = useState(false)
-  // Sustainability Score for future animations
+  // Sustainability Score for animations
   const [sustainabilityScore, setSustainabilityScore] = useState(0)
 
   const [modalVisible, setModalVisible] = useState(false);
@@ -60,7 +60,11 @@ const SwapMealsPage = ({ navigation }: SwapMealsPageProps) => {
     )
   }, [])
 
-  // Handle Swiping Input
+  /**
+   * Generates a new Recipe for the selected slot
+   * @param rowKey index of the recipe to switch by generating a new Recipe
+   * @param rowMap List containing all Recipes in the current plan
+   */
   const swipeLeft = async (rowKey: any, rowMap: any) => {
     if (swipeTracker[rowKey] > 0 && !loading) {
       setLoading(true)
@@ -76,7 +80,11 @@ const SwapMealsPage = ({ navigation }: SwapMealsPageProps) => {
     rowMap[rowKey].closeRow()
   };
 
-
+  /**
+   * Fetches the old Recipe for the selected slot
+   * @param rowKey index of the recipe to switch by fetching the previos Recipe
+   * @param rowMap List containing all Recipes in the current plan
+   */
   const swipeRight = async (rowKey: any, rowMap: any) => {
     if (!loading) {
       setLoading(true)
