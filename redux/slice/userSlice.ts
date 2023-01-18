@@ -110,7 +110,7 @@ export const getToken = createAsyncThunk<
             )
 
             const message = response.data
-            if (thunkApi.getState().user.name != name) {
+            if (thunkApi.getState().user.name !== name) {
                 thunkApi.dispatch(changeUsername(name))
                 thunkApi.dispatch(resetCurrentPlan())
             }

@@ -5,7 +5,7 @@ import { AppDispatch, RootState } from '../store'
 
 
 interface IState {
-    recipes: Meal[], // TODO: Now we have meal and recipe type, this is very confusing
+    recipes: Meal[],
     groceries: LargeGrocery[],
     ingredients: Ingredient[],
     updating: boolean
