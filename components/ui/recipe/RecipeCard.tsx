@@ -3,7 +3,7 @@ import React, { Fragment } from 'react'
 import { Theme } from '../../../utils/theme';
 import { createText, createBox, useTheme } from '@shopify/restyle';
 import { BlurView } from 'expo-blur';
-import IconText from '../common/iconText';
+import IconText from '../common/IconText';
 
 const Text = createText<Theme>();
 const Box = createBox<Theme>();
@@ -37,12 +37,12 @@ const recipeCard = (props: RecipeCardProps) => {
                         intensity={40}
                     >
                         <Box padding="s" flexDirection="row" width={"95%"} justifyContent="space-between" alignContent="center" margin="s">
-                            <Box flexDirection="row" width={"80%"}>
+                            <Box flexDirection="row" width={"75%"}>
                                 <Text variant="subsubheader" color={"primaryCardText"}>
                                     {props.recipeName}
                                 </Text>
                             </Box>
-                            <Box flexDirection="row" justifyContent="flex-end" flexGrow={1} width={"20%"}>
+                            <Box flexDirection="row" justifyContent="flex-end" flexGrow={1} width={"25%"}>
                                 {props.ready ?
                                     <Box>
                                         <IconText iconName={'checkmark-outline'} text={''} />

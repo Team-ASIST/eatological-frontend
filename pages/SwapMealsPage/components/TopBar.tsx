@@ -1,6 +1,6 @@
 import { createText, createBox } from "@shopify/restyle"
 import Ionicons from "react-native-vector-icons/Ionicons"
-import { ScoreBar } from "../../../components/ui/common/scoreBar"
+import { ScoreBar } from "../../../components/ui/common/ScoreBar"
 import { Theme } from "../../../utils/theme"
 
 const Text = createText<Theme>()
