@@ -12,10 +12,14 @@ export type HiddenCardProps = {
 }
 
 const indicator = (isLoading: boolean, left: boolean) => {
-  switch(isLoading){
-    case false: if(left){return <Ionicons name="arrow-back-circle-outline" size={40} color="white" />} 
-                else{return <Ionicons name="arrow-forward-circle-outline" size={40} color="white" />}
-    case true: return <ActivityIndicator size={40} color="white"/>            
+  if(isLoading){
+    return <ActivityIndicator size={40} color="white"/>
+  }else{
+    if(left){
+      return <Ionicons name="arrow-back-circle-outline" size={40} color="white" />
+    }else{
+      return <Ionicons name="arrow-forward-circle-outline" size={40} color="white" />
+    }
   }
 }
 

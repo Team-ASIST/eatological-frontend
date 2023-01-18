@@ -16,10 +16,12 @@ type Props = {
     navigation: NavigationScreenProp<any, any>
 }
 
+// Returns the MealQuantityScreen which enables users to add Meals and specify the amount of portions for each Meal
 const MealQuantityScreen = ({ navigation }: Props) => {
     const meals = useSelector(selectAllMeals)
     const dispatch = useDispatch<AppDispatch>()
 
+    // Current Meals stored in newPlanSlice
     const mealInputs = meals.map((meal: IMealAmount, index: number) => (
         <PlusMinusInput key={meal.id}
             increment={() => dispatch(mealIncrement({ id: meal.id }))}
@@ -27,6 +29,7 @@ const MealQuantityScreen = ({ navigation }: Props) => {
             value={meal.amount} title={`Gericht ${index + 1}`} />
     ))
 
+    // Component enabling the user to add a meal on Pressing the Button
     const addMeal = (
         <AddItemButton
             onPress={() => dispatch(mealAdded())}

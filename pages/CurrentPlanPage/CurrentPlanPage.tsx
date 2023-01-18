@@ -16,12 +16,18 @@ type CurrentPlanProps = {
   navigation: NavigationScreenProp<any, any>
 }
 
+// Returns the CurrentPlanPage containing the current Plan including all recipes
 const CurrentPlan = ({ navigation }: CurrentPlanProps) => {
   const recipes = useSelector(selectAllRecipes)
   const updating = useSelector(selectUpdatingPlan)
   const groceries = useSelector(selectAllGroceries)
   const dispatch = useDispatch<AppDispatch>()
 
+  /** 
+   * Determines whether all required ingredients in the recipes were bought in GroceryListPage
+   * @param items required items in the recipe
+   * @returns boolean stating whether recipe is cookable
+   */
   const checkIfCookable = (items: smallIngredient[]) => {
     let isReady = true
 
@@ -39,6 +45,7 @@ const CurrentPlan = ({ navigation }: CurrentPlanProps) => {
     return isReady
   }
 
+  // Fetches the current Plan and Groceries from the Backend if user drags the List down
   const onRefresh = React.useCallback(() => {
     dispatch(getPlan())
     dispatch(getGroceries())
